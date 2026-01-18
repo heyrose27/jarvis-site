@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Jarvis Heyrose | AI Dashboard</title>
-
+  <title>Jarvis Heyrose</title>
   <style>
     :root{
       --bg:#0b0f14;
@@ -29,6 +28,7 @@
       height:100vh;
       overflow:hidden;
     }
+
     .app{display:flex; height:100vh; width:100vw;}
 
     /* Sidebar */
@@ -41,7 +41,10 @@
       flex-direction:column;
       gap:14px;
     }
-    .brand{display:flex; align-items:center; gap:10px; padding:10px 10px 14px;}
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 10px 14px;
+    }
     .logo{
       width:38px; height:38px; border-radius:12px;
       background: radial-gradient(circle at 30% 30%, rgba(124,58,237,.9), rgba(34,197,94,.6));
@@ -50,7 +53,10 @@
     .brand h1{font-size:14px; margin:0; letter-spacing:.6px}
     .brand p{margin:2px 0 0; font-size:12px; color:var(--muted)}
 
-    .nav{display:flex; flex-direction:column; gap:6px; padding:0 6px;}
+    .nav{
+      display:flex; flex-direction:column; gap:6px;
+      padding:0 6px;
+    }
     .nav button{
       all:unset;
       cursor:pointer;
@@ -78,7 +84,6 @@
       background: rgba(34,197,94,.12);
       border:1px solid rgba(34,197,94,.25);
     }
-
     .sidebarFooter{
       margin-top:auto;
       padding:10px 6px 6px;
@@ -100,9 +105,14 @@
     .miniBtn:hover{border-color: rgba(255,255,255,.14)}
 
     /* Main */
-    .main{flex:1; display:flex; flex-direction:column; min-width:0;}
+    .main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+    }
 
-    /* Topbar */
+    /* Top bar */
     .topbar{
       height:64px;
       display:flex;
@@ -112,7 +122,12 @@
       border-bottom:1px solid var(--border);
       background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 70%);
     }
-    .tabs{display:flex; gap:8px; overflow:auto; padding-bottom:2px;}
+    .tabs{
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      padding-bottom:2px;
+    }
     .tab{
       all:unset;
       cursor:pointer;
@@ -130,7 +145,9 @@
       background: rgba(124,58,237,.18);
       border-color: rgba(124,58,237,.35);
     }
-    .topActions{display:flex; gap:10px; align-items:center;}
+    .topActions{
+      display:flex; gap:10px; align-items:center;
+    }
     .badge{
       display:flex; align-items:center; gap:8px;
       padding:8px 10px;
@@ -153,12 +170,25 @@
     .loginBtn:hover{background: rgba(124,58,237,.28)}
 
     /* Content */
-    .content{flex:1; overflow:auto; padding:18px; padding-bottom:120px;}
-    .pageTitle{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin:4px 0 14px;}
+    .content{
+      flex:1;
+      overflow:auto;
+      padding:18px;
+      padding-bottom:120px;
+    }
+    .pageTitle{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:16px;
+      margin:4px 0 14px;
+    }
     .pageTitle h2{margin:0; font-size:20px}
     .pageTitle p{margin:0; color:var(--muted); font-size:13px}
 
-    .grid{display:grid; grid-template-columns: repeat(12, 1fr); gap:14px;}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:14px;
+    }
     .card{
       grid-column: span 4;
       background: rgba(255,255,255,.03);
@@ -170,7 +200,10 @@
       display:flex;
       flex-direction:column;
     }
-    .cardHeader{padding:12px 12px 8px; display:flex; justify-content:space-between; align-items:center;}
+    .cardHeader{
+      padding:12px 12px 8px;
+      display:flex; justify-content:space-between; align-items:center;
+    }
     .tag{
       font-size:11px;
       padding:4px 8px;
@@ -179,7 +212,13 @@
       border:1px solid rgba(255,255,255,.08);
       color:var(--muted);
     }
-    .cardBody{padding:0 12px 12px; color:var(--muted); font-size:13px; line-height:1.35; flex:1;}
+    .cardBody{
+      padding:0 12px 12px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+      flex:1;
+    }
     .cardFooter{
       padding:12px;
       border-top:1px solid rgba(255,255,255,.07);
@@ -207,7 +246,7 @@
     }
     .ghost:hover{border-color: rgba(255,255,255,.18)}
 
-    /* Prompt bar */
+    /* Prompt Bar */
     .promptBar{
       position:fixed;
       left:260px;
@@ -265,7 +304,7 @@
       white-space:nowrap;
     }
 
-    /* Modal */
+    /* Promo Modal */
     .modalBackdrop{
       position:fixed; inset:0;
       background: rgba(0,0,0,.60);
@@ -304,31 +343,15 @@
       padding:12px 14px 14px;
       border-top:1px solid rgba(255,255,255,.08);
     }
-
-    @media (max-width: 980px){
-      .sidebar{width:220px}
-      .promptBar{left:220px}
-      .card{grid-column: span 6}
-    }
-    @media (max-width: 720px){
-      .sidebar{width:78px; padding:14px 10px}
-      .brand h1,.brand p{display:none}
-      .nav button span.label{display:none}
-      .pill{display:none}
-      .promptBar{left:78px; padding:12px}
-      .card{grid-column: span 12}
-      .badge{display:none}
-      .topbar{padding:0 12px}
-    }
   </style>
 </head>
 
 <body>
   <div class="app">
-
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="brand">
-        <div class="logo"></div>
+        <div class="logo" aria-hidden="true"></div>
         <div>
           <h1>JARVIS HEYROSE</h1>
           <p>AI • Ders • Video</p>
@@ -353,23 +376,28 @@
       </div>
     </aside>
 
+    <!-- MAIN -->
     <main class="main">
+      <!-- TOPBAR -->
       <header class="topbar">
         <div class="tabs" id="tabs">
-          <button class="tab active">Hepsi</button>
-          <button class="tab">Eğitim</button>
-          <button class="tab">Viral</button>
-          <button class="tab">Stil</button>
-          <button class="tab">Sinematik</button>
+          <button class="tab active" data-tab="hepsi">Hepsi</button>
+          <button class="tab" data-tab="ogrenim">Eğitim & Öğrenim</button>
+          <button class="tab" data-tab="viral">Viral Durum</button>
+          <button class="tab" data-tab="stil">Stil Sanatı</button>
+          <button class="tab" data-tab="sinematik">Sinematik</button>
         </div>
 
         <div class="topActions">
           <div class="badge"><span class="dot"></span> Sistem Aktif</div>
-          <button class="loginBtn" id="loginBtn">Giriş</button>
+          <button class="loginBtn" id="loginBtn">Google ile Giriş</button>
         </div>
       </header>
 
+      <!-- CONTENT -->
       <section class="content">
+
+        <!-- PAGES -->
         <div id="page-ai-tools" class="page">
           <div class="pageTitle">
             <div>
@@ -384,7 +412,7 @@
                 <strong>Prompt Oluştur</strong>
                 <span class="tag">Günlük 2 Free</span>
               </div>
-              <div class="cardBody">Ne yapmak istediğini yaz. Sistem promptu hazırlar.</div>
+              <div class="cardBody">Ne yapmak istediğini yaz. Sistem promptu temizler ve hazır verir.</div>
               <div class="cardFooter">
                 <button class="primary" onclick="setMode('prompt')">Seç</button>
                 <button class="ghost" onclick="openPromo()">Tanıtım</button>
@@ -396,7 +424,7 @@
                 <strong>Başlık Üret</strong>
                 <span class="tag">Günlük 2 Free</span>
               </div>
-              <div class="cardBody">SEO odaklı YouTube Shorts başlıkları.</div>
+              <div class="cardBody">YouTube/Shorts için SEO odaklı başlık üretimi.</div>
               <div class="cardFooter">
                 <button class="primary" onclick="setMode('baslik')">Seç</button>
                 <button class="ghost" onclick="openPromo()">Tanıtım</button>
@@ -408,7 +436,7 @@
                 <strong>Hashtag Bul</strong>
                 <span class="tag">Günlük 2 Free</span>
               </div>
-              <div class="cardBody">İçeriğe göre hashtag üretimi.</div>
+              <div class="cardBody">İçeriğe göre hashtag seti üretimi.</div>
               <div class="cardFooter">
                 <button class="primary" onclick="setMode('hashtag')">Seç</button>
                 <button class="ghost" onclick="openPromo()">Tanıtım</button>
@@ -420,7 +448,7 @@
                 <strong>Görsel Üret</strong>
                 <span class="tag">Günlük 2 Free</span>
               </div>
-              <div class="cardBody">Kısa komutla görsel üretim.</div>
+              <div class="cardBody">Kısa komutla görsel üretim (backend bağlanınca).</div>
               <div class="cardFooter">
                 <button class="primary" onclick="setMode('gorsel')">Seç</button>
                 <button class="ghost" onclick="openPromo()">Tanıtım</button>
@@ -432,7 +460,7 @@
                 <strong>Ders 30dk</strong>
                 <span class="tag">Pomodoro</span>
               </div>
-              <div class="cardBody">25 dk çalışma + 5 dk mola.</div>
+              <div class="cardBody">Ortaokul / KPSS / Ön lisans için 30 dk çalışma modu.</div>
               <div class="cardFooter">
                 <button class="primary" onclick="goPage('ders-30dk')">Aç</button>
                 <button class="ghost" onclick="openPromo()">Tanıtım</button>
@@ -444,16 +472,65 @@
                 <strong>Video</strong>
                 <span class="tag">Kanal</span>
               </div>
-              <div class="cardBody">Tanıtım videosu + yönlendirme.</div>
+              <div class="cardBody">Kanal videoları / tanıtım akışı (welcome ekranıyla).</div>
               <div class="cardFooter">
                 <button class="primary" onclick="goPage('video')">Aç</button>
                 <button class="ghost" onclick="openPromo()">Tanıtım</button>
               </div>
             </div>
+
           </div>
         </div>
+
+        <div id="page-ders-30dk" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>Ders 30dk</h2>
+              <p>25 dk çalışma + 5 dk mola</p>
+            </div>
+          </div>
+          <div class="card" style="grid-column: span 12; max-width:800px">
+            <div class="cardHeader"><strong>Pomodoro</strong><span class="tag" id="timerState">Hazır</span></div>
+            <div class="cardBody">
+              <div style="font-size:44px; font-weight:900; letter-spacing:2px" id="timer">25:00</div>
+              <p class="hint">Start ile başlat.</p>
+            </div>
+            <div class="cardFooter">
+              <button class="primary" id="startTimer">Start</button>
+              <button class="ghost" id="resetTimer">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="page-baslik" class="page" style="display:none">
+          <div class="pageTitle"><div><h2>Başlık</h2><p>SEO başlık üretimi (placeholder)</p></div></div>
+        </div>
+
+        <div id="page-hashtag" class="page" style="display:none">
+          <div class="pageTitle"><div><h2>Hashtag</h2><p>Hashtag seti (placeholder)</p></div></div>
+        </div>
+
+        <div id="page-gorsel" class="page" style="display:none">
+          <div class="pageTitle"><div><h2>Görsel</h2><p>Görsel üretim (backend bağlanınca)</p></div></div>
+        </div>
+
+        <div id="page-video" class="page" style="display:none">
+          <div class="pageTitle"><div><h2>Video</h2><p>Tanıtım / kanal yönlendirme</p></div></div>
+          <div class="card" style="max-width:900px">
+            <div class="cardHeader"><strong>YouTube Tanıtım</strong><span class="tag">13 sn</span></div>
+            <div class="cardBody">
+              Buraya YouTube embed koyacağız.
+            </div>
+            <div class="cardFooter">
+              <button class="primary" onclick="openPromo()">Popup Aç</button>
+              <button class="ghost" onclick="alert('Link verince gömeriz.')">Link Ekle</button>
+            </div>
+          </div>
+        </div>
+
       </section>
 
+      <!-- PROMPT BAR -->
       <div class="promptBar">
         <div class="promptInner">
           <button class="modeSelect" id="modeBtn">Mod: Prompt</button>
@@ -464,6 +541,7 @@
     </main>
   </div>
 
+  <!-- PROMO MODAL -->
   <div class="modalBackdrop" id="promoModal">
     <div class="modal">
       <div class="modalTop">
@@ -471,7 +549,12 @@
         <button class="xBtn" onclick="closePromo()">✕</button>
       </div>
       <div class="modalBody">
-        <p class="hint">İzle butonuna basınca random Shorts açılır.</p>
+        <div style="aspect-ratio:16/9; width:100%; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); border-radius:14px; display:grid; place-items:center;">
+          <div style="text-align:center; color:var(--muted); font-size:13px; padding:14px;">
+            Buraya YouTube embed gelecek.
+          </div>
+        </div>
+        <p class="hint">İzle butonuna basınca hak verilir (backend).</p>
       </div>
       <div class="modalActions">
         <button class="ghost" onclick="closePromo()">Atla</button>
@@ -481,26 +564,38 @@
   </div>
 
   <script>
-    const youtubeVideos = [
-      "6bd0a3p_qNs","5mVvlMPRg9U","AGBZYvXJpRg","i1Mw4b_ivYo",
-      "Zpr3aoAbRqU","_CelSfEJkz0","OZ99DyKxvYA","Dl9cDx3rouU",
-      "e_1id0_LN68","fg-4bpIAVl0","-hJZQcd0gKI","KypCc3Gq6Yo"
-    ];
+    // --- SIMPLE ROUTER (pages) ---
+    const nav = document.getElementById('nav');
+    const pages = {
+      "ai-tools": document.getElementById('page-ai-tools'),
+      "ders-30dk": document.getElementById('page-ders-30dk'),
+      "baslik": document.getElementById('page-baslik'),
+      "hashtag": document.getElementById('page-hashtag'),
+      "gorsel": document.getElementById('page-gorsel'),
+      "video": document.getElementById('page-video'),
+    };
 
-    function openRandomShort(){
-      const id = youtubeVideos[Math.floor(Math.random() * youtubeVideos.length)];
-      window.open(`https://www.youtube.com/shorts/${id}`, "_blank");
+    function goPage(key){
+      Object.values(pages).forEach(p => p.style.display = 'none');
+      pages[key].style.display = 'block';
+      [...nav.querySelectorAll('button')].forEach(b => b.classList.toggle('active', b.dataset.page === key));
     }
 
-    const promoModal = document.getElementById('promoModal');
-    function openPromo(){ promoModal.style.display = 'flex'; }
-    function closePromo(){ promoModal.style.display = 'none'; }
-    function watchedPromo(){
-      closePromo();
-      openRandomShort();
-      alert("İzlendi (demo). Backend bağlanınca üretim yapılacak.");
-    }
+    nav.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-page]');
+      if(!btn) return;
+      goPage(btn.dataset.page);
+    });
 
+    // --- TOP TABS (placeholder) ---
+    document.getElementById('tabs').addEventListener('click', (e)=>{
+      const t = e.target.closest('.tab');
+      if(!t) return;
+      [...document.querySelectorAll('.tab')].forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+    });
+
+    // --- MODE (prompt / baslik / hashtag / gorsel) ---
     let mode = 'prompt';
     const modeBtn = document.getElementById('modeBtn');
     function setMode(m){
@@ -508,16 +603,81 @@
       const map = {prompt:'Prompt', baslik:'Başlık', hashtag:'Hashtag', gorsel:'Görsel'};
       modeBtn.textContent = 'Mod: ' + (map[m] || 'Prompt');
     }
-
-    document.getElementById('sendBtn').addEventListener('click', ()=>{
-      const txt = document.getElementById('promptInput').value.trim();
-      if(!txt) return alert("Bir şey yaz.");
-      openPromo();
+    modeBtn.addEventListener('click', ()=>{
+      const order = ['prompt','baslik','hashtag','gorsel'];
+      const idx = (order.indexOf(mode)+1) % order.length;
+      setMode(order[idx]);
     });
 
+    // --- SEND (placeholder) ---
+    document.getElementById('sendBtn').addEventListener('click', ()=>{
+      const txt = document.getElementById('promptInput').value.trim();
+      if(!txt) return alert('Bir şey yaz.');
+      alert('Şu an sadece tasarım. Backend bağlayınca: ' + mode + ' üretilecek.');
+    });
+
+    // --- PROMO MODAL ---
+    const promoModal = document.getElementById('promoModal');
+    function openPromo(){ promoModal.style.display = 'flex'; }
+    function closePromo(){ promoModal.style.display = 'none'; }
+    function watchedPromo(){
+      closePromo();
+      alert('İzlendi işaretlendi (placeholder).');
+    }
+    window.openPromo = openPromo;
+    window.closePromo = closePromo;
+    window.watchedPromo = watchedPromo;
+    window.setMode = setMode;
+    window.goPage = goPage;
+
     document.getElementById('promoBtn').addEventListener('click', openPromo);
-    document.getElementById('helpBtn').addEventListener('click', ()=>alert("Menüden sayfa seç, alttan komut yaz."));
-    document.getElementById('loginBtn').addEventListener('click', ()=>alert("Google giriş sonra eklenecek."));
+    document.getElementById('helpBtn').addEventListener('click', ()=>alert('Yardım: Menüden sayfa seç, alttan komut yaz.'));
+
+    // --- SIMPLE POMODORO (25/5) ---
+    let timerInt = null;
+    let seconds = 25*60;
+    let working = true;
+
+    function renderTimer(){
+      const m = String(Math.floor(seconds/60)).padStart(2,'0');
+      const s = String(seconds%60).padStart(2,'0');
+      document.getElementById('timer').textContent = `${m}:${s}`;
+      document.getElementById('timerState').textContent = working ? 'Çalışma' : 'Mola';
+    }
+    function resetTimer(){
+      clearInterval(timerInt); timerInt=null;
+      working = true; seconds = 25*60; renderTimer();
+    }
+    document.getElementById('startTimer').addEventListener('click', ()=>{
+      if(timerInt) return;
+      timerInt = setInterval(()=>{
+        seconds--;
+        if(seconds <= 0){
+          working = !working;
+          seconds = working ? 25*60 : 5*60;
+        }
+        renderTimer();
+      }, 1000);
+    });
+    document.getElementById('resetTimer').addEventListener('click', resetTimer);
+    renderTimer();
+  </script>
+
+  <!-- GOOGLE LOGIN (SUPABASE) -->
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+    const SUPABASE_URL = "BURAYA_SUPABASE_URL";
+    const SUPABASE_ANON_KEY = "BURAYA_SUPABASE_ANON_KEY";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: "https://www.jarvisheyrose.com" }
+      });
+    });
   </script>
 </body>
 </html>
