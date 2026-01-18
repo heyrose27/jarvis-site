@@ -1,23 +1,523 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jarvis Heyrose | AI Dashboard</title>
-    <style>
-        body { background: #0a0a0a; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #111; padding: 40px; border-radius: 15px; border: 1px solid #333; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h1 { color: #00ff41; letter-spacing: 2px; }
-        p { color: #888; margin-bottom: 30px; }
-        .btn { background: #00ff41; color: black; padding: 12px 30px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; text-decoration: none; }
-        .btn:hover { background: #00cc33; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Jarvis Heyrose | AI Dashboard</title>
+
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --panel:#0f1520;
+      --panel2:#0c121b;
+      --border:rgba(255,255,255,.08);
+      --text:#e6edf6;
+      --muted:#a9b4c3;
+      --accent:#7c3aed;
+      --accent2:#22c55e;
+      --shadow: 0 10px 30px rgba(0,0,0,.55);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: radial-gradient(1200px 700px at 30% 10%, rgba(124,58,237,.18), transparent 55%),
+                  radial-gradient(900px 600px at 80% 70%, rgba(34,197,94,.10), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      height:100vh;
+      overflow:hidden;
+    }
+    .app{display:flex; height:100vh; width:100vw;}
+
+    /* Sidebar */
+    .sidebar{
+      width:260px;
+      padding:18px 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 35%), var(--panel2);
+      border-right:1px solid var(--border);
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .brand{display:flex; align-items:center; gap:10px; padding:10px 10px 14px;}
+    .logo{
+      width:38px; height:38px; border-radius:12px;
+      background: radial-gradient(circle at 30% 30%, rgba(124,58,237,.9), rgba(34,197,94,.6));
+      box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 10px 20px rgba(0,0,0,.35);
+    }
+    .brand h1{font-size:14px; margin:0; letter-spacing:.6px}
+    .brand p{margin:2px 0 0; font-size:12px; color:var(--muted)}
+
+    .nav{display:flex; flex-direction:column; gap:6px; padding:0 6px;}
+    .nav button{
+      all:unset;
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 12px;
+      border-radius:12px;
+      color:var(--text);
+      background:transparent;
+      border:1px solid transparent;
+    }
+    .nav button:hover{
+      background: rgba(255,255,255,.04);
+      border-color: rgba(255,255,255,.06);
+    }
+    .nav button.active{
+      background: rgba(124,58,237,.12);
+      border-color: rgba(124,58,237,.35);
+      box-shadow: 0 0 0 1px rgba(124,58,237,.18) inset;
+    }
+    .pill{
+      font-size:11px;
+      padding:3px 8px;
+      border-radius:999px;
+      color:rgba(255,255,255,.9);
+      background: rgba(34,197,94,.12);
+      border:1px solid rgba(34,197,94,.25);
+    }
+
+    .sidebarFooter{
+      margin-top:auto;
+      padding:10px 6px 6px;
+      color:var(--muted);
+      font-size:12px;
+      display:flex; gap:8px; flex-wrap:wrap;
+      align-items:center;
+    }
+    .miniBtn{
+      all:unset;
+      cursor:pointer;
+      padding:8px 10px;
+      border-radius:12px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.07);
+      color:var(--text);
+      font-size:12px;
+    }
+    .miniBtn:hover{border-color: rgba(255,255,255,.14)}
+
+    /* Main */
+    .main{flex:1; display:flex; flex-direction:column; min-width:0;}
+
+    /* Topbar */
+    .topbar{
+      height:64px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 18px;
+      border-bottom:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 70%);
+    }
+    .tabs{display:flex; gap:8px; overflow:auto; padding-bottom:2px;}
+    .tab{
+      all:unset;
+      cursor:pointer;
+      padding:8px 12px;
+      border-radius:999px;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      white-space:nowrap;
+      font-size:13px;
+    }
+    .tab:hover{border-color: rgba(255,255,255,.16)}
+    .tab.active{
+      color:var(--text);
+      background: rgba(124,58,237,.18);
+      border-color: rgba(124,58,237,.35);
+    }
+    .topActions{display:flex; gap:10px; align-items:center;}
+    .badge{
+      display:flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      font-size:13px;
+    }
+    .dot{width:8px; height:8px; border-radius:50%; background: var(--accent2); box-shadow:0 0 14px rgba(34,197,94,.55)}
+    .loginBtn{
+      all:unset; cursor:pointer;
+      padding:10px 12px;
+      border-radius:12px;
+      background: rgba(124,58,237,.20);
+      border:1px solid rgba(124,58,237,.35);
+      font-weight:700;
+      font-size:13px;
+    }
+    .loginBtn:hover{background: rgba(124,58,237,.28)}
+
+    /* Content */
+    .content{flex:1; overflow:auto; padding:18px; padding-bottom:120px;}
+    .pageTitle{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin:4px 0 14px;}
+    .pageTitle h2{margin:0; font-size:20px}
+    .pageTitle p{margin:0; color:var(--muted); font-size:13px}
+
+    .grid{display:grid; grid-template-columns: repeat(12, 1fr); gap:14px;}
+    .card{
+      grid-column: span 4;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      min-height:150px;
+      display:flex;
+      flex-direction:column;
+    }
+    .cardHeader{padding:12px 12px 8px; display:flex; justify-content:space-between; align-items:center;}
+    .tag{
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:999px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
+    }
+    .cardBody{padding:0 12px 12px; color:var(--muted); font-size:13px; line-height:1.35; flex:1;}
+    .cardFooter{
+      padding:12px;
+      border-top:1px solid rgba(255,255,255,.07);
+      display:flex; justify-content:space-between; align-items:center;
+      gap:10px;
+    }
+    .primary{
+      all:unset; cursor:pointer;
+      padding:9px 12px;
+      border-radius:12px;
+      background: rgba(34,197,94,.14);
+      border:1px solid rgba(34,197,94,.28);
+      font-weight:700;
+      font-size:13px;
+    }
+    .primary:hover{background: rgba(34,197,94,.20)}
+    .ghost{
+      all:unset; cursor:pointer;
+      padding:9px 12px;
+      border-radius:12px;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--text);
+      font-size:13px;
+    }
+    .ghost:hover{border-color: rgba(255,255,255,.18)}
+
+    /* Prompt bar */
+    .promptBar{
+      position:fixed;
+      left:260px;
+      right:0;
+      bottom:0;
+      padding:14px 18px;
+      border-top:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(11,15,20,.30), rgba(11,15,20,.90) 25%, rgba(11,15,20,.96));
+      backdrop-filter: blur(10px);
+    }
+    .promptInner{
+      max-width:1100px;
+      margin:0 auto;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      padding:10px;
+      box-shadow: var(--shadow);
+    }
+    .promptInner textarea{
+      width:100%;
+      resize:none;
+      height:44px;
+      max-height:120px;
+      background: transparent;
+      border:none;
+      outline:none;
+      color:var(--text);
+      font-size:14px;
+      padding:10px 10px;
+      line-height:1.25;
+    }
+    .sendBtn{
+      all:unset; cursor:pointer;
+      padding:10px 14px;
+      border-radius:14px;
+      background: rgba(124,58,237,.22);
+      border:1px solid rgba(124,58,237,.38);
+      font-weight:800;
+      font-size:13px;
+      white-space:nowrap;
+    }
+    .sendBtn:hover{background: rgba(124,58,237,.30)}
+    .modeSelect{
+      all:unset; cursor:pointer;
+      padding:10px 12px;
+      border-radius:14px;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--text);
+      font-size:13px;
+      white-space:nowrap;
+    }
+
+    /* Modal */
+    .modalBackdrop{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.60);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      z-index:50;
+    }
+    .modal{
+      width:min(720px, 100%);
+      background: rgba(15,21,32,.92);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .modalTop{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:12px 14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .modalTop h3{margin:0; font-size:14px}
+    .xBtn{
+      all:unset; cursor:pointer;
+      width:34px; height:34px;
+      display:grid; place-items:center;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+    .modalBody{padding:14px}
+    .hint{color:var(--muted); font-size:12px; margin:8px 0 0}
+    .modalActions{
+      display:flex; gap:10px; justify-content:flex-end;
+      padding:12px 14px 14px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+
+    @media (max-width: 980px){
+      .sidebar{width:220px}
+      .promptBar{left:220px}
+      .card{grid-column: span 6}
+    }
+    @media (max-width: 720px){
+      .sidebar{width:78px; padding:14px 10px}
+      .brand h1,.brand p{display:none}
+      .nav button span.label{display:none}
+      .pill{display:none}
+      .promptBar{left:78px; padding:12px}
+      .card{grid-column: span 12}
+      .badge{display:none}
+      .topbar{padding:0 12px}
+    }
+  </style>
 </head>
+
 <body>
-    <div class="card">
-        <h1>JARVIS HEYROSE</h1>
-        <p>Geleceğin Yapay Zeka Sistemine Hoş Geldiniz.</p>
-        <a href="#" class="btn" onclick="alert('Sistem Onayı: 14 Saniyelik Video Motoru Yükleniyor...')">SİSTEME GİRİŞ YAP</a>
+  <div class="app">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>JARVIS HEYROSE</h1>
+          <p>AI • Ders • Video</p>
+        </div>
+      </div>
+
+      <nav class="nav" id="nav">
+        <button class="active" data-page="ai-tools">
+          <span class="label">AI Tools</span>
+          <span class="pill">Free</span>
+        </button>
+        <button data-page="ders-30dk"><span class="label">Ders 30dk</span></button>
+        <button data-page="baslik"><span class="label">Başlık</span></button>
+        <button data-page="hashtag"><span class="label">Hashtag</span></button>
+        <button data-page="gorsel"><span class="label">Görsel</span></button>
+        <button data-page="video"><span class="label">Video</span></button>
+      </nav>
+
+      <div class="sidebarFooter">
+        <button class="miniBtn" id="promoBtn">Tanıtım</button>
+        <button class="miniBtn" id="helpBtn">Yardım</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="tabs" id="tabs">
+          <button class="tab active">Hepsi</button>
+          <button class="tab">Eğitim</button>
+          <button class="tab">Viral</button>
+          <button class="tab">Stil</button>
+          <button class="tab">Sinematik</button>
+        </div>
+
+        <div class="topActions">
+          <div class="badge"><span class="dot"></span> Sistem Aktif</div>
+          <button class="loginBtn" id="loginBtn">Giriş</button>
+        </div>
+      </header>
+
+      <section class="content">
+        <div id="page-ai-tools" class="page">
+          <div class="pageTitle">
+            <div>
+              <h2>AI Tools</h2>
+              <p>Prompt • Başlık • Hashtag • Görsel</p>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="card">
+              <div class="cardHeader">
+                <strong>Prompt Oluştur</strong>
+                <span class="tag">Günlük 2 Free</span>
+              </div>
+              <div class="cardBody">Ne yapmak istediğini yaz. Sistem promptu hazırlar.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('prompt')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="cardHeader">
+                <strong>Başlık Üret</strong>
+                <span class="tag">Günlük 2 Free</span>
+              </div>
+              <div class="cardBody">SEO odaklı YouTube Shorts başlıkları.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('baslik')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="cardHeader">
+                <strong>Hashtag Bul</strong>
+                <span class="tag">Günlük 2 Free</span>
+              </div>
+              <div class="cardBody">İçeriğe göre hashtag üretimi.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('hashtag')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="cardHeader">
+                <strong>Görsel Üret</strong>
+                <span class="tag">Günlük 2 Free</span>
+              </div>
+              <div class="cardBody">Kısa komutla görsel üretim.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('gorsel')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="cardHeader">
+                <strong>Ders 30dk</strong>
+                <span class="tag">Pomodoro</span>
+              </div>
+              <div class="cardBody">25 dk çalışma + 5 dk mola.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="goPage('ders-30dk')">Aç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="cardHeader">
+                <strong>Video</strong>
+                <span class="tag">Kanal</span>
+              </div>
+              <div class="cardBody">Tanıtım videosu + yönlendirme.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="goPage('video')">Aç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="promptBar">
+        <div class="promptInner">
+          <button class="modeSelect" id="modeBtn">Mod: Prompt</button>
+          <textarea id="promptInput" placeholder="Buraya yaz..."></textarea>
+          <button class="sendBtn" id="sendBtn">Oluştur</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="modalBackdrop" id="promoModal">
+    <div class="modal">
+      <div class="modalTop">
+        <h3>13 sn Tanıtım Videosu</h3>
+        <button class="xBtn" onclick="closePromo()">✕</button>
+      </div>
+      <div class="modalBody">
+        <p class="hint">İzle butonuna basınca random Shorts açılır.</p>
+      </div>
+      <div class="modalActions">
+        <button class="ghost" onclick="closePromo()">Atla</button>
+        <button class="primary" onclick="watchedPromo()">İzle</button>
+      </div>
     </div>
+  </div>
+
+  <script>
+    const youtubeVideos = [
+      "6bd0a3p_qNs","5mVvlMPRg9U","AGBZYvXJpRg","i1Mw4b_ivYo",
+      "Zpr3aoAbRqU","_CelSfEJkz0","OZ99DyKxvYA","Dl9cDx3rouU",
+      "e_1id0_LN68","fg-4bpIAVl0","-hJZQcd0gKI","KypCc3Gq6Yo"
+    ];
+
+    function openRandomShort(){
+      const id = youtubeVideos[Math.floor(Math.random() * youtubeVideos.length)];
+      window.open(`https://www.youtube.com/shorts/${id}`, "_blank");
+    }
+
+    const promoModal = document.getElementById('promoModal');
+    function openPromo(){ promoModal.style.display = 'flex'; }
+    function closePromo(){ promoModal.style.display = 'none'; }
+    function watchedPromo(){
+      closePromo();
+      openRandomShort();
+      alert("İzlendi (demo). Backend bağlanınca üretim yapılacak.");
+    }
+
+    let mode = 'prompt';
+    const modeBtn = document.getElementById('modeBtn');
+    function setMode(m){
+      mode = m;
+      const map = {prompt:'Prompt', baslik:'Başlık', hashtag:'Hashtag', gorsel:'Görsel'};
+      modeBtn.textContent = 'Mod: ' + (map[m] || 'Prompt');
+    }
+
+    document.getElementById('sendBtn').addEventListener('click', ()=>{
+      const txt = document.getElementById('promptInput').value.trim();
+      if(!txt) return alert("Bir şey yaz.");
+      openPromo();
+    });
+
+    document.getElementById('promoBtn').addEventListener('click', openPromo);
+    document.getElementById('helpBtn').addEventListener('click', ()=>alert("Menüden sayfa seç, alttan komut yaz."));
+    document.getElementById('loginBtn').addEventListener('click', ()=>alert("Google giriş sonra eklenecek."));
+  </script>
 </body>
 </html>
