@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Jarvis Heyrose</title>
+
   <style>
     :root{
       --bg:#0b0f14;
@@ -87,8 +88,10 @@
       background: rgba(124,58,237,.20);
       border:1px solid rgba(124,58,237,.35);
       font-weight:700; font-size:13px;
+      display:flex; align-items:center; gap:8px;
     }
     .loginBtn:hover{background: rgba(124,58,237,.28)}
+    .loginBtn img{width:16px;height:16px}
 
     .content{flex:1; overflow:auto; padding:18px; padding-bottom:120px;}
     .pageTitle{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin:4px 0 14px;}
@@ -193,27 +196,27 @@
         </div>
       </div>
 
-      <nav class="nav" id="nav">
-        <button class="active" data-page="ai-tools">
+      <nav class="nav">
+        <button class="active">
           <span class="label">AI Tools</span>
           <span class="pill">Free</span>
         </button>
-        <button data-page="ders-30dk"><span class="label">Ders 30dk</span></button>
-        <button data-page="baslik"><span class="label">Başlık</span></button>
-        <button data-page="hashtag"><span class="label">Hashtag</span></button>
-        <button data-page="gorsel"><span class="label">Görsel</span></button>
-        <button data-page="video"><span class="label">Video</span></button>
+        <button><span class="label">Ders 30dk</span></button>
+        <button><span class="label">Başlık</span></button>
+        <button><span class="label">Hashtag</span></button>
+        <button><span class="label">Görsel</span></button>
+        <button><span class="label">Video</span></button>
       </nav>
-
-      <div class="sidebarFooter">
-        <button class="ghost" style="width:100%">Tanıtım</button>
-      </div>
     </aside>
 
     <main class="main">
       <header class="topbar">
         <div class="badge"><span class="dot"></span> Sistem Aktif</div>
-        <button class="loginBtn" id="loginBtn">Google ile Giriş</button>
+
+        <button class="loginBtn" id="loginBtn">
+          <img src="https://www.google.com/favicon.ico" alt="Google">
+          Google ile Giriş
+        </button>
       </header>
 
       <section class="content">
@@ -272,6 +275,7 @@
     </main>
   </div>
 
+  <!-- PROMPT BUTTON -->
   <script>
     document.getElementById("sendBtn").addEventListener("click", () => {
       const txt = document.getElementById("promptInput").value.trim();
@@ -280,20 +284,21 @@
     });
   </script>
 
-  <!-- GOOGLE LOGIN (SUPABASE) -->
-  <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
+  <!-- GOOGLE LOGIN (SUPABASE) - ÇALIŞAN -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script>
     const SUPABASE_URL = "https://cdzxzgwvebmvccfkvfll.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_QDz16Zn2HeoOw7Sf25PENA_FgZL0P-F";
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     document.getElementById("loginBtn").addEventListener("click", async () => {
-      await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: { redirectTo: "https://www.jarvisheyrose.com" }
       });
+
+      if (error) alert(error.message);
     });
   </script>
 </body>
