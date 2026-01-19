@@ -174,6 +174,19 @@
       gap:8px;
     }
     .loginBtn:hover{background: rgba(124,58,237,.28)}
+    
+    .logoutBtn{
+      all:unset; cursor:pointer;
+      padding:10px 12px;
+      border-radius:12px;
+      background: rgba(239,68,68,.20);
+      border:1px solid rgba(239,68,68,.35);
+      font-weight:800;
+      font-size:13px;
+      display:none;
+    }
+    .logoutBtn:hover{background: rgba(239,68,68,.28)}
+    
     .googleIcon{
       width:16px;height:16px;display:inline-block;
       border-radius:4px;
@@ -434,6 +447,10 @@
             <span class="googleIcon" aria-hidden="true"></span>
             Google ile Giriş
           </button>
+          
+          <button class="logoutBtn" id="logoutBtn" title="Çıkış yap">
+            Çıkış Yap
+          </button>
         </div>
       </header>
 
@@ -640,7 +657,7 @@
             <div class="cardHeader"><strong>30 Dakika Çalışma</strong><span class="tag" id="timerState">Hazır</span></div>
             <div class="cardBody">
               <div style="font-size:44px; font-weight:900; letter-spacing:2px" id="timer">30:00</div>
-              <p class="hint">Süre bitince: “Bugün size ayrılan sürenin sonuna geldik. Yarın tekrar görüşürüz.”</p>
+              <p class="hint">Süre bitince: "Bugün size ayrılan sürenin sonuna geldik. Yarın tekrar görüşürüz."</p>
             </div>
             <div class="cardFooter">
               <button class="primary" id="startTimer">Start</button>
@@ -673,248 +690,4 @@
         </div>
 
         <!-- KPSS -->
-        <div id="page-kpss" class="page" style="display:none">
-          <div class="pageTitle">
-            <div>
-              <h2>KPSS Test Odası</h2>
-              <p>Test çözme (30dk)</p>
-            </div>
-          </div>
-
-          <div class="warnBox">
-            ⚠️ Bu içerikler yapay zekâ tarafından üretilir. Doğruluğu %100 garanti değildir.
-          </div>
-
-          <div class="card" style="grid-column: span 12; max-width:800px">
-            <div class="cardHeader"><strong>KPSS 30dk</strong><span class="tag">Limit</span></div>
-            <div class="cardBody">30 dakika test modu. Süre bitince yarın tekrar.</div>
-            <div class="cardFooter">
-              <button class="primary" onclick="alert('KPSS test: yakında')">Başlat</button>
-              <button class="ghost" onclick="openPromo()">Tanıtım</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- ANALIZ -->
-        <div id="page-analiz" class="page" style="display:none">
-          <div class="pageTitle">
-            <div>
-              <h2>Kanal Analiz Odası</h2>
-              <p>Analiz • Öneri • Plan</p>
-            </div>
-          </div>
-
-          <div class="grid">
-            <div class="card">
-              <div class="cardHeader"><strong>Analiz</strong><span class="tag">Free</span></div>
-              <div class="cardBody">Kanal durumunu analiz eder (placeholder).</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="setMode('analiz')">Seç</button>
-                <button class="ghost" onclick="openPromo()">Tanıtım</button>
-              </div>
-            </div>
-            <div class="card">
-              <div class="cardHeader"><strong>Öneri</strong><span class="tag">Free</span></div>
-              <div class="cardBody">Gelişim önerileri üretir (placeholder).</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="setMode('oneriler')">Seç</button>
-                <button class="ghost" onclick="openPromo()">Tanıtım</button>
-              </div>
-            </div>
-            <div class="card">
-              <div class="cardHeader"><strong>İçerik Planı</strong><span class="tag">Free</span></div>
-              <div class="cardBody">30 günlük plan (placeholder).</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="setMode('plan')">Seç</button>
-                <button class="ghost" onclick="openPromo()">Tanıtım</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- PROMPT BAR -->
-      <div class="promptBar">
-        <div class="promptInner">
-          <button class="modeSelect" id="modeBtn">Mod: Başlık</button>
-          <textarea id="promptInput" placeholder="Buraya yaz..."></textarea>
-          <button class="sendBtn" id="sendBtn">Oluştur</button>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- PROMO MODAL -->
-  <div class="modalBackdrop" id="promoModal">
-    <div class="modal">
-      <div class="modalTop">
-        <h3>Tanıtım</h3>
-        <button class="xBtn" onclick="closePromo()">✕</button>
-      </div>
-      <div class="modalBody">
-        <div style="aspect-ratio:16/9; width:100%; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); border-radius:14px; display:grid; place-items:center;">
-          <div style="text-align:center; color:var(--muted); font-size:13px; padding:14px;">
-            Buraya YouTube tanıtım embed gelecek.
-          </div>
-        </div>
-        <p class="hint">İleride izleyene hak verme sistemi ekleriz.</p>
-      </div>
-      <div class="modalActions">
-        <button class="ghost" onclick="closePromo()">Kapat</button>
-        <button class="primary" onclick="closePromo()">Tamam</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SUPABASE + GOOGLE LOGIN -->
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-
-    const SUPABASE_URL = "https://cdzxzgwvebmvccfkvfll.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_QDz16Zn2HeoOw7Sf25PENA_FgZL0P-F";
-
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    const googleBtn = document.getElementById("googleLoginBtn");
-
-    googleBtn.addEventListener("click", async () => {
-      googleBtn.style.opacity = "0.7";
-      googleBtn.style.pointerEvents = "none";
-
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: "https://www.jarvisheyrose.com"
-        }
-      });
-
-      if (error) {
-        alert("Google giriş hatası: " + error.message);
-        googleBtn.style.opacity = "1";
-        googleBtn.style.pointerEvents = "auto";
-      }
-    });
-
-    // login olmuş mu kontrol
-    const { data } = await supabase.auth.getSession();
-    if (data?.session?.user?.email) {
-      googleBtn.innerHTML = `<span class="googleIcon"></span> ${data.session.user.email}`;
-    }
-
-    supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (session?.user?.email) {
-        googleBtn.innerHTML = `<span class="googleIcon"></span> ${session.user.email}`;
-      }
-    });
-  </script>
-
-  <script>
-    // --- ROUTER ---
-    const nav = document.getElementById('nav');
-    const pages = {
-      youtube: document.getElementById('page-youtube'),
-      instagram: document.getElementById('page-instagram'),
-      tiktok: document.getElementById('page-tiktok'),
-      facebook: document.getElementById('page-facebook'),
-      x: document.getElementById('page-x'),
-      ders: document.getElementById('page-ders'),
-      uni: document.getElementById('page-uni'),
-      kpss: document.getElementById('page-kpss'),
-      analiz: document.getElementById('page-analiz'),
-    };
-
-    function goPage(key){
-      Object.values(pages).forEach(p => p.style.display = 'none');
-      pages[key].style.display = 'block';
-      [...nav.querySelectorAll('button')].forEach(b => b.classList.toggle('active', b.dataset.page === key));
-    }
-
-    nav.addEventListener('click', (e) => {
-      const btn = e.target.closest('button[data-page]');
-      if(!btn) return;
-      goPage(btn.dataset.page);
-    });
-
-    // --- TABS (placeholder) ---
-    document.getElementById('tabs').addEventListener('click', (e)=>{
-      const t = e.target.closest('.tab');
-      if(!t) return;
-      [...document.querySelectorAll('.tab')].forEach(x=>x.classList.remove('active'));
-      t.classList.add('active');
-    });
-
-    // --- MODE ---
-    let mode = 'baslik';
-    const modeBtn = document.getElementById('modeBtn');
-    function setMode(m){
-      mode = m;
-      const map = {
-        baslik:'Başlık',
-        hashtag:'Hashtag',
-        aciklama:'Açıklama',
-        analiz:'Analiz',
-        oneriler:'Öneri',
-        plan:'Plan'
-      };
-      modeBtn.textContent = 'Mod: ' + (map[m] || 'Başlık');
-    }
-    window.setMode = setMode;
-
-    modeBtn.addEventListener('click', ()=>{
-      const order = ['baslik','hashtag','aciklama'];
-      const idx = (order.indexOf(mode)+1) % order.length;
-      setMode(order[idx]);
-    });
-
-    document.getElementById('sendBtn').addEventListener('click', ()=>{
-      const txt = document.getElementById('promptInput').value.trim();
-      if(!txt) return alert('Bir şey yaz.');
-      alert('Şu an demo. Sonra gerçek üretim bağlanacak.\nMod: ' + mode + '\nİstek: ' + txt);
-    });
-
-    // --- PROMO MODAL ---
-    const promoModal = document.getElementById('promoModal');
-    function openPromo(){ promoModal.style.display = 'flex'; }
-    function closePromo(){ promoModal.style.display = 'none'; }
-    window.openPromo = openPromo;
-    window.closePromo = closePromo;
-
-    document.getElementById('helpBtn').addEventListener('click', ()=>alert('Menüden oda seç, alttan yazıp üret.'));
-
-    // --- 30 DK TIMER ---
-    let timerInt = null;
-    let seconds = 30*60;
-
-    function renderTimer(){
-      const m = String(Math.floor(seconds/60)).padStart(2,'0');
-      const s = String(seconds%60).padStart(2,'0');
-      document.getElementById('timer').textContent = `${m}:${s}`;
-      document.getElementById('timerState').textContent = 'Çalışma';
-    }
-
-    function resetTimer(){
-      clearInterval(timerInt); timerInt=null;
-      seconds = 30*60; renderTimer();
-    }
-
-    document.getElementById('startTimer').addEventListener('click', ()=>{
-      if(timerInt) return;
-      timerInt = setInterval(()=>{
-        seconds--;
-        if(seconds <= 0){
-          clearInterval(timerInt);
-          timerInt = null;
-          alert('Bugün size ayrılan sürenin sonuna geldik. Yarın tekrar görüşürüz.');
-          resetTimer();
-          return;
-        }
-        renderTimer();
-      }, 1000);
-    });
-
-    document.getElementById('resetTimer').addEventListener('click', resetTimer);
-    renderTimer();
-  </script>
-</body>
-</html>
+        <div id="page-kpss" class="page
