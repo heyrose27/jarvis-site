@@ -1,300 +1,224 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Jarvis Heyrose</title>
 
   <style>
     :root{
-      --bg:#0b0f14;
-      --panel2:#0c121b;
-      --border:rgba(255,255,255,.10);
-      --text:#e6edf6;
-      --muted:#a9b4c3;
-      --accent:#7c3aed;
-      --accent2:#22c55e;
-      --shadow: 0 10px 30px rgba(0,0,0,.55);
-      --radius:16px;
+      --bg:#0b0b10;
+      --panel:#141422;
+      --panel2:#1a1a2b;
+      --text:#eaeaf2;
+      --muted:#a1a1b5;
+      --green:#23d18b;
+      --border:rgba(255,255,255,.08);
     }
+
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: radial-gradient(1200px 700px at 30% 10%, rgba(124,58,237,.18), transparent 55%),
-                  radial-gradient(900px 600px at 80% 70%, rgba(34,197,94,.10), transparent 55%),
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: radial-gradient(1200px 600px at 20% 0%, rgba(120,70,255,.25), transparent 60%),
+                  radial-gradient(900px 500px at 80% 20%, rgba(35,209,139,.18), transparent 55%),
                   var(--bg);
       color:var(--text);
       min-height:100vh;
-    }
-
-    .app{display:flex; min-height:100vh; width:100vw;}
-
-    .sidebar{
-      width:260px;
-      padding:18px 14px;
-      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 35%), var(--panel2);
-      border-right:1px solid var(--border);
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
-    .brand{display:flex; align-items:center; gap:10px; padding:10px 10px 14px;}
-    .logo{
-      width:38px; height:38px; border-radius:12px;
-      background: radial-gradient(circle at 30% 30%, rgba(124,58,237,.9), rgba(34,197,94,.6));
-      box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 10px 20px rgba(0,0,0,.35);
-    }
-    .brand h1{font-size:14px; margin:0; letter-spacing:.6px}
-    .brand p{margin:2px 0 0; font-size:12px; color:var(--muted)}
-
-    .nav{display:flex; flex-direction:column; gap:6px; padding:0 6px;}
-    .nav button{
-      all:unset;
-      cursor:pointer;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 12px;
-      border-radius:12px;
-      color:var(--text);
-      border:1px solid transparent;
-    }
-    .nav button:hover{
-      background: rgba(255,255,255,.04);
-      border-color: rgba(255,255,255,.06);
-    }
-    .nav button.active{
-      background: rgba(124,58,237,.12);
-      border-color: rgba(124,58,237,.35);
-    }
-
-    .main{flex:1; display:flex; flex-direction:column; min-width:0;}
-
-    .topbar{
-      height:64px;
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      padding:0 18px;
-      border-bottom:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 70%);
+      justify-content:center;
+      padding:24px;
     }
-    .badge{
-      display:flex; align-items:center; gap:8px;
-      padding:8px 10px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-      color:var(--text);
-      font-size:13px;
-    }
-    .dot{width:8px; height:8px; border-radius:50%; background: var(--accent2);}
 
-    .loginBtn{
-      all:unset; cursor:pointer;
-      padding:10px 12px;
-      border-radius:12px;
-      background: rgba(124,58,237,.20);
-      border:1px solid rgba(124,58,237,.35);
-      font-weight:900;
-      font-size:13px;
+    /* ÖNEMLİ: TIKLAMAYI BLOKE EDEN HER ŞEYİ İPTAL */
+    canvas, .overlay, .fx, .bg, #overlay, #fx, #bg{
+      pointer-events:none !important;
     }
-    .loginBtn:hover{background: rgba(124,58,237,.28)}
 
-    .content{padding:18px;}
+    .wrap{
+      width:min(980px, 100%);
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:16px;
+    }
+
+    @media (max-width:900px){
+      .wrap{grid-template-columns:1fr}
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:18px;
+      box-shadow:0 20px 60px rgba(0,0,0,.35);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:14px;
+    }
+    .dot{
+      width:14px;height:14px;border-radius:999px;
+      background:linear-gradient(180deg, #7c4dff, #23d18b);
+      box-shadow:0 0 18px rgba(35,209,139,.25);
+    }
+    .brand h1{
+      font-size:18px;margin:0;letter-spacing:.8px;
+    }
+    .sub{
+      color:var(--muted);
+      font-size:13px;
+      margin:0 0 14px 0;
+    }
 
     .grid{
       display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap:14px;
-      max-width:1100px;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:12px;
     }
-    .card{
-      grid-column: span 4;
-      background: rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius);
-      overflow:hidden;
-      box-shadow: var(--shadow);
-      min-height:150px;
+    @media (max-width:600px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .box{
+      background:rgba(0,0,0,.25);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px;
+      min-height:110px;
       display:flex;
       flex-direction:column;
+      justify-content:space-between;
     }
-    .cardHeader{
-      padding:12px 12px 8px;
-      display:flex; justify-content:space-between; align-items:center;
-    }
-    .tag{
-      font-size:11px;
-      padding:4px 8px;
-      border-radius:999px;
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
-      color:var(--muted);
-    }
-    .cardBody{
-      padding:0 12px 12px;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.35;
-      flex:1;
-    }
-    .cardFooter{
-      padding:12px;
-      border-top:1px solid rgba(255,255,255,.07);
-      display:flex; justify-content:flex-end;
-    }
-    .primary{
-      all:unset; cursor:pointer;
-      padding:9px 12px;
+    .box h3{margin:0;font-size:14px}
+    .box p{margin:6px 0 0 0;color:var(--muted);font-size:12px}
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      padding:12px 14px;
       border-radius:12px;
-      background: rgba(34,197,94,.14);
-      border:1px solid rgba(34,197,94,.28);
-      font-weight:900;
-      font-size:13px;
+      cursor:pointer;
+      font-weight:700;
+      text-decoration:none;
+      user-select:none;
+      transition:.15s;
+      width:100%;
     }
-    .primary:hover{background: rgba(34,197,94,.20)}
+    .btn:hover{transform:translateY(-1px); background:rgba(255,255,255,.10)}
+    .btn:active{transform:translateY(0px)}
+    .btn.primary{
+      background:linear-gradient(180deg, rgba(35,209,139,.20), rgba(35,209,139,.10));
+      border-color:rgba(35,209,139,.35);
+    }
 
-    footer{
-      margin-top:30px;
-      text-align:center;
-      padding:18px 10px;
-      color:rgba(255,255,255,.55);
-      font-size:13px;
+    .right .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.25);
+      color:var(--muted);
+      font-size:12px;
+      margin-bottom:12px;
     }
-    footer a{color:#00ff41; text-decoration:none;}
-    footer a:hover{text-decoration:underline;}
+    .live{
+      width:8px;height:8px;border-radius:999px;background:var(--green);
+      box-shadow:0 0 10px rgba(35,209,139,.5);
+    }
 
-    @media (max-width: 980px){
-      .sidebar{width:220px}
-      .card{grid-column: span 6}
+    .footer{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      font-size:12px;
     }
-    @media (max-width: 720px){
-      .sidebar{width:78px; padding:14px 10px}
-      .brand h1,.brand p{display:none}
-      .nav button span.label{display:none}
-      .card{grid-column: span 12}
-      .badge{display:none}
-    }
+    .footer a{color:var(--green); text-decoration:none}
+    .footer a:hover{text-decoration:underline}
   </style>
 </head>
 
 <body>
-  <div class="app">
-    <aside class="sidebar">
+  <div class="wrap">
+    <div class="card left">
       <div class="brand">
-        <div class="logo"></div>
+        <div class="dot"></div>
         <div>
           <h1>JARVIS HEYROSE</h1>
-          <p>AI • Ders • Video</p>
+          <p class="sub">AI • Ders • Video</p>
         </div>
       </div>
 
-      <nav class="nav">
-        <button class="active"><span class="label">AI Tools</span></button>
-        <button><span class="label">Ders 30dk</span></button>
-        <button><span class="label">Başlık</span></button>
-        <button><span class="label">Hashtag</span></button>
-        <button><span class="label">Görsel</span></button>
-        <button><span class="label">Video</span></button>
-      </nav>
-    </aside>
-
-    <main class="main">
-      <header class="topbar">
-        <div class="badge"><span class="dot"></span> Sistem Aktif</div>
-        <button class="loginBtn" id="loginBtn">Google ile Giriş</button>
-      </header>
-
-      <section class="content">
-        <div class="grid">
-          <div class="card">
-            <div class="cardHeader">
-              <strong>Prompt Oluştur</strong>
-              <span class="tag">Günlük 2 Free</span>
-            </div>
-            <div class="cardBody">Prompt üretimi (yakında).</div>
-            <div class="cardFooter">
-              <button class="primary">Seç</button>
-            </div>
+      <div class="grid">
+        <div class="box">
+          <div>
+            <h3>Prompt Oluştur</h3>
+            <p>Prompt üretimi (yakında).</p>
           </div>
-
-          <div class="card">
-            <div class="cardHeader">
-              <strong>Başlık Üret</strong>
-              <span class="tag">Günlük 2 Free</span>
-            </div>
-            <div class="cardBody">SEO başlık üretimi (yakında).</div>
-            <div class="cardFooter">
-              <button class="primary">Seç</button>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="cardHeader">
-              <strong>Hashtag Bul</strong>
-              <span class="tag">Günlük 2 Free</span>
-            </div>
-            <div class="cardBody">Hashtag seti (yakında).</div>
-            <div class="cardFooter">
-              <button class="primary">Seç</button>
-            </div>
-          </div>
+          <button class="btn" onclick="alert('Bu kart demo')">Seç</button>
         </div>
 
-        <footer>
-          <a href="/privacy.html">Gizlilik Politikası</a>
-          &nbsp;|&nbsp;
-          <a href="/terms.html">Hizmet Şartları</a>
-        </footer>
-      </section>
-    </main>
+        <div class="box">
+          <div>
+            <h3>Başlık Üret</h3>
+            <p>SEO başlık üretimi (yakında).</p>
+          </div>
+          <button class="btn" onclick="alert('Bu kart demo')">Seç</button>
+        </div>
+
+        <div class="box">
+          <div>
+            <h3>Hashtag Bul</h3>
+            <p>Hashtag seti (yakında).</p>
+          </div>
+          <button class="btn" onclick="alert('Bu kart demo')">Seç</button>
+        </div>
+
+        <div class="box">
+          <div>
+            <h3>Video</h3>
+            <p>Tanıtım videosu + yönlendirme.</p>
+          </div>
+          <button class="btn" onclick="alert('Bu kart demo')">Aç</button>
+        </div>
+      </div>
+
+      <div class="footer">
+        <a href="/privacy.html">Gizlilik Politikası</a>
+        <span style="color:var(--muted)">|</span>
+        <a href="/terms.html">Hizmet Şartları</a>
+      </div>
+    </div>
+
+    <div class="card right">
+      <div class="pill"><span class="live"></span> Sistem Aktif</div>
+
+      <!-- ŞU AN SADECE TEST: TIKLAMA ÇALIŞIYOR MU? -->
+      <button class="btn primary" id="loginBtn">Google ile Giriş</button>
+
+      <p class="sub" style="margin-top:12px">
+        Not: Önce butonun tıklaması düzelsin. Sonra Google login kodunu bağlarız.
+      </p>
+    </div>
   </div>
 
-  <!-- Supabase JS (UNPKG) -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
   <script>
-    const SUPABASE_URL = "https://cdzxzgwvebmvccfkvfll.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_QDz16Zn2HeoOw7Sf25PENA_FgZL0P-F";
-
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    async function signInWithGoogle() {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: { redirectTo: "https://www.jarvisheyrose.com" }
-      });
-
-      if (error) alert("Google giriş hatası: " + error.message);
-    }
-
-    document.getElementById("loginBtn").addEventListener("click", signInWithGoogle);
+    // Test: tıklama geliyor mu?
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      alert("Buton çalışıyor ✅");
+    });
   </script>
 </body>
 </html>
-/* TIKLAMA BLOKE EDEN KATMANLARI DEVRE DISI BIRAK */
-canvas,
-.overlay,
-.backdrop,
-.modal-backdrop,
-.scanlines,
-.noise,
-.fx,
-.vignette,
-#overlay,
-#bg,
-#fx,
-.bg,
-.layer,
-.fullscreen,
-.full-screen {
-  pointer-events: none !important;
-}
-
-/* BUTONLAR HER ZAMAN TIKLANABILSIN */
-a, button, [role="button"] {
-  pointer-events: auto !important;
-  position: relative;
-  z-index: 999999 !important;
-}
-<button onclick="alert('Tıklama çalışıyor')">GİRİŞ</button>
