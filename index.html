@@ -78,6 +78,18 @@
       border-color: rgba(124,58,237,.35);
       box-shadow: 0 0 0 1px rgba(124,58,237,.18) inset;
     }
+
+    /* ✅ SIDEBAR CIKIS (giris yokken gorunmez) */
+    .nav button.logoutNav{
+      display:none;
+      background: rgba(239,68,68,.10);
+      border-color: rgba(239,68,68,.25);
+    }
+    .nav button.logoutNav:hover{
+      background: rgba(239,68,68,.18);
+      border-color: rgba(239,68,68,.35);
+    }
+
     .pill{
       font-size:11px;
       padding:3px 8px;
@@ -174,19 +186,6 @@
       gap:8px;
     }
     .loginBtn:hover{background: rgba(124,58,237,.28)}
-    
-    .logoutBtn{
-      all:unset; cursor:pointer;
-      padding:10px 12px;
-      border-radius:12px;
-      background: rgba(239,68,68,.20);
-      border:1px solid rgba(239,68,68,.35);
-      font-weight:800;
-      font-size:13px;
-      display:none;
-    }
-    .logoutBtn:hover{background: rgba(239,68,68,.28)}
-    
     .googleIcon{
       width:16px;height:16px;display:inline-block;
       border-radius:4px;
@@ -424,7 +423,7 @@
         <button data-page="analiz"><span class="label">Kanal Analiz</span></button>
 
         <!-- ✅ EKLENDİ: Kanal Analiz altına Çıkış -->
-        <button id="sidebarLogoutBtn"><span class="label">Çıkış</span></button>
+        <button id="sidebarLogoutBtn" class="logoutNav"><span class="label">Çıkış</span></button>
       </nav>
 
       <div class="sidebarFooter">
@@ -449,10 +448,6 @@
           <button class="loginBtn" id="googleLoginBtn" title="Google ile giriş">
             <span class="googleIcon" aria-hidden="true"></span>
             Google ile Giriş
-          </button>
-          
-          <button class="logoutBtn" id="logoutBtn" title="Çıkış yap">
-            Çıkış Yap
           </button>
         </div>
       </header>
@@ -499,20 +494,469 @@
           </div>
         </div>
 
-        <!-- ... SENİN KODUN DEVAM EDİYOR (INSTAGRAM / TIKTOK / FACEBOOK / X / DERS / UNI) ... -->
+        <!-- INSTAGRAM -->
+        <div id="page-instagram" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>Instagram Reels Odası</h2>
+              <p>Başlık • Hashtag • Açıklama (3 adet limit)</p>
+            </div>
+          </div>
+          <div class="grid">
+            <div class="card">
+              <div class="cardHeader"><strong>Başlık Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Reels için kısa, dikkat çekici başlık üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('baslik')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Hashtag Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Reels için etkileşim hashtag seti.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('hashtag')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Açıklama Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Reels açıklaması + CTA üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('aciklama')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TIKTOK -->
+        <div id="page-tiktok" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>TikTok Odası</h2>
+              <p>Yüksek aramalı başlık • Hashtag • Açıklama (3 adet)</p>
+            </div>
+          </div>
+          <div class="grid">
+            <div class="card">
+              <div class="cardHeader"><strong>Başlık Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">TikTok için hızlı tüketilen başlıklar üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('baslik')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Hashtag Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">TikTok trend hashtag seti üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('hashtag')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Açıklama Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Kısa açıklama + etkileşim çağrısı.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('aciklama')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FACEBOOK -->
+        <div id="page-facebook" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>Facebook Odası</h2>
+              <p>Başlık • Hashtag • Açıklama (3 adet)</p>
+            </div>
+          </div>
+          <div class="grid">
+            <div class="card">
+              <div class="cardHeader"><strong>Başlık Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Facebook paylaşımı için başlık üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('baslik')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Hashtag Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Facebook için uygun hashtag seti.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('hashtag')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Açıklama Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Facebook açıklaması / caption üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('aciklama')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- X -->
+        <div id="page-x" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>X Odası</h2>
+              <p>Başlık • Hashtag • Açıklama (3 adet)</p>
+            </div>
+          </div>
+          <div class="grid">
+            <div class="card">
+              <div class="cardHeader"><strong>Başlık Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">X için kısa, net, viral başlık üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('baslik')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Hashtag Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">X için hashtag seti üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('hashtag')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Açıklama Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">X paylaşım metni üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('aciklama')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DERS -->
+        <div id="page-ders" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>Ders Odası (30dk)</h2>
+              <p>İlkokul • Ortaokul • Lise</p>
+            </div>
+          </div>
+
+          <div class="warnBox">
+            ⚠️ Bu içerikler yapay zekâ tarafından üretilir. Doğruluğu %100 garanti değildir.
+          </div>
+
+          <div class="card" style="grid-column: span 12; max-width:800px">
+            <div class="cardHeader"><strong>30 Dakika Çalışma</strong><span class="tag" id="timerState">Hazır</span></div>
+            <div class="cardBody">
+              <div style="font-size:44px; font-weight:900; letter-spacing:2px" id="timer">30:00</div>
+              <p class="hint">Süre bitince: “Bugün size ayrılan sürenin sonuna geldik. Yarın tekrar görüşürüz.”</p>
+            </div>
+            <div class="cardFooter">
+              <button class="primary" id="startTimer">Start</button>
+              <button class="ghost" id="resetTimer">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- UNI -->
+        <div id="page-uni" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>Üniversite Aday Odası</h2>
+              <p>Sınav merkezi gibi (30dk)</p>
+            </div>
+          </div>
+
+          <div class="warnBox">
+            ⚠️ Bu içerikler yapay zekâ tarafından üretilir. Doğruluğu %100 garanti değildir.
+          </div>
+
+          <div class="card" style="grid-column: span 12; max-width:800px">
+            <div class="cardHeader"><strong>30 Dakika Sınav Modu</strong><span class="tag">Limit</span></div>
+            <div class="cardBody">30 dakika odaklan, süre bitince sistem kapatır.</div>
+            <div class="cardFooter">
+              <button class="primary" onclick="alert('30dk mod: yakında')">Başlat</button>
+              <button class="ghost" onclick="openPromo()">Tanıtım</button>
+            </div>
+          </div>
+        </div>
 
         <!-- KPSS -->
-        <div id="page-kpss" class="page
+        <div id="page-kpss" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>KPSS Test Odası</h2>
+              <p>Test çözme (30dk)</p>
+            </div>
+          </div>
+
+          <div class="warnBox">
+            ⚠️ Bu içerikler yapay zekâ tarafından üretilir. Doğruluğu %100 garanti değildir.
+          </div>
+
+          <div class="card" style="grid-column: span 12; max-width:800px">
+            <div class="cardHeader"><strong>KPSS 30dk</strong><span class="tag">Limit</span></div>
+            <div class="cardBody">30 dakika test modu. Süre bitince yarın tekrar.</div>
+            <div class="cardFooter">
+              <button class="primary" onclick="alert('KPSS test: yakında')">Başlat</button>
+              <button class="ghost" onclick="openPromo()">Tanıtım</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ANALIZ -->
+        <div id="page-analiz" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>Kanal Analiz Odası</h2>
+              <p>Analiz • Öneri • Plan</p>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="card">
+              <div class="cardHeader"><strong>Analiz</strong><span class="tag">Free</span></div>
+              <div class="cardBody">Kanal durumunu analiz eder (placeholder).</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('analiz')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Öneri</strong><span class="tag">Free</span></div>
+              <div class="cardBody">Gelişim önerileri üretir (placeholder).</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('oneriler')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>İçerik Planı</strong><span class="tag">Free</span></div>
+              <div class="cardBody">30 günlük plan (placeholder).</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('plan')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
       </section>
+
+      <!-- PROMPT BAR -->
+      <div class="promptBar">
+        <div class="promptInner">
+          <button class="modeSelect" id="modeBtn">Mod: Başlık</button>
+          <textarea id="promptInput" placeholder="Buraya yaz..."></textarea>
+          <button class="sendBtn" id="sendBtn">Oluştur</button>
+        </div>
+      </div>
     </main>
   </div>
 
-  <!-- ✅ EKLENDİ: Sidebar Çıkış butonu mevcut logout’u tetikler -->
-  <script>
-    document.getElementById("sidebarLogoutBtn")?.addEventListener("click", () => {
-      document.getElementById("logoutBtn")?.click();
+  <!-- PROMO MODAL -->
+  <div class="modalBackdrop" id="promoModal">
+    <div class="modal">
+      <div class="modalTop">
+        <h3>Tanıtım</h3>
+        <button class="xBtn" onclick="closePromo()">✕</button>
+      </div>
+      <div class="modalBody">
+        <div style="aspect-ratio:16/9; width:100%; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); border-radius:14px; display:grid; place-items:center;">
+          <div style="text-align:center; color:var(--muted); font-size:13px; padding:14px;">
+            Buraya YouTube tanıtım embed gelecek.
+          </div>
+        </div>
+        <p class="hint">İleride izleyene hak verme sistemi ekleriz.</p>
+      </div>
+      <div class="modalActions">
+        <button class="ghost" onclick="closePromo()">Kapat</button>
+        <button class="primary" onclick="closePromo()">Tamam</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUPABASE + GOOGLE LOGIN -->
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    const SUPABASE_URL = "https://cdzxzgwvebmvccfkvfll.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_QDz16Zn2HeoOw7Sf25PENA_FgZL0P-F";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const googleBtn = document.getElementById("googleLoginBtn");
+    const sidebarLogoutBtn = document.getElementById("sidebarLogoutBtn");
+
+    const defaultGoogleBtnHTML = `<span class="googleIcon" aria-hidden="true"></span> Google ile Giriş`;
+
+    function setLoggedInUI(email){
+      googleBtn.innerHTML = `<span class="googleIcon"></span> ${email}`;
+      if (sidebarLogoutBtn) sidebarLogoutBtn.style.display = "flex";
+    }
+
+    function setLoggedOutUI(){
+      googleBtn.innerHTML = defaultGoogleBtnHTML;
+      googleBtn.style.opacity = "1";
+      googleBtn.style.pointerEvents = "auto";
+      if (sidebarLogoutBtn) sidebarLogoutBtn.style.display = "none";
+    }
+
+    googleBtn.addEventListener("click", async () => {
+      googleBtn.style.opacity = "0.7";
+      googleBtn.style.pointerEvents = "none";
+
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: "https://www.jarvisheyrose.com"
+        }
+      });
+
+      if (error) {
+        alert("Google giriş hatası: " + error.message);
+        googleBtn.style.opacity = "1";
+        googleBtn.style.pointerEvents = "auto";
+      }
     });
+
+    // ✅ ÇIKIŞ
+    sidebarLogoutBtn?.addEventListener("click", async () => {
+      const { error } = await supabase.auth.signOut();
+      if (error) return alert("Çıkış hatası: " + error.message);
+      setLoggedOutUI();
+      location.reload();
+    });
+
+    // login olmuş mu kontrol
+    const { data } = await supabase.auth.getSession();
+    if (data?.session?.user?.email) {
+      setLoggedInUI(data.session.user.email);
+    } else {
+      setLoggedOutUI();
+    }
+
+    supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user?.email) {
+        setLoggedInUI(session.user.email);
+      } else {
+        setLoggedOutUI();
+      }
+    });
+  </script>
+
+  <script>
+    // --- ROUTER ---
+    const nav = document.getElementById('nav');
+    const pages = {
+      youtube: document.getElementById('page-youtube'),
+      instagram: document.getElementById('page-instagram'),
+      tiktok: document.getElementById('page-tiktok'),
+      facebook: document.getElementById('page-facebook'),
+      x: document.getElementById('page-x'),
+      ders: document.getElementById('page-ders'),
+      uni: document.getElementById('page-uni'),
+      kpss: document.getElementById('page-kpss'),
+      analiz: document.getElementById('page-analiz'),
+    };
+
+    function goPage(key){
+      Object.values(pages).forEach(p => p.style.display = 'none');
+      pages[key].style.display = 'block';
+      [...nav.querySelectorAll('button')].forEach(b => b.classList.toggle('active', b.dataset.page === key));
+    }
+
+    nav.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-page]');
+      if(!btn) return;
+      goPage(btn.dataset.page);
+    });
+
+    // --- TABS (placeholder) ---
+    document.getElementById('tabs').addEventListener('click', (e)=>{
+      const t = e.target.closest('.tab');
+      if(!t) return;
+      [...document.querySelectorAll('.tab')].forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+    });
+
+    // --- MODE ---
+    let mode = 'baslik';
+    const modeBtn = document.getElementById('modeBtn');
+    function setMode(m){
+      mode = m;
+      const map = {
+        baslik:'Başlık',
+        hashtag:'Hashtag',
+        aciklama:'Açıklama',
+        analiz:'Analiz',
+        oneriler:'Öneri',
+        plan:'Plan'
+      };
+      modeBtn.textContent = 'Mod: ' + (map[m] || 'Başlık');
+    }
+    window.setMode = setMode;
+
+    modeBtn.addEventListener('click', ()=>{
+      const order = ['baslik','hashtag','aciklama'];
+      const idx = (order.indexOf(mode)+1) % order.length;
+      setMode(order[idx]);
+    });
+
+    document.getElementById('sendBtn').addEventListener('click', ()=>{
+      const txt = document.getElementById('promptInput').value.trim();
+      if(!txt) return alert('Bir şey yaz.');
+      alert('Şu an demo. Sonra gerçek üretim bağlanacak.\nMod: ' + mode + '\nİstek: ' + txt);
+    });
+
+    // --- PROMO MODAL ---
+    const promoModal = document.getElementById('promoModal');
+    function openPromo(){ promoModal.style.display = 'flex'; }
+    function closePromo(){ promoModal.style.display = 'none'; }
+    window.openPromo = openPromo;
+    window.closePromo = closePromo;
+
+    document.getElementById('helpBtn').addEventListener('click', ()=>alert('Menüden oda seç, alttan yazıp üret.'));
+
+    // --- 30 DK TIMER ---
+    let timerInt = null;
+    let seconds = 30*60;
+
+    function renderTimer(){
+      const m = String(Math.floor(seconds/60)).padStart(2,'0');
+      const s = String(seconds%60).padStart(2,'0');
+      document.getElementById('timer').textContent = `${m}:${s}`;
+      document.getElementById('timerState').textContent = 'Çalışma';
+    }
+
+    function resetTimer(){
+      clearInterval(timerInt); timerInt=null;
+      seconds = 30*60; renderTimer();
+    }
+
+    document.getElementById('startTimer').addEventListener('click', ()=>{
+      if(timerInt) return;
+      timerInt = setInterval(()=>{
+        seconds--;
+        if(seconds <= 0){
+          clearInterval(timerInt);
+          timerInt = null;
+          alert('Bugün size ayrılan sürenin sonuna geldik. Yarın tekrar görüşürüz.');
+          resetTimer();
+          return;
+        }
+        renderTimer();
+      }, 1000);
+    });
+
+    document.getElementById('resetTimer').addEventListener('click', resetTimer);
+    renderTimer();
   </script>
 </body>
 </html>
