@@ -3,299 +3,644 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Görsel Üretici - YouTube Shorts ile Powered</title>
+  <title>Jarvis Heyrose - AI Tools</title>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body{
-      font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-      min-height:100vh; display:flex; align-items:center; justify-content:center;
-      padding:20px;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: radial-gradient(circle at top left, #1a1a2e, #0b0b12);
+      color:#fff;
+      min-height:100vh;
     }
-    .container{
-      background:#fff; padding:50px; border-radius:30px;
-      box-shadow:0 20px 60px rgba(0,0,0,.3);
-      max-width:600px; width:100%; text-align:center;
-    }
-    h1{ color:#667eea; margin-bottom:15px; font-size:2.5em; }
-    .subtitle{ color:#666; margin-bottom:40px; font-size:1.1em; }
-    .input-group{ margin-bottom:30px; text-align:left; }
-    label{ display:block; color:#333; font-weight:700; margin-bottom:10px; font-size:1.1em; }
-    textarea,select{
-      width:100%; padding:15px 20px; border:2px solid #e0e0e0; border-radius:15px;
-      font-size:1em; transition:all .3s; font-family:inherit;
-    }
-    textarea:focus,select:focus{ outline:none; border-color:#667eea; box-shadow:0 0 0 3px rgba(102,126,234,.1); }
-    textarea{ resize:vertical; min-height:100px; }
 
-    .generate-btn{
-      background:linear-gradient(135deg,#667eea,#764ba2);
-      color:#fff; border:none; padding:18px 50px; border-radius:50px;
-      font-size:1.3em; font-weight:700; cursor:pointer; transition:all .3s;
-      box-shadow:0 5px 20px rgba(102,126,234,.4); width:100%; margin-top:20px;
+    .app{
+      display:flex;
+      min-height:100vh;
     }
-    .generate-btn:hover{ transform:translateY(-3px); box-shadow:0 8px 30px rgba(102,126,234,.6); }
 
-    .popup-overlay{
-      display:none; position:fixed; inset:0;
-      background:rgba(0,0,0,.95); z-index:1000;
-      animation:fadeIn .3s;
+    /* SIDEBAR */
+    .sidebar{
+      width:260px;
+      background: rgba(255,255,255,0.04);
+      border-right: 1px solid rgba(255,255,255,0.08);
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
     }
-    .popup-content{
-      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-      background:#fff; padding:40px; border-radius:25px; max-width:500px; width:90%;
-      box-shadow:0 20px 60px rgba(0,0,0,.5); text-align:center;
-    }
-    .popup-header h2{ color:#667eea; margin-bottom:20px; font-size:2em; }
-    .video-button{
-      background:#FF0000; color:#fff; border:none; padding:20px 40px; border-radius:50px;
-      font-size:1.3em; font-weight:700; cursor:pointer; margin:20px 0;
-      transition:all .3s; box-shadow:0 5px 20px rgba(255,0,0,.3); width:100%;
-    }
-    .video-button:hover{ background:#cc0000; transform:scale(1.05); }
-    .instruction{ color:#666; font-size:1.1em; margin:20px 0; line-height:1.6; }
 
-    .progress-bar{ width:100%; height:10px; background:#e0e0e0; border-radius:10px; overflow:hidden; margin-top:20px; }
-    .progress-fill{ height:100%; background:linear-gradient(90deg,#667eea,#764ba2); width:0%; transition:width .5s linear; }
-    .timer{ text-align:center; color:#667eea; font-weight:700; margin-top:15px; font-size:1.5em; }
-
-    .result-container{
-      display:none; margin-top:40px; padding:30px; background:#f8f9ff;
-      border-radius:20px; border:2px solid #667eea;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:10px 10px;
+      border-radius:14px;
+      background: rgba(255,255,255,0.03);
     }
-    .result-container h3{ color:#667eea; margin-bottom:20px; font-size:1.5em; }
-    .result-text{
-      background:#fff; padding:20px; border-radius:15px; color:#333; line-height:1.8;
-      text-align:left; white-space:pre-wrap; max-height:300px; overflow-y:auto;
-    }
-    .copy-btn{
-      background:#667eea; color:#fff; border:none; padding:12px 30px; border-radius:25px;
-      cursor:pointer; margin-top:15px; font-weight:700; transition:all .3s;
-    }
-    .copy-btn:hover{ background:#764ba2; transform:scale(1.05); }
 
-    @keyframes fadeIn{ from{opacity:0} to{opacity:1} }
+    .brandLogo{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      background: linear-gradient(135deg,#7c3aed,#22c55e);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      color:#0b0b12;
+    }
 
-    @media (max-width:768px){
-      .container{ padding:30px 20px; }
-      h1{ font-size:2em; }
+    .brandText h1{
+      font-size:14px;
+      font-weight:800;
+      letter-spacing:0.4px;
+    }
+    .brandText p{
+      font-size:12px;
+      opacity:0.75;
+      margin-top:2px;
+    }
+
+    .menuTitle{
+      font-size:12px;
+      opacity:0.65;
+      margin-top:6px;
+      padding-left:8px;
+    }
+
+    .menu{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .menu button{
+      text-align:left;
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color:#fff;
+      cursor:pointer;
+      transition:0.2s;
+      font-weight:700;
+    }
+    .menu button:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.06);
+    }
+    .menu button.active{
+      background: rgba(124,58,237,0.25);
+      border-color: rgba(124,58,237,0.45);
+    }
+
+    .sidebarFooter{
+      margin-top:auto;
+      font-size:12px;
+      opacity:0.6;
+      padding:10px;
+      border-radius:14px;
+      background: rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    /* MAIN */
+    .main{
+      flex:1;
+      padding:24px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+
+    .statusPill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:999px;
+      background: rgba(34,197,94,0.12);
+      border:1px solid rgba(34,197,94,0.25);
+      font-weight:700;
+      font-size:13px;
+    }
+    .dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:#22c55e;
+      box-shadow:0 0 12px rgba(34,197,94,0.8);
+    }
+
+    .timerBox{
+      padding:10px 14px;
+      border-radius:999px;
+      background: rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.1);
+      font-weight:800;
+      font-size:13px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:14px;
+    }
+
+    .card{
+      background: rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:20px;
+      padding:16px;
+      min-height:120px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      transition:0.2s;
+      cursor:pointer;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .cardTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    }
+
+    .cardTitle{
+      font-weight:900;
+      font-size:16px;
+    }
+
+    .badge{
+      font-size:12px;
+      font-weight:800;
+      padding:6px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.10);
+      opacity:0.9;
+    }
+
+    .cardDesc{
+      font-size:13px;
+      opacity:0.75;
+      line-height:1.35;
+    }
+
+    .cardBtn{
+      margin-top:auto;
+      align-self:flex-end;
+      padding:10px 14px;
+      border-radius:12px;
+      border:none;
+      cursor:pointer;
+      font-weight:900;
+      background: linear-gradient(135deg,#22c55e,#7c3aed);
+      color:#0b0b12;
+      transition:0.2s;
+    }
+    .cardBtn:hover{
+      transform: scale(1.03);
+    }
+
+    .panel{
+      margin-top:6px;
+      background: rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:20px;
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .panel h2{
+      font-size:18px;
+      font-weight:900;
+    }
+
+    .warn{
+      padding:12px 14px;
+      border-radius:14px;
+      background: rgba(245,158,11,0.12);
+      border:1px solid rgba(245,158,11,0.25);
+      color:#fff;
+      font-size:13px;
+      line-height:1.35;
+      font-weight:700;
+    }
+
+    .inputRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:flex-start;
+    }
+
+    textarea{
+      flex:1;
+      min-width:260px;
+      min-height:90px;
+      resize:vertical;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.25);
+      color:#fff;
+      outline:none;
+      font-size:14px;
+      line-height:1.35;
+    }
+
+    .actionBtn{
+      padding:14px 18px;
+      border-radius:14px;
+      border:none;
+      cursor:pointer;
+      font-weight:900;
+      background: linear-gradient(135deg,#7c3aed,#22c55e);
+      color:#0b0b12;
+      transition:0.2s;
+      min-width:180px;
+    }
+    .actionBtn:hover{ transform: translateY(-1px); }
+
+    .locked{
+      opacity:0.45;
+      pointer-events:none;
+      filter: grayscale(0.6);
+    }
+
+    .results{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:12px;
+      margin-top:8px;
+    }
+
+    .resultBox{
+      background: rgba(0,0,0,0.25);
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:16px;
+      padding:12px;
+      min-height:140px;
+    }
+
+    .resultBox h3{
+      font-size:13px;
+      font-weight:900;
+      opacity:0.9;
+      margin-bottom:8px;
+    }
+
+    .resultItem{
+      font-size:13px;
+      opacity:0.85;
+      margin-bottom:6px;
+      line-height:1.35;
+    }
+
+    .copySmall{
+      margin-top:10px;
+      width:100%;
+      padding:10px;
+      border-radius:12px;
+      border:none;
+      cursor:pointer;
+      font-weight:900;
+      background: rgba(255,255,255,0.08);
+      color:#fff;
+      transition:0.2s;
+    }
+    .copySmall:hover{
+      background: rgba(255,255,255,0.12);
+    }
+
+    .footerLinks{
+      margin-top:6px;
+      text-align:center;
+      font-size:13px;
+      opacity:0.8;
+    }
+    .footerLinks a{
+      color:#22c55e;
+      text-decoration:none;
+      font-weight:800;
+      margin:0 10px;
+    }
+
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .results{ grid-template-columns: 1fr; }
+      .sidebar{ width:220px; }
+    }
+
+    @media (max-width: 720px){
+      .app{ flex-direction:column; }
+      .sidebar{ width:100%; }
+      .grid{ grid-template-columns: 1fr; }
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <h1>🎨 AI Görsel Prompt Üretici</h1>
-    <p class="subtitle">Midjourney, DALL-E ve Stable Diffusion için profesyonel prompt'lar</p>
+  <div class="app">
 
-    <div class="input-group">
-      <label>🖼️ Ne tür bir görsel istiyorsunuz?</label>
-      <textarea id="description" placeholder="Örnek: Gün batımında deniz kenarında yürüyen bir kedi, sinematik, 4k, gerçekçi..."></textarea>
-    </div>
-
-    <div class="input-group">
-      <label>🎨 Stil Tercihi</label>
-      <select id="style">
-        <option value="">Stil Seçin...</option>
-        <option value="realistic">Gerçekçi (Realistic)</option>
-        <option value="anime">Anime/Manga</option>
-        <option value="cartoon">Karikatür</option>
-        <option value="oil-painting">Yağlı Boya</option>
-        <option value="watercolor">Sulu Boya</option>
-        <option value="3d">3D Render</option>
-        <option value="minimalist">Minimalist</option>
-        <option value="cyberpunk">Cyberpunk</option>
-        <option value="fantasy">Fantezi</option>
-      </select>
-    </div>
-
-    <div class="input-group">
-      <label>📱 Platform</label>
-      <select id="platform">
-        <option value="">Platform Seçin...</option>
-        <option value="instagram">Instagram Post (1:1)</option>
-        <option value="instagram-story">Instagram Story (9:16)</option>
-        <option value="youtube">YouTube Thumbnail (16:9)</option>
-        <option value="youtube-shorts">YouTube Shorts (9:16)</option>
-        <option value="tiktok">TikTok/Reels (9:16)</option>
-        <option value="twitter">X/Twitter Header (3:1)</option>
-        <option value="facebook">Facebook Cover (2.7:1)</option>
-      </select>
-    </div>
-
-    <button type="button" class="generate-btn" onclick="generatePrompt()">✨ Prompt Oluştur</button>
-
-    <div class="result-container" id="resultContainer">
-      <h3>🎯 Hazır Prompt'unuz:</h3>
-      <div class="result-text" id="resultText"></div>
-      <button type="button" class="copy-btn" onclick="copyResult(this)">📋 Kopyala</button>
-    </div>
-  </div>
-
-  <div class="popup-overlay" id="popupOverlay" onclick="closePopupIfBackground(event)">
-    <div class="popup-content" onclick="event.stopPropagation()">
-      <div class="popup-header">
-        <h2>🎬 Video İzle & Bekle</h2>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brandLogo">JH</div>
+        <div class="brandText">
+          <h1>JARVIS HEYROSE</h1>
+          <p>AI • Ders • Video</p>
+        </div>
       </div>
 
-      <p class="instruction">👇 Önce videoyu izleyin, sonra devam edin!</p>
+      <div class="menuTitle">AI Tools</div>
+      <div class="menu" id="menu"></div>
 
-      <button type="button" class="video-button" id="videoButton" onclick="openVideo()">
-        ▶️ 1. Adım: YouTube Shorts Aç
-      </button>
-
-      <button type="button" class="video-button" id="continueButton"
-        onclick="startCountdown()" style="display:none; background:#4CAF50;">
-        ✅ 2. Adım: Videoyu İzledim, Devam Et!
-      </button>
-
-      <div class="progress-bar" id="progressSection" style="display:none;">
-        <div class="progress-fill" id="progressFill"></div>
+      <div class="sidebarFooter">
+        Bugünlük kullanım: <b>Ücretsiz</b><br/>
+        Limitler: 3 başlık / 3 hashtag / 3 açıklama
       </div>
-      <div class="timer" id="timer" style="display:none;">13 saniye</div>
-    </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <div class="topbar">
+        <div class="statusPill"><span class="dot"></span> Sistem Aktif</div>
+        <div class="timerBox">
+          ⏳ Süre: <span id="timeLeftText">30:00</span>
+        </div>
+      </div>
+
+      <!-- ROOMS GRID -->
+      <section class="grid" id="roomsGrid"></section>
+
+      <!-- PANEL -->
+      <section class="panel" id="panel">
+        <h2 id="panelTitle">Bir oda seç</h2>
+
+        <div id="warnBox" class="warn" style="display:none;">
+          ⚠️ Bu içerikler yapay zekâ tarafından üretilir. Doğruluğu %100 garanti değildir.
+        </div>
+
+        <div class="inputRow">
+          <textarea id="userInput" placeholder="Ne istiyorsun? Örnek: 'Saksafon müziği Shorts için viral başlık ve hashtag'"></textarea>
+          <button class="actionBtn" id="generateBtn" type="button">🚀 Üret</button>
+        </div>
+
+        <div class="results" id="results" style="display:none;">
+          <div class="resultBox">
+            <h3>🔥 3 Başlık</h3>
+            <div id="titles"></div>
+            <button class="copySmall" onclick="copyBox('titles')">Kopyala</button>
+          </div>
+
+          <div class="resultBox">
+            <h3>🏷️ 3 Hashtag</h3>
+            <div id="hashtags"></div>
+            <button class="copySmall" onclick="copyBox('hashtags')">Kopyala</button>
+          </div>
+
+          <div class="resultBox">
+            <h3>📝 3 Açıklama</h3>
+            <div id="descs"></div>
+            <button class="copySmall" onclick="copyBox('descs')">Kopyala</button>
+          </div>
+        </div>
+
+        <div class="footerLinks">
+          <a href="privacy.html" target="_blank">Gizlilik Politikası</a>
+          |
+          <a href="terms.html" target="_blank">Hizmet Şartları</a>
+        </div>
+      </section>
+
+    </main>
   </div>
 
   <script>
-    const youtubeVideos = [
-      '6bd0a3p_qNs','5mVvlMPRg9U','AGBZYvXJpRg','i1Mw4b_ivYo',
-      'Zpr3aoAbRqU','_CelSfEJkz0','OZ99DyKxvYA','Dl9cDx3rouU',
-      'e_1id0_LN68','fg-4bpIAVl0','-hJZQcd0gKI','KypCc3Gq6Yo'
+    // =========================
+    // 30 DAKİKA LIMIT
+    // =========================
+    const TOTAL_SECONDS = 30 * 60;
+    let secondsLeft = TOTAL_SECONDS;
+    let isLocked = false;
+
+    function formatTime(s){
+      const m = String(Math.floor(s/60)).padStart(2,'0');
+      const ss = String(s%60).padStart(2,'0');
+      return `${m}:${ss}`;
+    }
+
+    function tick(){
+      if(isLocked) return;
+      secondsLeft--;
+      document.getElementById("timeLeftText").textContent = formatTime(secondsLeft);
+
+      if(secondsLeft <= 0){
+        lockAll("⛔ Bugün size ayrılan sürenin sonuna geldik. Yarın tekrar görüşürüz.");
+      }
+    }
+
+    function lockAll(message){
+      isLocked = true;
+      document.getElementById("generateBtn").textContent = "Kilitli";
+      document.getElementById("generateBtn").classList.add("locked");
+      alert(message);
+    }
+
+    setInterval(tick, 1000);
+    document.getElementById("timeLeftText").textContent = formatTime(secondsLeft);
+
+    // =========================
+    // ODALAR
+    // =========================
+    const rooms = [
+      { id:"youtube", name:"YouTube Odası", desc:"YouTube için başlık / hashtag / açıklama", badge:"Günlük 2 Free" },
+      { id:"insta", name:"Instagram Reels Odası", desc:"Reels için yüksek aramalı içerikler", badge:"Günlük 2 Free" },
+      { id:"tiktok", name:"TikTok Odası", desc:"TikTok viral başlık / hashtag / açıklama", badge:"Günlük 2 Free" },
+      { id:"facebook", name:"Facebook Odası", desc:"Facebook post ve sayfa büyütme", badge:"Günlük 2 Free" },
+      { id:"x", name:"X (Twitter) Odası", desc:"X için etkileşim artıran içerik", badge:"Günlük 2 Free" },
+      { id:"ders", name:"Ders 30dk (İlk/Orta/Lise)", desc:"30 dakikalık ders + soru", badge:"30dk" },
+      { id:"uni", name:"Üniversite Adayları", desc:"Sınav merkezi gibi çalışma", badge:"30dk" },
+      { id:"kpss", name:"KPSS Test Odası", desc:"KPSS test çözme + çalışma", badge:"30dk" },
+      { id:"analiz", name:"Kanal Analiz Odası", desc:"Kanal büyütme analizi", badge:"Günlük 2 Free" }
     ];
 
-    let currentVideoId = '';
-    let countdownInterval = null;
+    let currentRoom = null;
 
-    function getRandomVideo() {
-      return youtubeVideos[Math.floor(Math.random() * youtubeVideos.length)];
-    }
+    const roomsGrid = document.getElementById("roomsGrid");
+    const menu = document.getElementById("menu");
 
-    function generatePrompt() {
-      const description = document.getElementById('description').value.trim();
-      const style = document.getElementById('style').value;
-      const platform = document.getElementById('platform').value;
+    function renderRooms(){
+      roomsGrid.innerHTML = "";
+      rooms.forEach(r => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.onclick = () => selectRoom(r.id);
 
-      if (!description) { alert('⚠️ Lütfen bir görsel açıklaması girin!'); return; }
-
-      currentVideoId = getRandomVideo();
-
-      window.promptData = { description, style, platform };
-
-      resetPopupUI();
-      document.getElementById('popupOverlay').style.display = 'block';
-    }
-
-    function openVideo() {
-      window.open(`https://www.youtube.com/shorts/${currentVideoId}`, '_blank');
-
-      document.getElementById('videoButton').style.display = 'none';
-      document.getElementById('continueButton').style.display = 'block';
-    }
-
-    function startCountdown() {
-      document.getElementById('progressSection').style.display = 'block';
-      document.getElementById('timer').style.display = 'block';
-      document.getElementById('continueButton').style.display = 'none';
-
-      const progressFill = document.getElementById('progressFill');
-      const timerEl = document.getElementById('timer');
-
-      let timeLeft = 13;
-      let progress = 0;
-
-      if (countdownInterval) clearInterval(countdownInterval);
-
-      countdownInterval = setInterval(() => {
-        timeLeft--;
-        progress += 100 / 13;
-        progressFill.style.width = Math.min(progress, 100) + '%';
-        timerEl.textContent = timeLeft > 0 ? (timeLeft + ' saniye') : 'Hazır! ✨';
-
-        if (timeLeft <= 0) {
-          clearInterval(countdownInterval);
-          setTimeout(() => {
-            const d = window.promptData || {};
-            showResult(d.description || '', d.style || '', d.platform || '');
-          }, 300);
-        }
-      }, 1000);
-    }
-
-    function showResult(description, style, platform) {
-      document.getElementById('popupOverlay').style.display = 'none';
-
-      let prompt = description;
-
-      if (style) {
-        const styleNames = {
-          realistic: 'photorealistic, highly detailed, 8k resolution, professional photography',
-          anime: 'anime style, manga art, vibrant colors, cel shaded',
-          cartoon: 'cartoon style, colorful, playful, vector art',
-          'oil-painting': 'oil painting style, classical art, brush strokes visible',
-          watercolor: 'watercolor painting, soft colors, artistic, flowing',
-          '3d': '3D render, octane render, high quality, ray tracing',
-          minimalist: 'minimalist design, clean, simple, modern',
-          cyberpunk: 'cyberpunk style, neon lights, futuristic, dark atmosphere',
-          fantasy: 'fantasy art, magical, ethereal, dreamlike'
-        };
-        prompt += ', ' + (styleNames[style] || '');
-      }
-
-      if (platform) {
-        const aspectRatios = {
-          instagram: ', aspect ratio 1:1, square format, Instagram optimized',
-          'instagram-story': ', aspect ratio 9:16, vertical format, story optimized',
-          youtube: ', aspect ratio 16:9, widescreen, thumbnail optimized, eye-catching',
-          'youtube-shorts': ', aspect ratio 9:16, vertical format, YouTube Shorts optimized, mobile-first',
-          tiktok: ', aspect ratio 9:16, vertical video format, mobile optimized',
-          twitter: ', aspect ratio 3:1, banner format, horizontal',
-          facebook: ', aspect ratio 2.7:1, cover photo format, wide banner'
-        };
-        prompt += (aspectRatios[platform] || '');
-      }
-
-      prompt += ', professional quality, studio lighting, sharp focus, trending on artstation, award winning, masterpiece';
-
-      document.getElementById('resultText').textContent = prompt;
-      const resultContainer = document.getElementById('resultContainer');
-      resultContainer.style.display = 'block';
-      resultContainer.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // ✅ FIREFOX FIX: event yerine this gönderiyoruz
-    function copyResult(btn) {
-      const text = document.getElementById('resultText').textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        const original = btn.textContent;
-        btn.textContent = '✅ Kopyalandı!';
-        setTimeout(() => btn.textContent = original, 1500);
-      }).catch(() => {
-        alert('Kopyalama engellendi. Manuel seçip kopyalayın.');
+        div.innerHTML = `
+          <div class="cardTop">
+            <div class="cardTitle">${r.name}</div>
+            <div class="badge">${r.badge}</div>
+          </div>
+          <div class="cardDesc">${r.desc}</div>
+          <button class="cardBtn" type="button">Seç</button>
+        `;
+        roomsGrid.appendChild(div);
       });
     }
 
-    function resetPopupUI() {
-      document.getElementById('progressFill').style.width = '0%';
-      document.getElementById('timer').textContent = '13 saniye';
-      document.getElementById('timer').style.display = 'none';
-      document.getElementById('progressSection').style.display = 'none';
-      document.getElementById('videoButton').style.display = 'block';
-      document.getElementById('continueButton').style.display = 'none';
+    function renderMenu(){
+      menu.innerHTML = "";
+      rooms.forEach(r => {
+        const btn = document.createElement("button");
+        btn.textContent = r.name;
+        btn.onclick = () => selectRoom(r.id);
+        btn.id = "menu_" + r.id;
+        menu.appendChild(btn);
+      });
     }
 
-    function closePopupIfBackground(e) {
-      // arka siyaha tıklayınca kapansın (istersen kaldırırız)
-      document.getElementById('popupOverlay').style.display = 'none';
-      resetPopupUI();
-    }
+    function selectRoom(roomId){
+      currentRoom = rooms.find(x => x.id === roomId);
 
-    // ESC ile kapatma
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        document.getElementById('popupOverlay').style.display = 'none';
-        resetPopupUI();
+      // menü aktif
+      rooms.forEach(r => {
+        const b = document.getElementById("menu_" + r.id);
+        if(!b) return;
+        b.classList.toggle("active", r.id === roomId);
+      });
+
+      document.getElementById("panelTitle").textContent = currentRoom.name + " • İçerik Üret";
+      document.getElementById("results").style.display = "none";
+
+      // Ders odalarında uyarı
+      const warnBox = document.getElementById("warnBox");
+      if(["ders","uni","kpss"].includes(roomId)){
+        warnBox.style.display = "block";
+      } else {
+        warnBox.style.display = "none";
       }
+    }
+
+    renderRooms();
+    renderMenu();
+
+    // =========================
+    // ÜRETİM
+    // =========================
+    function pickPlatformLabel(roomId){
+      const map = {
+        youtube: "YouTube",
+        insta: "Instagram Reels",
+        tiktok: "TikTok",
+        facebook: "Facebook",
+        x: "X (Twitter)",
+        ders: "Ders (30dk)",
+        uni: "Üniversite Adayları",
+        kpss: "KPSS",
+        analiz: "Kanal Analiz"
+      };
+      return map[roomId] || "Platform";
+    }
+
+    function make3Titles(topic, platform){
+      return [
+        `${topic} | ${platform} için en iyi başlık`,
+        `${platform} için ${topic} (yüksek arama)`,
+        `${topic} — Bugün dene (viral)`,
+      ];
+    }
+
+    function make3Hashtags(topic, platform){
+      const clean = topic.replace(/\s+/g,'').slice(0,18);
+      const p = platform.replace(/\s+/g,'').slice(0,14);
+      return [
+        `#${p}`,
+        `#${clean}`,
+        `#Keşfet`
+      ];
+    }
+
+    function make3Descs(topic, platform){
+      return [
+        `${platform} için hazırlandı: ${topic}\nBeğendiysen kaydet + paylaş.`,
+        `${topic} hakkında en net içerik burada.\nTakip etmeyi unutma.`,
+        `Bugün dene: ${topic}\nYorumlara fikrini yaz.`
+      ];
+    }
+
+    function renderList(elId, arr){
+      const el = document.getElementById(elId);
+      el.innerHTML = "";
+      arr.forEach((t,i)=>{
+        const div = document.createElement("div");
+        div.className = "resultItem";
+        div.textContent = (i+1) + ") " + t;
+        el.appendChild(div);
+      });
+    }
+
+    document.getElementById("generateBtn").addEventListener("click", () => {
+      if(isLocked) return;
+
+      if(!currentRoom){
+        alert("Önce bir oda seç.");
+        return;
+      }
+
+      const input = document.getElementById("userInput").value.trim();
+      if(!input){
+        alert("Bir şey yaz.");
+        return;
+      }
+
+      const platform = pickPlatformLabel(currentRoom.id);
+
+      // 3-3-3 üretim
+      const titles = make3Titles(input, platform);
+      const hashtags = make3Hashtags(input, platform);
+      const descs = make3Descs(input, platform);
+
+      renderList("titles", titles);
+      renderList("hashtags", hashtags);
+      renderList("descs", descs);
+
+      document.getElementById("results").style.display = "grid";
     });
+
+    // =========================
+    // KOPYALA
+    // =========================
+    function copyBox(id){
+      const el = document.getElementById(id);
+      const text = el.innerText;
+      navigator.clipboard.writeText(text).then(()=>{
+        alert("Kopyalandı");
+      }).catch(()=>{
+        alert("Kopyalama engellendi. Manuel kopyala.");
+      });
+    }
   </script>
 </body>
 </html>
