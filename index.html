@@ -3,644 +3,918 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jarvis Heyrose - AI Tools</title>
+  <title>Jarvis Heyrose</title>
+
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
+    :root{
+      --bg:#0b0f14;
+      --panel:#0f1520;
+      --panel2:#0c121b;
+      --border:rgba(255,255,255,.08);
+      --text:#e6edf6;
+      --muted:#a9b4c3;
+      --accent:#7c3aed;
+      --accent2:#22c55e;
+      --shadow: 0 10px 30px rgba(0,0,0,.55);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
     body{
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: radial-gradient(circle at top left, #1a1a2e, #0b0b12);
-      color:#fff;
-      min-height:100vh;
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: radial-gradient(1200px 700px at 30% 10%, rgba(124,58,237,.18), transparent 55%),
+                  radial-gradient(900px 600px at 80% 70%, rgba(34,197,94,.10), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      height:100vh;
+      overflow:hidden;
     }
 
-    .app{
-      display:flex;
-      min-height:100vh;
-    }
+    .app{display:flex; height:100vh; width:100vw;}
 
-    /* SIDEBAR */
+    /* Sidebar */
     .sidebar{
       width:260px;
-      background: rgba(255,255,255,0.04);
-      border-right: 1px solid rgba(255,255,255,0.08);
-      padding:18px;
+      padding:18px 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 35%), var(--panel2);
+      border-right:1px solid var(--border);
       display:flex;
       flex-direction:column;
-      gap:16px;
+      gap:14px;
     }
-
     .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:10px 10px;
-      border-radius:14px;
-      background: rgba(255,255,255,0.03);
+      display:flex; align-items:center; gap:10px;
+      padding:10px 10px 14px;
     }
+    .logo{
+      width:38px; height:38px; border-radius:12px;
+      background: radial-gradient(circle at 30% 30%, rgba(124,58,237,.9), rgba(34,197,94,.6));
+      box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 10px 20px rgba(0,0,0,.35);
+    }
+    .brand h1{font-size:14px; margin:0; letter-spacing:.6px}
+    .brand p{margin:2px 0 0; font-size:12px; color:var(--muted)}
 
-    .brandLogo{
-      width:42px;
-      height:42px;
-      border-radius:14px;
-      background: linear-gradient(135deg,#7c3aed,#22c55e);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:800;
-      color:#0b0b12;
+    .nav{
+      display:flex; flex-direction:column; gap:6px;
+      padding:0 6px;
+      overflow:auto;
     }
-
-    .brandText h1{
-      font-size:14px;
-      font-weight:800;
-      letter-spacing:0.4px;
-    }
-    .brandText p{
-      font-size:12px;
-      opacity:0.75;
-      margin-top:2px;
-    }
-
-    .menuTitle{
-      font-size:12px;
-      opacity:0.65;
-      margin-top:6px;
-      padding-left:8px;
-    }
-
-    .menu{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
-    .menu button{
-      text-align:left;
-      width:100%;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
-      color:#fff;
+    .nav button{
+      all:unset;
       cursor:pointer;
-      transition:0.2s;
-      font-weight:700;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 12px;
+      border-radius:12px;
+      color:var(--text);
+      background:transparent;
+      border:1px solid transparent;
     }
-    .menu button:hover{
-      transform: translateY(-1px);
-      background: rgba(255,255,255,0.06);
+    .nav button:hover{
+      background: rgba(255,255,255,.04);
+      border-color: rgba(255,255,255,.06);
     }
-    .menu button.active{
-      background: rgba(124,58,237,0.25);
-      border-color: rgba(124,58,237,0.45);
+    .nav button.active{
+      background: rgba(124,58,237,.12);
+      border-color: rgba(124,58,237,.35);
+      box-shadow: 0 0 0 1px rgba(124,58,237,.18) inset;
     }
-
+    .pill{
+      font-size:11px;
+      padding:3px 8px;
+      border-radius:999px;
+      color:rgba(255,255,255,.9);
+      background: rgba(34,197,94,.12);
+      border:1px solid rgba(34,197,94,.25);
+    }
     .sidebarFooter{
       margin-top:auto;
+      padding:10px 6px 6px;
+      color:var(--muted);
       font-size:12px;
-      opacity:0.6;
-      padding:10px;
-      border-radius:14px;
-      background: rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.08);
+      display:flex; gap:8px; flex-wrap:wrap;
+      align-items:center;
     }
+    .miniBtn{
+      all:unset;
+      cursor:pointer;
+      padding:8px 10px;
+      border-radius:12px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.07);
+      color:var(--text);
+      font-size:12px;
+    }
+    .miniBtn:hover{border-color: rgba(255,255,255,.14)}
 
-    /* MAIN */
+    /* Main */
     .main{
       flex:1;
-      padding:24px;
       display:flex;
       flex-direction:column;
-      gap:18px;
+      min-width:0;
     }
 
+    /* Top bar */
     .topbar{
+      height:64px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
+      padding:0 18px;
+      border-bottom:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 70%);
     }
-
-    .statusPill{
-      display:inline-flex;
-      align-items:center;
+    .tabs{
+      display:flex;
       gap:8px;
-      padding:10px 14px;
+      overflow:auto;
+      padding-bottom:2px;
+    }
+    .tab{
+      all:unset;
+      cursor:pointer;
+      padding:8px 12px;
       border-radius:999px;
-      background: rgba(34,197,94,0.12);
-      border:1px solid rgba(34,197,94,0.25);
-      font-weight:700;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      white-space:nowrap;
       font-size:13px;
     }
-    .dot{
-      width:10px;
-      height:10px;
-      border-radius:50%;
-      background:#22c55e;
-      box-shadow:0 0 12px rgba(34,197,94,0.8);
+    .tab:hover{border-color: rgba(255,255,255,.16)}
+    .tab.active{
+      color:var(--text);
+      background: rgba(124,58,237,.18);
+      border-color: rgba(124,58,237,.35);
     }
+    .topActions{
+      display:flex; gap:10px; align-items:center;
+    }
+    .badge{
+      display:flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      font-size:13px;
+    }
+    .dot{width:8px; height:8px; border-radius:50%; background: var(--accent2); box-shadow:0 0 14px rgba(34,197,94,.55)}
 
-    .timerBox{
-      padding:10px 14px;
-      border-radius:999px;
-      background: rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.1);
+    .loginBtn{
+      all:unset; cursor:pointer;
+      padding:10px 12px;
+      border-radius:12px;
+      background: rgba(124,58,237,.20);
+      border:1px solid rgba(124,58,237,.35);
       font-weight:800;
       font-size:13px;
       display:flex;
-      gap:8px;
       align-items:center;
+      gap:8px;
     }
+    .loginBtn:hover{background: rgba(124,58,237,.28)}
+    .googleIcon{
+      width:16px;height:16px;display:inline-block;
+      border-radius:4px;
+      background:conic-gradient(from 0deg, #4285F4 0 25%, #34A853 0 50%, #FBBC05 0 75%, #EA4335 0 100%);
+    }
+
+    /* Content */
+    .content{
+      flex:1;
+      overflow:auto;
+      padding:18px;
+      padding-bottom:120px;
+    }
+    .pageTitle{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:16px;
+      margin:4px 0 14px;
+    }
+    .pageTitle h2{margin:0; font-size:20px}
+    .pageTitle p{margin:0; color:var(--muted); font-size:13px}
 
     .grid{
       display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(12, 1fr);
       gap:14px;
     }
-
     .card{
-      background: rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:20px;
-      padding:16px;
-      min-height:120px;
+      grid-column: span 4;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: var(--shadow);
+      min-height:150px;
       display:flex;
       flex-direction:column;
-      gap:10px;
-      transition:0.2s;
-      cursor:pointer;
     }
-    .card:hover{
-      transform: translateY(-2px);
-      background: rgba(255,255,255,0.06);
-    }
-
-    .cardTop{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
+    .cardHeader{
+      padding:12px 12px 8px;
+      display:flex; justify-content:space-between; align-items:center;
       gap:10px;
     }
-
-    .cardTitle{
-      font-weight:900;
-      font-size:16px;
-    }
-
-    .badge{
-      font-size:12px;
-      font-weight:800;
-      padding:6px 10px;
+    .tag{
+      font-size:11px;
+      padding:4px 8px;
       border-radius:999px;
-      background: rgba(255,255,255,0.06);
-      border:1px solid rgba(255,255,255,0.10);
-      opacity:0.9;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--muted);
+      white-space:nowrap;
     }
-
-    .cardDesc{
+    .cardBody{
+      padding:0 12px 12px;
+      color:var(--muted);
       font-size:13px;
-      opacity:0.75;
       line-height:1.35;
+      flex:1;
     }
-
-    .cardBtn{
-      margin-top:auto;
-      align-self:flex-end;
-      padding:10px 14px;
+    .cardFooter{
+      padding:12px;
+      border-top:1px solid rgba(255,255,255,.07);
+      display:flex; justify-content:space-between; align-items:center;
+      gap:10px;
+    }
+    .primary{
+      all:unset; cursor:pointer;
+      padding:9px 12px;
       border-radius:12px;
-      border:none;
-      cursor:pointer;
-      font-weight:900;
-      background: linear-gradient(135deg,#22c55e,#7c3aed);
-      color:#0b0b12;
-      transition:0.2s;
+      background: rgba(34,197,94,.14);
+      border:1px solid rgba(34,197,94,.28);
+      font-weight:800;
+      font-size:13px;
     }
-    .cardBtn:hover{
-      transform: scale(1.03);
+    .primary:hover{background: rgba(34,197,94,.20)}
+    .ghost{
+      all:unset; cursor:pointer;
+      padding:9px 12px;
+      border-radius:12px;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--text);
+      font-size:13px;
     }
+    .ghost:hover{border-color: rgba(255,255,255,.18)}
 
-    .panel{
-      margin-top:6px;
-      background: rgba(255,255,255,0.04);
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:20px;
-      padding:18px;
+    /* Prompt Bar */
+    .promptBar{
+      position:fixed;
+      left:260px;
+      right:0;
+      bottom:0;
+      padding:14px 18px;
+      border-top:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(11,15,20,.30), rgba(11,15,20,.90) 25%, rgba(11,15,20,.96));
+      backdrop-filter: blur(10px);
+    }
+    .promptInner{
+      max-width:1100px;
+      margin:0 auto;
       display:flex;
-      flex-direction:column;
-      gap:12px;
+      gap:10px;
+      align-items:center;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      padding:10px;
+      box-shadow: var(--shadow);
     }
-
-    .panel h2{
-      font-size:18px;
+    .promptInner textarea{
+      width:100%;
+      resize:none;
+      height:44px;
+      max-height:120px;
+      background: transparent;
+      border:none;
+      outline:none;
+      color:var(--text);
+      font-size:14px;
+      padding:10px 10px;
+      line-height:1.25;
+    }
+    .sendBtn{
+      all:unset; cursor:pointer;
+      padding:10px 14px;
+      border-radius:14px;
+      background: rgba(124,58,237,.22);
+      border:1px solid rgba(124,58,237,.38);
       font-weight:900;
+      font-size:13px;
+      white-space:nowrap;
+    }
+    .sendBtn:hover{background: rgba(124,58,237,.30)}
+    .modeSelect{
+      all:unset; cursor:pointer;
+      padding:10px 12px;
+      border-radius:14px;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--text);
+      font-size:13px;
+      white-space:nowrap;
     }
 
-    .warn{
+    /* Modal */
+    .modalBackdrop{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.60);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      z-index:50;
+    }
+    .modal{
+      width:min(720px, 100%);
+      background: rgba(15,21,32,.92);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .modalTop{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:12px 14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .modalTop h3{margin:0; font-size:14px}
+    .xBtn{
+      all:unset; cursor:pointer;
+      width:34px; height:34px;
+      display:grid; place-items:center;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+    .modalBody{padding:14px}
+    .hint{color:var(--muted); font-size:12px; margin:8px 0 0}
+    .modalActions{
+      display:flex; gap:10px; justify-content:flex-end;
+      padding:12px 14px 14px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+
+    .warnBox{
+      background: rgba(255, 200, 0, .10);
+      border:1px solid rgba(255, 200, 0, .22);
+      color: rgba(255,255,255,.92);
       padding:12px 14px;
       border-radius:14px;
-      background: rgba(245,158,11,0.12);
-      border:1px solid rgba(245,158,11,0.25);
-      color:#fff;
+      margin-bottom:14px;
       font-size:13px;
       line-height:1.35;
-      font-weight:700;
     }
 
-    .inputRow{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:flex-start;
-    }
-
-    textarea{
-      flex:1;
-      min-width:260px;
-      min-height:90px;
-      resize:vertical;
-      padding:14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.25);
-      color:#fff;
-      outline:none;
-      font-size:14px;
-      line-height:1.35;
-    }
-
-    .actionBtn{
-      padding:14px 18px;
-      border-radius:14px;
-      border:none;
-      cursor:pointer;
-      font-weight:900;
-      background: linear-gradient(135deg,#7c3aed,#22c55e);
-      color:#0b0b12;
-      transition:0.2s;
-      min-width:180px;
-    }
-    .actionBtn:hover{ transform: translateY(-1px); }
-
-    .locked{
-      opacity:0.45;
-      pointer-events:none;
-      filter: grayscale(0.6);
-    }
-
-    .results{
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap:12px;
-      margin-top:8px;
-    }
-
-    .resultBox{
-      background: rgba(0,0,0,0.25);
-      border:1px solid rgba(255,255,255,0.10);
-      border-radius:16px;
-      padding:12px;
-      min-height:140px;
-    }
-
-    .resultBox h3{
-      font-size:13px;
-      font-weight:900;
-      opacity:0.9;
-      margin-bottom:8px;
-    }
-
-    .resultItem{
-      font-size:13px;
-      opacity:0.85;
-      margin-bottom:6px;
-      line-height:1.35;
-    }
-
-    .copySmall{
-      margin-top:10px;
-      width:100%;
-      padding:10px;
-      border-radius:12px;
-      border:none;
-      cursor:pointer;
-      font-weight:900;
-      background: rgba(255,255,255,0.08);
-      color:#fff;
-      transition:0.2s;
-    }
-    .copySmall:hover{
-      background: rgba(255,255,255,0.12);
-    }
-
-    .footerLinks{
-      margin-top:6px;
-      text-align:center;
-      font-size:13px;
-      opacity:0.8;
-    }
-    .footerLinks a{
-      color:#22c55e;
-      text-decoration:none;
-      font-weight:800;
-      margin:0 10px;
-    }
-
+    /* Responsive */
     @media (max-width: 980px){
-      .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .results{ grid-template-columns: 1fr; }
-      .sidebar{ width:220px; }
+      .sidebar{width:220px}
+      .promptBar{left:220px}
+      .card{grid-column: span 6}
     }
-
     @media (max-width: 720px){
-      .app{ flex-direction:column; }
-      .sidebar{ width:100%; }
-      .grid{ grid-template-columns: 1fr; }
+      .sidebar{width:78px; padding:14px 10px}
+      .brand h1,.brand p{display:none}
+      .nav button span.label{display:none}
+      .pill{display:none}
+      .promptBar{left:78px; padding:12px}
+      .card{grid-column: span 12}
+      .topbar{padding:0 12px}
+      .badge{display:none}
     }
   </style>
 </head>
 
 <body>
   <div class="app">
-
     <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="brand">
-        <div class="brandLogo">JH</div>
-        <div class="brandText">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
           <h1>JARVIS HEYROSE</h1>
-          <p>AI • Ders • Video</p>
+          <p>Odalar • AI • Ders</p>
         </div>
       </div>
 
-      <div class="menuTitle">AI Tools</div>
-      <div class="menu" id="menu"></div>
+      <nav class="nav" id="nav">
+        <button class="active" data-page="youtube"><span class="label">YouTube Odası</span><span class="pill">3 Free</span></button>
+        <button data-page="instagram"><span class="label">Instagram Reels</span></button>
+        <button data-page="tiktok"><span class="label">TikTok Odası</span></button>
+        <button data-page="facebook"><span class="label">Facebook Odası</span></button>
+        <button data-page="x"><span class="label">X Odası</span></button>
+        <button data-page="ders"><span class="label">Ders Odası (30dk)</span></button>
+        <button data-page="uni"><span class="label">Üniversite Aday</span></button>
+        <button data-page="kpss"><span class="label">KPSS Test</span></button>
+        <button data-page="analiz"><span class="label">Kanal Analiz</span></button>
+      </nav>
 
       <div class="sidebarFooter">
-        Bugünlük kullanım: <b>Ücretsiz</b><br/>
-        Limitler: 3 başlık / 3 hashtag / 3 açıklama
+        <button class="miniBtn" id="helpBtn">Yardım</button>
       </div>
     </aside>
 
     <!-- MAIN -->
     <main class="main">
-
-      <div class="topbar">
-        <div class="statusPill"><span class="dot"></span> Sistem Aktif</div>
-        <div class="timerBox">
-          ⏳ Süre: <span id="timeLeftText">30:00</span>
-        </div>
-      </div>
-
-      <!-- ROOMS GRID -->
-      <section class="grid" id="roomsGrid"></section>
-
-      <!-- PANEL -->
-      <section class="panel" id="panel">
-        <h2 id="panelTitle">Bir oda seç</h2>
-
-        <div id="warnBox" class="warn" style="display:none;">
-          ⚠️ Bu içerikler yapay zekâ tarafından üretilir. Doğruluğu %100 garanti değildir.
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="tabs" id="tabs">
+          <button class="tab active" data-tab="hepsi">Hepsi</button>
+          <button class="tab" data-tab="viral">Viral</button>
+          <button class="tab" data-tab="seo">SEO</button>
+          <button class="tab" data-tab="ders">Ders</button>
         </div>
 
-        <div class="inputRow">
-          <textarea id="userInput" placeholder="Ne istiyorsun? Örnek: 'Saksafon müziği Shorts için viral başlık ve hashtag'"></textarea>
-          <button class="actionBtn" id="generateBtn" type="button">🚀 Üret</button>
-        </div>
+        <div class="topActions">
+          <div class="badge"><span class="dot"></span> Sistem Aktif</div>
 
-        <div class="results" id="results" style="display:none;">
-          <div class="resultBox">
-            <h3>🔥 3 Başlık</h3>
-            <div id="titles"></div>
-            <button class="copySmall" onclick="copyBox('titles')">Kopyala</button>
+          <button class="loginBtn" id="googleLoginBtn" title="Google ile giriş">
+            <span class="googleIcon" aria-hidden="true"></span>
+            Google ile Giriş
+          </button>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <section class="content">
+
+        <!-- YOUTUBE -->
+        <div id="page-youtube" class="page">
+          <div class="pageTitle">
+            <div>
+              <h2>YouTube Odası</h2>
+              <p>Başlık • Hashtag • Kanal açıklaması (3 adet limit)</p>
+            </div>
           </div>
 
-          <div class="resultBox">
-            <h3>🏷️ 3 Hashtag</h3>
-            <div id="hashtags"></div>
-            <button class="copySmall" onclick="copyBox('hashtags')">Kopyala</button>
-          </div>
+          <div class="grid">
+            <div class="card">
+              <div class="cardHeader"><strong>Başlık Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">YouTube/Shorts için yüksek aramalı başlık üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('baslik')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
 
-          <div class="resultBox">
-            <h3>📝 3 Açıklama</h3>
-            <div id="descs"></div>
-            <button class="copySmall" onclick="copyBox('descs')">Kopyala</button>
+            <div class="card">
+              <div class="cardHeader"><strong>Hashtag Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">İçeriğe göre hashtag seti üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('hashtag')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="cardHeader"><strong>Kanal Açıklaması</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Kanal açıklaması / bio üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('aciklama')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="footerLinks">
-          <a href="privacy.html" target="_blank">Gizlilik Politikası</a>
-          |
-          <a href="terms.html" target="_blank">Hizmet Şartları</a>
+        <!-- INSTAGRAM -->
+        <div id="page-instagram" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>Instagram Reels Odası</h2>
+              <p>Başlık • Hashtag • Açıklama (3 adet limit)</p>
+            </div>
+          </div>
+          <div class="grid">
+            <div class="card">
+              <div class="cardHeader"><strong>Başlık Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Reels için kısa, dikkat çekici başlık üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('baslik')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Hashtag Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Reels için etkileşim hashtag seti.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('hashtag')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Açıklama Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Reels açıklaması + CTA üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('aciklama')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- TIKTOK -->
+        <div id="page-tiktok" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>TikTok Odası</h2>
+              <p>Yüksek aramalı başlık • Hashtag • Açıklama (3 adet)</p>
+            </div>
+          </div>
+          <div class="grid">
+            <div class="card">
+              <div class="cardHeader"><strong>Başlık Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">TikTok için hızlı tüketilen başlıklar üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('baslik')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Hashtag Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">TikTok trend hashtag seti üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('hashtag')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Açıklama Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Kısa açıklama + etkileşim çağrısı.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('aciklama')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FACEBOOK -->
+        <div id="page-facebook" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>Facebook Odası</h2>
+              <p>Başlık • Hashtag • Açıklama (3 adet)</p>
+            </div>
+          </div>
+          <div class="grid">
+            <div class="card">
+              <div class="cardHeader"><strong>Başlık Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Facebook paylaşımı için başlık üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('baslik')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Hashtag Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Facebook için uygun hashtag seti.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('hashtag')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Açıklama Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">Facebook açıklaması / caption üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('aciklama')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- X -->
+        <div id="page-x" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>X Odası</h2>
+              <p>Başlık • Hashtag • Açıklama (3 adet)</p>
+            </div>
+          </div>
+          <div class="grid">
+            <div class="card">
+              <div class="cardHeader"><strong>Başlık Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">X için kısa, net, viral başlık üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('baslik')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Hashtag Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">X için hashtag seti üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('hashtag')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Açıklama Üret</strong><span class="tag">3 Adet</span></div>
+              <div class="cardBody">X paylaşım metni üretir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('aciklama')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DERS -->
+        <div id="page-ders" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>Ders Odası (30dk)</h2>
+              <p>İlkokul • Ortaokul • Lise</p>
+            </div>
+          </div>
+
+          <div class="warnBox">
+            ⚠️ Bu içerikler yapay zekâ tarafından üretilir. Doğruluğu %100 garanti değildir.
+          </div>
+
+          <div class="card" style="grid-column: span 12; max-width:800px">
+            <div class="cardHeader"><strong>30 Dakika Çalışma</strong><span class="tag" id="timerState">Hazır</span></div>
+            <div class="cardBody">
+              <div style="font-size:44px; font-weight:900; letter-spacing:2px" id="timer">30:00</div>
+              <p class="hint">Süre bitince: “Bugün size ayrılan sürenin sonuna geldik. Yarın tekrar görüşürüz.”</p>
+            </div>
+            <div class="cardFooter">
+              <button class="primary" id="startTimer">Start</button>
+              <button class="ghost" id="resetTimer">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- UNI -->
+        <div id="page-uni" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>Üniversite Aday Odası</h2>
+              <p>Sınav merkezi gibi (30dk)</p>
+            </div>
+          </div>
+
+          <div class="warnBox">
+            ⚠️ Bu içerikler yapay zekâ tarafından üretilir. Doğruluğu %100 garanti değildir.
+          </div>
+
+          <div class="card" style="grid-column: span 12; max-width:800px">
+            <div class="cardHeader"><strong>30 Dakika Sınav Modu</strong><span class="tag">Limit</span></div>
+            <div class="cardBody">30 dakika odaklan, süre bitince sistem kapatır.</div>
+            <div class="cardFooter">
+              <button class="primary" onclick="alert('30dk mod: yakında')">Başlat</button>
+              <button class="ghost" onclick="openPromo()">Tanıtım</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPSS -->
+        <div id="page-kpss" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>KPSS Test Odası</h2>
+              <p>Test çözme (30dk)</p>
+            </div>
+          </div>
+
+          <div class="warnBox">
+            ⚠️ Bu içerikler yapay zekâ tarafından üretilir. Doğruluğu %100 garanti değildir.
+          </div>
+
+          <div class="card" style="grid-column: span 12; max-width:800px">
+            <div class="cardHeader"><strong>KPSS 30dk</strong><span class="tag">Limit</span></div>
+            <div class="cardBody">30 dakika test modu. Süre bitince yarın tekrar.</div>
+            <div class="cardFooter">
+              <button class="primary" onclick="alert('KPSS test: yakında')">Başlat</button>
+              <button class="ghost" onclick="openPromo()">Tanıtım</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ANALIZ -->
+        <div id="page-analiz" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>Kanal Analiz Odası</h2>
+              <p>Analiz • Öneri • Plan</p>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="card">
+              <div class="cardHeader"><strong>Analiz</strong><span class="tag">Free</span></div>
+              <div class="cardBody">Kanal durumunu analiz eder (placeholder).</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('analiz')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>Öneri</strong><span class="tag">Free</span></div>
+              <div class="cardBody">Gelişim önerileri üretir (placeholder).</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('oneriler')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+            <div class="card">
+              <div class="cardHeader"><strong>İçerik Planı</strong><span class="tag">Free</span></div>
+              <div class="cardBody">30 günlük plan (placeholder).</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('plan')">Seç</button>
+                <button class="ghost" onclick="openPromo()">Tanıtım</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </section>
 
+      <!-- PROMPT BAR -->
+      <div class="promptBar">
+        <div class="promptInner">
+          <button class="modeSelect" id="modeBtn">Mod: Başlık</button>
+          <textarea id="promptInput" placeholder="Buraya yaz..."></textarea>
+          <button class="sendBtn" id="sendBtn">Oluştur</button>
+        </div>
+      </div>
     </main>
   </div>
 
-  <script>
-    // =========================
-    // 30 DAKİKA LIMIT
-    // =========================
-    const TOTAL_SECONDS = 30 * 60;
-    let secondsLeft = TOTAL_SECONDS;
-    let isLocked = false;
-
-    function formatTime(s){
-      const m = String(Math.floor(s/60)).padStart(2,'0');
-      const ss = String(s%60).padStart(2,'0');
-      return `${m}:${ss}`;
-    }
-
-    function tick(){
-      if(isLocked) return;
-      secondsLeft--;
-      document.getElementById("timeLeftText").textContent = formatTime(secondsLeft);
-
-      if(secondsLeft <= 0){
-        lockAll("⛔ Bugün size ayrılan sürenin sonuna geldik. Yarın tekrar görüşürüz.");
-      }
-    }
-
-    function lockAll(message){
-      isLocked = true;
-      document.getElementById("generateBtn").textContent = "Kilitli";
-      document.getElementById("generateBtn").classList.add("locked");
-      alert(message);
-    }
-
-    setInterval(tick, 1000);
-    document.getElementById("timeLeftText").textContent = formatTime(secondsLeft);
-
-    // =========================
-    // ODALAR
-    // =========================
-    const rooms = [
-      { id:"youtube", name:"YouTube Odası", desc:"YouTube için başlık / hashtag / açıklama", badge:"Günlük 2 Free" },
-      { id:"insta", name:"Instagram Reels Odası", desc:"Reels için yüksek aramalı içerikler", badge:"Günlük 2 Free" },
-      { id:"tiktok", name:"TikTok Odası", desc:"TikTok viral başlık / hashtag / açıklama", badge:"Günlük 2 Free" },
-      { id:"facebook", name:"Facebook Odası", desc:"Facebook post ve sayfa büyütme", badge:"Günlük 2 Free" },
-      { id:"x", name:"X (Twitter) Odası", desc:"X için etkileşim artıran içerik", badge:"Günlük 2 Free" },
-      { id:"ders", name:"Ders 30dk (İlk/Orta/Lise)", desc:"30 dakikalık ders + soru", badge:"30dk" },
-      { id:"uni", name:"Üniversite Adayları", desc:"Sınav merkezi gibi çalışma", badge:"30dk" },
-      { id:"kpss", name:"KPSS Test Odası", desc:"KPSS test çözme + çalışma", badge:"30dk" },
-      { id:"analiz", name:"Kanal Analiz Odası", desc:"Kanal büyütme analizi", badge:"Günlük 2 Free" }
-    ];
-
-    let currentRoom = null;
-
-    const roomsGrid = document.getElementById("roomsGrid");
-    const menu = document.getElementById("menu");
-
-    function renderRooms(){
-      roomsGrid.innerHTML = "";
-      rooms.forEach(r => {
-        const div = document.createElement("div");
-        div.className = "card";
-        div.onclick = () => selectRoom(r.id);
-
-        div.innerHTML = `
-          <div class="cardTop">
-            <div class="cardTitle">${r.name}</div>
-            <div class="badge">${r.badge}</div>
+  <!-- PROMO MODAL -->
+  <div class="modalBackdrop" id="promoModal">
+    <div class="modal">
+      <div class="modalTop">
+        <h3>Tanıtım</h3>
+        <button class="xBtn" onclick="closePromo()">✕</button>
+      </div>
+      <div class="modalBody">
+        <div style="aspect-ratio:16/9; width:100%; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10); border-radius:14px; display:grid; place-items:center;">
+          <div style="text-align:center; color:var(--muted); font-size:13px; padding:14px;">
+            Buraya YouTube tanıtım embed gelecek.
           </div>
-          <div class="cardDesc">${r.desc}</div>
-          <button class="cardBtn" type="button">Seç</button>
-        `;
-        roomsGrid.appendChild(div);
+        </div>
+        <p class="hint">İleride izleyene hak verme sistemi ekleriz.</p>
+      </div>
+      <div class="modalActions">
+        <button class="ghost" onclick="closePromo()">Kapat</button>
+        <button class="primary" onclick="closePromo()">Tamam</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUPABASE + GOOGLE LOGIN -->
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    const SUPABASE_URL = "https://cdzxzgwvebmvccfkvfll.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_QDz16Zn2HeoOw7Sf25PENA_FgZL0P-F";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const googleBtn = document.getElementById("googleLoginBtn");
+
+    googleBtn.addEventListener("click", async () => {
+      googleBtn.style.opacity = "0.7";
+      googleBtn.style.pointerEvents = "none";
+
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: "https://www.jarvisheyrose.com"
+        }
       });
-    }
 
-    function renderMenu(){
-      menu.innerHTML = "";
-      rooms.forEach(r => {
-        const btn = document.createElement("button");
-        btn.textContent = r.name;
-        btn.onclick = () => selectRoom(r.id);
-        btn.id = "menu_" + r.id;
-        menu.appendChild(btn);
-      });
-    }
-
-    function selectRoom(roomId){
-      currentRoom = rooms.find(x => x.id === roomId);
-
-      // menü aktif
-      rooms.forEach(r => {
-        const b = document.getElementById("menu_" + r.id);
-        if(!b) return;
-        b.classList.toggle("active", r.id === roomId);
-      });
-
-      document.getElementById("panelTitle").textContent = currentRoom.name + " • İçerik Üret";
-      document.getElementById("results").style.display = "none";
-
-      // Ders odalarında uyarı
-      const warnBox = document.getElementById("warnBox");
-      if(["ders","uni","kpss"].includes(roomId)){
-        warnBox.style.display = "block";
-      } else {
-        warnBox.style.display = "none";
+      if (error) {
+        alert("Google giriş hatası: " + error.message);
+        googleBtn.style.opacity = "1";
+        googleBtn.style.pointerEvents = "auto";
       }
-    }
-
-    renderRooms();
-    renderMenu();
-
-    // =========================
-    // ÜRETİM
-    // =========================
-    function pickPlatformLabel(roomId){
-      const map = {
-        youtube: "YouTube",
-        insta: "Instagram Reels",
-        tiktok: "TikTok",
-        facebook: "Facebook",
-        x: "X (Twitter)",
-        ders: "Ders (30dk)",
-        uni: "Üniversite Adayları",
-        kpss: "KPSS",
-        analiz: "Kanal Analiz"
-      };
-      return map[roomId] || "Platform";
-    }
-
-    function make3Titles(topic, platform){
-      return [
-        `${topic} | ${platform} için en iyi başlık`,
-        `${platform} için ${topic} (yüksek arama)`,
-        `${topic} — Bugün dene (viral)`,
-      ];
-    }
-
-    function make3Hashtags(topic, platform){
-      const clean = topic.replace(/\s+/g,'').slice(0,18);
-      const p = platform.replace(/\s+/g,'').slice(0,14);
-      return [
-        `#${p}`,
-        `#${clean}`,
-        `#Keşfet`
-      ];
-    }
-
-    function make3Descs(topic, platform){
-      return [
-        `${platform} için hazırlandı: ${topic}\nBeğendiysen kaydet + paylaş.`,
-        `${topic} hakkında en net içerik burada.\nTakip etmeyi unutma.`,
-        `Bugün dene: ${topic}\nYorumlara fikrini yaz.`
-      ];
-    }
-
-    function renderList(elId, arr){
-      const el = document.getElementById(elId);
-      el.innerHTML = "";
-      arr.forEach((t,i)=>{
-        const div = document.createElement("div");
-        div.className = "resultItem";
-        div.textContent = (i+1) + ") " + t;
-        el.appendChild(div);
-      });
-    }
-
-    document.getElementById("generateBtn").addEventListener("click", () => {
-      if(isLocked) return;
-
-      if(!currentRoom){
-        alert("Önce bir oda seç.");
-        return;
-      }
-
-      const input = document.getElementById("userInput").value.trim();
-      if(!input){
-        alert("Bir şey yaz.");
-        return;
-      }
-
-      const platform = pickPlatformLabel(currentRoom.id);
-
-      // 3-3-3 üretim
-      const titles = make3Titles(input, platform);
-      const hashtags = make3Hashtags(input, platform);
-      const descs = make3Descs(input, platform);
-
-      renderList("titles", titles);
-      renderList("hashtags", hashtags);
-      renderList("descs", descs);
-
-      document.getElementById("results").style.display = "grid";
     });
 
-    // =========================
-    // KOPYALA
-    // =========================
-    function copyBox(id){
-      const el = document.getElementById(id);
-      const text = el.innerText;
-      navigator.clipboard.writeText(text).then(()=>{
-        alert("Kopyalandı");
-      }).catch(()=>{
-        alert("Kopyalama engellendi. Manuel kopyala.");
-      });
+    // login olmuş mu kontrol
+    const { data } = await supabase.auth.getSession();
+    if (data?.session?.user?.email) {
+      googleBtn.innerHTML = `<span class="googleIcon"></span> ${data.session.user.email}`;
     }
+
+    supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user?.email) {
+        googleBtn.innerHTML = `<span class="googleIcon"></span> ${session.user.email}`;
+      }
+    });
+  </script>
+
+  <script>
+    // --- ROUTER ---
+    const nav = document.getElementById('nav');
+    const pages = {
+      youtube: document.getElementById('page-youtube'),
+      instagram: document.getElementById('page-instagram'),
+      tiktok: document.getElementById('page-tiktok'),
+      facebook: document.getElementById('page-facebook'),
+      x: document.getElementById('page-x'),
+      ders: document.getElementById('page-ders'),
+      uni: document.getElementById('page-uni'),
+      kpss: document.getElementById('page-kpss'),
+      analiz: document.getElementById('page-analiz'),
+    };
+
+    function goPage(key){
+      Object.values(pages).forEach(p => p.style.display = 'none');
+      pages[key].style.display = 'block';
+      [...nav.querySelectorAll('button')].forEach(b => b.classList.toggle('active', b.dataset.page === key));
+    }
+
+    nav.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-page]');
+      if(!btn) return;
+      goPage(btn.dataset.page);
+    });
+
+    // --- TABS (placeholder) ---
+    document.getElementById('tabs').addEventListener('click', (e)=>{
+      const t = e.target.closest('.tab');
+      if(!t) return;
+      [...document.querySelectorAll('.tab')].forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+    });
+
+    // --- MODE ---
+    let mode = 'baslik';
+    const modeBtn = document.getElementById('modeBtn');
+    function setMode(m){
+      mode = m;
+      const map = {
+        baslik:'Başlık',
+        hashtag:'Hashtag',
+        aciklama:'Açıklama',
+        analiz:'Analiz',
+        oneriler:'Öneri',
+        plan:'Plan'
+      };
+      modeBtn.textContent = 'Mod: ' + (map[m] || 'Başlık');
+    }
+    window.setMode = setMode;
+
+    modeBtn.addEventListener('click', ()=>{
+      const order = ['baslik','hashtag','aciklama'];
+      const idx = (order.indexOf(mode)+1) % order.length;
+      setMode(order[idx]);
+    });
+
+    document.getElementById('sendBtn').addEventListener('click', ()=>{
+      const txt = document.getElementById('promptInput').value.trim();
+      if(!txt) return alert('Bir şey yaz.');
+      alert('Şu an demo. Sonra gerçek üretim bağlanacak.\nMod: ' + mode + '\nİstek: ' + txt);
+    });
+
+    // --- PROMO MODAL ---
+    const promoModal = document.getElementById('promoModal');
+    function openPromo(){ promoModal.style.display = 'flex'; }
+    function closePromo(){ promoModal.style.display = 'none'; }
+    window.openPromo = openPromo;
+    window.closePromo = closePromo;
+
+    document.getElementById('helpBtn').addEventListener('click', ()=>alert('Menüden oda seç, alttan yazıp üret.'));
+
+    // --- 30 DK TIMER ---
+    let timerInt = null;
+    let seconds = 30*60;
+
+    function renderTimer(){
+      const m = String(Math.floor(seconds/60)).padStart(2,'0');
+      const s = String(seconds%60).padStart(2,'0');
+      document.getElementById('timer').textContent = `${m}:${s}`;
+      document.getElementById('timerState').textContent = 'Çalışma';
+    }
+
+    function resetTimer(){
+      clearInterval(timerInt); timerInt=null;
+      seconds = 30*60; renderTimer();
+    }
+
+    document.getElementById('startTimer').addEventListener('click', ()=>{
+      if(timerInt) return;
+      timerInt = setInterval(()=>{
+        seconds--;
+        if(seconds <= 0){
+          clearInterval(timerInt);
+          timerInt = null;
+          alert('Bugün size ayrılan sürenin sonuna geldik. Yarın tekrar görüşürüz.');
+          resetTimer();
+          return;
+        }
+        renderTimer();
+      }, 1000);
+    });
+
+    document.getElementById('resetTimer').addEventListener('click', resetTimer);
+    renderTimer();
   </script>
 </body>
 </html>
