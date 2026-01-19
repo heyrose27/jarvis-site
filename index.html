@@ -272,3 +272,28 @@
   </script>
 </body>
 </html>
+/* TIKLAMA BLOKE EDEN KATMANLARI DEVRE DISI BIRAK */
+canvas,
+.overlay,
+.backdrop,
+.modal-backdrop,
+.scanlines,
+.noise,
+.fx,
+.vignette,
+#overlay,
+#bg,
+#fx,
+.bg,
+.layer,
+.fullscreen,
+.full-screen {
+  pointer-events: none !important;
+}
+
+/* BUTONLAR HER ZAMAN TIKLANABILSIN */
+a, button, [role="button"] {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 999999 !important;
+}
