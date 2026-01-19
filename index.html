@@ -1,223 +1,300 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jarvis Heyrose</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Görsel Üretici - YouTube Shorts ile Powered</title>
   <style>
-    :root{
-      --bg:#0b0b10;
-      --panel:#141422;
-      --panel2:#1a1a2b;
-      --text:#eaeaf2;
-      --muted:#a1a1b5;
-      --green:#23d18b;
-      --border:rgba(255,255,255,.08);
-    }
-
-    *{box-sizing:border-box}
+    * { margin:0; padding:0; box-sizing:border-box; }
     body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      background: radial-gradient(1200px 600px at 20% 0%, rgba(120,70,255,.25), transparent 60%),
-                  radial-gradient(900px 500px at 80% 20%, rgba(35,209,139,.18), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
+      font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+      background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      padding:20px;
     }
+    .container{
+      background:#fff; padding:50px; border-radius:30px;
+      box-shadow:0 20px 60px rgba(0,0,0,.3);
+      max-width:600px; width:100%; text-align:center;
+    }
+    h1{ color:#667eea; margin-bottom:15px; font-size:2.5em; }
+    .subtitle{ color:#666; margin-bottom:40px; font-size:1.1em; }
+    .input-group{ margin-bottom:30px; text-align:left; }
+    label{ display:block; color:#333; font-weight:700; margin-bottom:10px; font-size:1.1em; }
+    textarea,select{
+      width:100%; padding:15px 20px; border:2px solid #e0e0e0; border-radius:15px;
+      font-size:1em; transition:all .3s; font-family:inherit;
+    }
+    textarea:focus,select:focus{ outline:none; border-color:#667eea; box-shadow:0 0 0 3px rgba(102,126,234,.1); }
+    textarea{ resize:vertical; min-height:100px; }
 
-    /* ÖNEMLİ: TIKLAMAYI BLOKE EDEN HER ŞEYİ İPTAL */
-    canvas, .overlay, .fx, .bg, #overlay, #fx, #bg{
-      pointer-events:none !important;
+    .generate-btn{
+      background:linear-gradient(135deg,#667eea,#764ba2);
+      color:#fff; border:none; padding:18px 50px; border-radius:50px;
+      font-size:1.3em; font-weight:700; cursor:pointer; transition:all .3s;
+      box-shadow:0 5px 20px rgba(102,126,234,.4); width:100%; margin-top:20px;
     }
+    .generate-btn:hover{ transform:translateY(-3px); box-shadow:0 8px 30px rgba(102,126,234,.6); }
 
-    .wrap{
-      width:min(980px, 100%);
-      display:grid;
-      grid-template-columns: 1fr 360px;
-      gap:16px;
+    .popup-overlay{
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,.95); z-index:1000;
+      animation:fadeIn .3s;
     }
+    .popup-content{
+      position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+      background:#fff; padding:40px; border-radius:25px; max-width:500px; width:90%;
+      box-shadow:0 20px 60px rgba(0,0,0,.5); text-align:center;
+    }
+    .popup-header h2{ color:#667eea; margin-bottom:20px; font-size:2em; }
+    .video-button{
+      background:#FF0000; color:#fff; border:none; padding:20px 40px; border-radius:50px;
+      font-size:1.3em; font-weight:700; cursor:pointer; margin:20px 0;
+      transition:all .3s; box-shadow:0 5px 20px rgba(255,0,0,.3); width:100%;
+    }
+    .video-button:hover{ background:#cc0000; transform:scale(1.05); }
+    .instruction{ color:#666; font-size:1.1em; margin:20px 0; line-height:1.6; }
 
-    @media (max-width:900px){
-      .wrap{grid-template-columns:1fr}
-    }
+    .progress-bar{ width:100%; height:10px; background:#e0e0e0; border-radius:10px; overflow:hidden; margin-top:20px; }
+    .progress-fill{ height:100%; background:linear-gradient(90deg,#667eea,#764ba2); width:0%; transition:width .5s linear; }
+    .timer{ text-align:center; color:#667eea; font-weight:700; margin-top:15px; font-size:1.5em; }
 
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border:1px solid var(--border);
-      border-radius:16px;
-      padding:18px;
-      box-shadow:0 20px 60px rgba(0,0,0,.35);
+    .result-container{
+      display:none; margin-top:40px; padding:30px; background:#f8f9ff;
+      border-radius:20px; border:2px solid #667eea;
     }
+    .result-container h3{ color:#667eea; margin-bottom:20px; font-size:1.5em; }
+    .result-text{
+      background:#fff; padding:20px; border-radius:15px; color:#333; line-height:1.8;
+      text-align:left; white-space:pre-wrap; max-height:300px; overflow-y:auto;
+    }
+    .copy-btn{
+      background:#667eea; color:#fff; border:none; padding:12px 30px; border-radius:25px;
+      cursor:pointer; margin-top:15px; font-weight:700; transition:all .3s;
+    }
+    .copy-btn:hover{ background:#764ba2; transform:scale(1.05); }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin-bottom:14px;
-    }
-    .dot{
-      width:14px;height:14px;border-radius:999px;
-      background:linear-gradient(180deg, #7c4dff, #23d18b);
-      box-shadow:0 0 18px rgba(35,209,139,.25);
-    }
-    .brand h1{
-      font-size:18px;margin:0;letter-spacing:.8px;
-    }
-    .sub{
-      color:var(--muted);
-      font-size:13px;
-      margin:0 0 14px 0;
-    }
+    @keyframes fadeIn{ from{opacity:0} to{opacity:1} }
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:12px;
+    @media (max-width:768px){
+      .container{ padding:30px 20px; }
+      h1{ font-size:2em; }
     }
-    @media (max-width:600px){
-      .grid{grid-template-columns:1fr}
-    }
-
-    .box{
-      background:rgba(0,0,0,.25);
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:14px;
-      min-height:110px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-    }
-    .box h3{margin:0;font-size:14px}
-    .box p{margin:6px 0 0 0;color:var(--muted);font-size:12px}
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.06);
-      color:var(--text);
-      padding:12px 14px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:700;
-      text-decoration:none;
-      user-select:none;
-      transition:.15s;
-      width:100%;
-    }
-    .btn:hover{transform:translateY(-1px); background:rgba(255,255,255,.10)}
-    .btn:active{transform:translateY(0px)}
-    .btn.primary{
-      background:linear-gradient(180deg, rgba(35,209,139,.20), rgba(35,209,139,.10));
-      border-color:rgba(35,209,139,.35);
-    }
-
-    .right .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:rgba(0,0,0,.25);
-      color:var(--muted);
-      font-size:12px;
-      margin-bottom:12px;
-    }
-    .live{
-      width:8px;height:8px;border-radius:999px;background:var(--green);
-      box-shadow:0 0 10px rgba(35,209,139,.5);
-    }
-
-    .footer{
-      margin-top:10px;
-      display:flex;
-      gap:10px;
-      justify-content:center;
-      font-size:12px;
-    }
-    .footer a{color:var(--green); text-decoration:none}
-    .footer a:hover{text-decoration:underline}
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="card left">
-      <div class="brand">
-        <div class="dot"></div>
-        <div>
-          <h1>JARVIS HEYROSE</h1>
-          <p class="sub">AI • Ders • Video</p>
-        </div>
-      </div>
+  <div class="container">
+    <h1>🎨 AI Görsel Prompt Üretici</h1>
+    <p class="subtitle">Midjourney, DALL-E ve Stable Diffusion için profesyonel prompt'lar</p>
 
-      <div class="grid">
-        <div class="box">
-          <div>
-            <h3>Prompt Oluştur</h3>
-            <p>Prompt üretimi (yakında).</p>
-          </div>
-          <button class="btn" onclick="alert('Bu kart demo')">Seç</button>
-        </div>
-
-        <div class="box">
-          <div>
-            <h3>Başlık Üret</h3>
-            <p>SEO başlık üretimi (yakında).</p>
-          </div>
-          <button class="btn" onclick="alert('Bu kart demo')">Seç</button>
-        </div>
-
-        <div class="box">
-          <div>
-            <h3>Hashtag Bul</h3>
-            <p>Hashtag seti (yakında).</p>
-          </div>
-          <button class="btn" onclick="alert('Bu kart demo')">Seç</button>
-        </div>
-
-        <div class="box">
-          <div>
-            <h3>Video</h3>
-            <p>Tanıtım videosu + yönlendirme.</p>
-          </div>
-          <button class="btn" onclick="alert('Bu kart demo')">Aç</button>
-        </div>
-      </div>
-
-      <div class="footer">
-        <a href="/privacy.html">Gizlilik Politikası</a>
-        <span style="color:var(--muted)">|</span>
-        <a href="/terms.html">Hizmet Şartları</a>
-      </div>
+    <div class="input-group">
+      <label>🖼️ Ne tür bir görsel istiyorsunuz?</label>
+      <textarea id="description" placeholder="Örnek: Gün batımında deniz kenarında yürüyen bir kedi, sinematik, 4k, gerçekçi..."></textarea>
     </div>
 
-    <div class="card right">
-      <div class="pill"><span class="live"></span> Sistem Aktif</div>
+    <div class="input-group">
+      <label>🎨 Stil Tercihi</label>
+      <select id="style">
+        <option value="">Stil Seçin...</option>
+        <option value="realistic">Gerçekçi (Realistic)</option>
+        <option value="anime">Anime/Manga</option>
+        <option value="cartoon">Karikatür</option>
+        <option value="oil-painting">Yağlı Boya</option>
+        <option value="watercolor">Sulu Boya</option>
+        <option value="3d">3D Render</option>
+        <option value="minimalist">Minimalist</option>
+        <option value="cyberpunk">Cyberpunk</option>
+        <option value="fantasy">Fantezi</option>
+      </select>
+    </div>
 
-      <!-- ŞU AN SADECE TEST: TIKLAMA ÇALIŞIYOR MU? -->
-      <button class="btn primary" id="loginBtn">Google ile Giriş</button>
+    <div class="input-group">
+      <label>📱 Platform</label>
+      <select id="platform">
+        <option value="">Platform Seçin...</option>
+        <option value="instagram">Instagram Post (1:1)</option>
+        <option value="instagram-story">Instagram Story (9:16)</option>
+        <option value="youtube">YouTube Thumbnail (16:9)</option>
+        <option value="youtube-shorts">YouTube Shorts (9:16)</option>
+        <option value="tiktok">TikTok/Reels (9:16)</option>
+        <option value="twitter">X/Twitter Header (3:1)</option>
+        <option value="facebook">Facebook Cover (2.7:1)</option>
+      </select>
+    </div>
 
-      <p class="sub" style="margin-top:12px">
-        Not: Önce butonun tıklaması düzelsin. Sonra Google login kodunu bağlarız.
-      </p>
+    <button type="button" class="generate-btn" onclick="generatePrompt()">✨ Prompt Oluştur</button>
+
+    <div class="result-container" id="resultContainer">
+      <h3>🎯 Hazır Prompt'unuz:</h3>
+      <div class="result-text" id="resultText"></div>
+      <button type="button" class="copy-btn" onclick="copyResult(this)">📋 Kopyala</button>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="popupOverlay" onclick="closePopupIfBackground(event)">
+    <div class="popup-content" onclick="event.stopPropagation()">
+      <div class="popup-header">
+        <h2>🎬 Video İzle & Bekle</h2>
+      </div>
+
+      <p class="instruction">👇 Önce videoyu izleyin, sonra devam edin!</p>
+
+      <button type="button" class="video-button" id="videoButton" onclick="openVideo()">
+        ▶️ 1. Adım: YouTube Shorts Aç
+      </button>
+
+      <button type="button" class="video-button" id="continueButton"
+        onclick="startCountdown()" style="display:none; background:#4CAF50;">
+        ✅ 2. Adım: Videoyu İzledim, Devam Et!
+      </button>
+
+      <div class="progress-bar" id="progressSection" style="display:none;">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="timer" id="timer" style="display:none;">13 saniye</div>
     </div>
   </div>
 
   <script>
-    // Test: tıklama geliyor mu?
-    document.getElementById("loginBtn").addEventListener("click", () => {
-      alert("Buton çalışıyor ✅");
+    const youtubeVideos = [
+      '6bd0a3p_qNs','5mVvlMPRg9U','AGBZYvXJpRg','i1Mw4b_ivYo',
+      'Zpr3aoAbRqU','_CelSfEJkz0','OZ99DyKxvYA','Dl9cDx3rouU',
+      'e_1id0_LN68','fg-4bpIAVl0','-hJZQcd0gKI','KypCc3Gq6Yo'
+    ];
+
+    let currentVideoId = '';
+    let countdownInterval = null;
+
+    function getRandomVideo() {
+      return youtubeVideos[Math.floor(Math.random() * youtubeVideos.length)];
+    }
+
+    function generatePrompt() {
+      const description = document.getElementById('description').value.trim();
+      const style = document.getElementById('style').value;
+      const platform = document.getElementById('platform').value;
+
+      if (!description) { alert('⚠️ Lütfen bir görsel açıklaması girin!'); return; }
+
+      currentVideoId = getRandomVideo();
+
+      window.promptData = { description, style, platform };
+
+      resetPopupUI();
+      document.getElementById('popupOverlay').style.display = 'block';
+    }
+
+    function openVideo() {
+      window.open(`https://www.youtube.com/shorts/${currentVideoId}`, '_blank');
+
+      document.getElementById('videoButton').style.display = 'none';
+      document.getElementById('continueButton').style.display = 'block';
+    }
+
+    function startCountdown() {
+      document.getElementById('progressSection').style.display = 'block';
+      document.getElementById('timer').style.display = 'block';
+      document.getElementById('continueButton').style.display = 'none';
+
+      const progressFill = document.getElementById('progressFill');
+      const timerEl = document.getElementById('timer');
+
+      let timeLeft = 13;
+      let progress = 0;
+
+      if (countdownInterval) clearInterval(countdownInterval);
+
+      countdownInterval = setInterval(() => {
+        timeLeft--;
+        progress += 100 / 13;
+        progressFill.style.width = Math.min(progress, 100) + '%';
+        timerEl.textContent = timeLeft > 0 ? (timeLeft + ' saniye') : 'Hazır! ✨';
+
+        if (timeLeft <= 0) {
+          clearInterval(countdownInterval);
+          setTimeout(() => {
+            const d = window.promptData || {};
+            showResult(d.description || '', d.style || '', d.platform || '');
+          }, 300);
+        }
+      }, 1000);
+    }
+
+    function showResult(description, style, platform) {
+      document.getElementById('popupOverlay').style.display = 'none';
+
+      let prompt = description;
+
+      if (style) {
+        const styleNames = {
+          realistic: 'photorealistic, highly detailed, 8k resolution, professional photography',
+          anime: 'anime style, manga art, vibrant colors, cel shaded',
+          cartoon: 'cartoon style, colorful, playful, vector art',
+          'oil-painting': 'oil painting style, classical art, brush strokes visible',
+          watercolor: 'watercolor painting, soft colors, artistic, flowing',
+          '3d': '3D render, octane render, high quality, ray tracing',
+          minimalist: 'minimalist design, clean, simple, modern',
+          cyberpunk: 'cyberpunk style, neon lights, futuristic, dark atmosphere',
+          fantasy: 'fantasy art, magical, ethereal, dreamlike'
+        };
+        prompt += ', ' + (styleNames[style] || '');
+      }
+
+      if (platform) {
+        const aspectRatios = {
+          instagram: ', aspect ratio 1:1, square format, Instagram optimized',
+          'instagram-story': ', aspect ratio 9:16, vertical format, story optimized',
+          youtube: ', aspect ratio 16:9, widescreen, thumbnail optimized, eye-catching',
+          'youtube-shorts': ', aspect ratio 9:16, vertical format, YouTube Shorts optimized, mobile-first',
+          tiktok: ', aspect ratio 9:16, vertical video format, mobile optimized',
+          twitter: ', aspect ratio 3:1, banner format, horizontal',
+          facebook: ', aspect ratio 2.7:1, cover photo format, wide banner'
+        };
+        prompt += (aspectRatios[platform] || '');
+      }
+
+      prompt += ', professional quality, studio lighting, sharp focus, trending on artstation, award winning, masterpiece';
+
+      document.getElementById('resultText').textContent = prompt;
+      const resultContainer = document.getElementById('resultContainer');
+      resultContainer.style.display = 'block';
+      resultContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ✅ FIREFOX FIX: event yerine this gönderiyoruz
+    function copyResult(btn) {
+      const text = document.getElementById('resultText').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const original = btn.textContent;
+        btn.textContent = '✅ Kopyalandı!';
+        setTimeout(() => btn.textContent = original, 1500);
+      }).catch(() => {
+        alert('Kopyalama engellendi. Manuel seçip kopyalayın.');
+      });
+    }
+
+    function resetPopupUI() {
+      document.getElementById('progressFill').style.width = '0%';
+      document.getElementById('timer').textContent = '13 saniye';
+      document.getElementById('timer').style.display = 'none';
+      document.getElementById('progressSection').style.display = 'none';
+      document.getElementById('videoButton').style.display = 'block';
+      document.getElementById('continueButton').style.display = 'none';
+    }
+
+    function closePopupIfBackground(e) {
+      // arka siyaha tıklayınca kapansın (istersen kaldırırız)
+      document.getElementById('popupOverlay').style.display = 'none';
+      resetPopupUI();
+    }
+
+    // ESC ile kapatma
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.getElementById('popupOverlay').style.display = 'none';
+        resetPopupUI();
+      }
     });
   </script>
 </body>
