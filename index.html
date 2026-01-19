@@ -8,8 +8,9 @@
   <style>
     :root{
       --bg:#0b0f14;
+      --panel:#0f1520;
       --panel2:#0c121b;
-      --border:rgba(255,255,255,.08);
+      --border:rgba(255,255,255,.10);
       --text:#e6edf6;
       --muted:#a9b4c3;
       --accent:#7c3aed;
@@ -25,12 +26,13 @@
                   radial-gradient(900px 600px at 80% 70%, rgba(34,197,94,.10), transparent 55%),
                   var(--bg);
       color:var(--text);
-      height:100vh;
-      overflow:hidden;
+      min-height:100vh;
+      overflow-x:hidden;
     }
 
-    .app{display:flex; height:100vh; width:100vw;}
+    .app{display:flex; min-height:100vh; width:100vw;}
 
+    /* Sidebar */
     .sidebar{
       width:260px;
       padding:18px 14px;
@@ -40,7 +42,10 @@
       flex-direction:column;
       gap:14px;
     }
-    .brand{display:flex; align-items:center; gap:10px; padding:10px 10px 14px;}
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      padding:10px 10px 14px;
+    }
     .logo{
       width:38px; height:38px; border-radius:12px;
       background: radial-gradient(circle at 30% 30%, rgba(124,58,237,.9), rgba(34,197,94,.6));
@@ -49,58 +54,142 @@
     .brand h1{font-size:14px; margin:0; letter-spacing:.6px}
     .brand p{margin:2px 0 0; font-size:12px; color:var(--muted)}
 
-    .nav{display:flex; flex-direction:column; gap:6px; padding:0 6px;}
-    .nav button{
-      all:unset; cursor:pointer;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 12px; border-radius:12px; color:var(--text);
-      background:transparent; border:1px solid transparent;
+    .nav{
+      display:flex; flex-direction:column; gap:6px;
+      padding:0 6px;
     }
-    .nav button:hover{background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.06);}
+    .nav button{
+      all:unset;
+      cursor:pointer;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 12px;
+      border-radius:12px;
+      color:var(--text);
+      background:transparent;
+      border:1px solid transparent;
+    }
+    .nav button:hover{
+      background: rgba(255,255,255,.04);
+      border-color: rgba(255,255,255,.06);
+    }
     .nav button.active{
       background: rgba(124,58,237,.12);
       border-color: rgba(124,58,237,.35);
       box-shadow: 0 0 0 1px rgba(124,58,237,.18) inset;
     }
     .pill{
-      font-size:11px; padding:3px 8px; border-radius:999px;
+      font-size:11px;
+      padding:3px 8px;
+      border-radius:999px;
       color:rgba(255,255,255,.9);
       background: rgba(34,197,94,.12);
       border:1px solid rgba(34,197,94,.25);
     }
+    .sidebarFooter{
+      margin-top:auto;
+      padding:10px 6px 6px;
+      color:var(--muted);
+      font-size:12px;
+      display:flex; gap:8px; flex-wrap:wrap;
+      align-items:center;
+    }
+    .miniBtn{
+      all:unset;
+      cursor:pointer;
+      padding:8px 10px;
+      border-radius:12px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.07);
+      color:var(--text);
+      font-size:12px;
+    }
+    .miniBtn:hover{border-color: rgba(255,255,255,.14)}
 
-    .main{flex:1; display:flex; flex-direction:column; min-width:0;}
+    /* Main */
+    .main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+    }
+
+    /* Top bar */
     .topbar{
-      height:64px; display:flex; align-items:center; justify-content:space-between;
-      padding:0 18px; border-bottom:1px solid var(--border);
+      height:64px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 18px;
+      border-bottom:1px solid var(--border);
       background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 70%);
+    }
+    .tabs{
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      padding-bottom:2px;
+    }
+    .tab{
+      all:unset;
+      cursor:pointer;
+      padding:8px 12px;
+      border-radius:999px;
+      color:var(--muted);
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+      white-space:nowrap;
+      font-size:13px;
+    }
+    .tab:hover{border-color: rgba(255,255,255,.16)}
+    .tab.active{
+      color:var(--text);
+      background: rgba(124,58,237,.18);
+      border-color: rgba(124,58,237,.35);
+    }
+    .topActions{
+      display:flex; gap:10px; align-items:center;
     }
     .badge{
       display:flex; align-items:center; gap:8px;
-      padding:8px 10px; border-radius:12px;
+      padding:8px 10px;
+      border-radius:12px;
       border:1px solid rgba(255,255,255,.08);
       background: rgba(255,255,255,.03);
-      color:var(--text); font-size:13px;
+      color:var(--text);
+      font-size:13px;
     }
     .dot{width:8px; height:8px; border-radius:50%; background: var(--accent2); box-shadow:0 0 14px rgba(34,197,94,.55)}
-
     .loginBtn{
       all:unset; cursor:pointer;
-      padding:10px 12px; border-radius:12px;
+      padding:10px 12px;
+      border-radius:12px;
       background: rgba(124,58,237,.20);
       border:1px solid rgba(124,58,237,.35);
-      font-weight:700; font-size:13px;
-      display:flex; align-items:center; gap:8px;
+      font-weight:800;
+      font-size:13px;
     }
     .loginBtn:hover{background: rgba(124,58,237,.28)}
-    .loginBtn img{width:16px;height:16px}
 
-    .content{flex:1; overflow:auto; padding:18px; padding-bottom:120px;}
-    .pageTitle{margin:4px 0 14px;}
+    /* Content */
+    .content{
+      flex:1;
+      overflow:auto;
+      padding:18px;
+      padding-bottom:140px;
+    }
+    .pageTitle{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:16px;
+      margin:4px 0 14px;
+    }
     .pageTitle h2{margin:0; font-size:20px}
-    .pageTitle p{margin:6px 0 0; color:var(--muted); font-size:13px}
+    .pageTitle p{margin:0; color:var(--muted); font-size:13px}
 
-    .grid{display:grid; grid-template-columns: repeat(12, 1fr); gap:14px;}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:14px;
+    }
     .card{
       grid-column: span 4;
       background: rgba(255,255,255,.03);
@@ -109,67 +198,130 @@
       overflow:hidden;
       box-shadow: var(--shadow);
       min-height:150px;
-      display:flex; flex-direction:column;
+      display:flex;
+      flex-direction:column;
     }
-    .cardHeader{padding:12px 12px 8px; display:flex; justify-content:space-between; align-items:center;}
+    .cardHeader{
+      padding:12px 12px 8px;
+      display:flex; justify-content:space-between; align-items:center;
+    }
     .tag{
-      font-size:11px; padding:4px 8px; border-radius:999px;
+      font-size:11px;
+      padding:4px 8px;
+      border-radius:999px;
       background: rgba(255,255,255,.05);
       border:1px solid rgba(255,255,255,.08);
       color:var(--muted);
     }
-    .cardBody{padding:0 12px 12px; color:var(--muted); font-size:13px; line-height:1.35; flex:1;}
+    .cardBody{
+      padding:0 12px 12px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+      flex:1;
+    }
     .cardFooter{
-      padding:12px; border-top:1px solid rgba(255,255,255,.07);
-      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      padding:12px;
+      border-top:1px solid rgba(255,255,255,.07);
+      display:flex; justify-content:space-between; align-items:center;
+      gap:10px;
     }
     .primary{
       all:unset; cursor:pointer;
-      padding:9px 12px; border-radius:12px;
+      padding:9px 12px;
+      border-radius:12px;
       background: rgba(34,197,94,.14);
       border:1px solid rgba(34,197,94,.28);
-      font-weight:700; font-size:13px;
+      font-weight:800;
+      font-size:13px;
     }
     .primary:hover{background: rgba(34,197,94,.20)}
     .ghost{
       all:unset; cursor:pointer;
-      padding:9px 12px; border-radius:12px;
+      padding:9px 12px;
+      border-radius:12px;
       background: rgba(255,255,255,.03);
       border:1px solid rgba(255,255,255,.10);
-      color:var(--text); font-size:13px;
+      color:var(--text);
+      font-size:13px;
     }
     .ghost:hover{border-color: rgba(255,255,255,.18)}
 
+    /* Prompt Bar */
     .promptBar{
-      position:fixed; left:260px; right:0; bottom:0;
+      position:fixed;
+      left:260px;
+      right:0;
+      bottom:0;
       padding:14px 18px;
       border-top:1px solid var(--border);
       background: linear-gradient(180deg, rgba(11,15,20,.30), rgba(11,15,20,.90) 25%, rgba(11,15,20,.96));
       backdrop-filter: blur(10px);
     }
     .promptInner{
-      max-width:1100px; margin:0 auto;
-      display:flex; gap:10px; align-items:center;
+      max-width:1100px;
+      margin:0 auto;
+      display:flex;
+      gap:10px;
+      align-items:center;
       background: rgba(255,255,255,.04);
       border:1px solid rgba(255,255,255,.10);
-      border-radius:18px; padding:10px;
+      border-radius:18px;
+      padding:10px;
       box-shadow: var(--shadow);
     }
     .promptInner textarea{
-      width:100%; resize:none; height:44px; max-height:120px;
-      background: transparent; border:none; outline:none;
-      color:var(--text); font-size:14px;
-      padding:10px 10px; line-height:1.25;
+      width:100%;
+      resize:none;
+      height:44px;
+      max-height:120px;
+      background: transparent;
+      border:none;
+      outline:none;
+      color:var(--text);
+      font-size:14px;
+      padding:10px 10px;
+      line-height:1.25;
     }
     .sendBtn{
       all:unset; cursor:pointer;
-      padding:10px 14px; border-radius:14px;
+      padding:10px 14px;
+      border-radius:14px;
       background: rgba(124,58,237,.22);
       border:1px solid rgba(124,58,237,.38);
-      font-weight:800; font-size:13px; white-space:nowrap;
+      font-weight:900;
+      font-size:13px;
+      white-space:nowrap;
     }
     .sendBtn:hover{background: rgba(124,58,237,.30)}
+    .modeSelect{
+      all:unset; cursor:pointer;
+      padding:10px 12px;
+      border-radius:14px;
+      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--text);
+      font-size:13px;
+      white-space:nowrap;
+    }
 
+    /* Footer */
+    footer{
+      margin-top:30px;
+      text-align:center;
+      padding:18px 10px;
+      color:rgba(255,255,255,.55);
+      font-size:13px;
+    }
+    footer a{
+      color:#00ff41;
+      text-decoration:none;
+    }
+    footer a:hover{
+      text-decoration:underline;
+    }
+
+    /* Responsive */
     @media (max-width: 980px){
       .sidebar{width:220px}
       .promptBar{left:220px}
@@ -178,10 +330,10 @@
     @media (max-width: 720px){
       .sidebar{width:78px; padding:14px 10px}
       .brand h1,.brand p{display:none}
+      .nav button span.label{display:none}
       .pill{display:none}
       .promptBar{left:78px; padding:12px}
       .card{grid-column: span 12}
-      .topbar{padding:0 12px}
       .badge{display:none}
     }
   </style>
@@ -189,6 +341,7 @@
 
 <body>
   <div class="app">
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="brand">
         <div class="logo" aria-hidden="true"></div>
@@ -198,76 +351,176 @@
         </div>
       </div>
 
-      <nav class="nav">
-        <button class="active">
+      <nav class="nav" id="nav">
+        <button class="active" data-page="ai-tools">
           <span class="label">AI Tools</span>
           <span class="pill">Free</span>
         </button>
-        <button><span class="label">Ders 30dk</span></button>
-        <button><span class="label">Başlık</span></button>
-        <button><span class="label">Hashtag</span></button>
-        <button><span class="label">Görsel</span></button>
-        <button><span class="label">Video</span></button>
+        <button data-page="ders-30dk"><span class="label">Ders 30dk</span></button>
+        <button data-page="baslik"><span class="label">Başlık</span></button>
+        <button data-page="hashtag"><span class="label">Hashtag</span></button>
+        <button data-page="gorsel"><span class="label">Görsel</span></button>
+        <button data-page="video"><span class="label">Video</span></button>
       </nav>
+
+      <div class="sidebarFooter">
+        <button class="miniBtn" id="helpBtn">Yardım</button>
+      </div>
     </aside>
 
+    <!-- MAIN -->
     <main class="main">
+      <!-- TOPBAR -->
       <header class="topbar">
-        <div class="badge"><span class="dot"></span> Sistem Aktif</div>
+        <div class="tabs" id="tabs">
+          <button class="tab active" data-tab="hepsi">Hepsi</button>
+          <button class="tab" data-tab="ogrenim">Eğitim</button>
+          <button class="tab" data-tab="viral">Viral</button>
+          <button class="tab" data-tab="stil">Stil</button>
+          <button class="tab" data-tab="sinematik">Sinematik</button>
+        </div>
 
-        <button class="loginBtn" id="loginBtn">
-          <img src="https://www.google.com/favicon.ico" alt="Google">
-          Google ile Giriş
-        </button>
+        <div class="topActions">
+          <div class="badge"><span class="dot"></span> Sistem Aktif</div>
+          <button class="loginBtn" id="loginBtn">Google ile Giriş</button>
+        </div>
       </header>
 
+      <!-- CONTENT -->
       <section class="content">
-        <div class="pageTitle">
-          <h2>AI Tools</h2>
-          <p>Prompt • Başlık • Hashtag • Görsel</p>
+
+        <div id="page-ai-tools" class="page">
+          <div class="pageTitle">
+            <div>
+              <h2>AI Tools</h2>
+              <p>Prompt • Başlık • Hashtag • Görsel</p>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="card">
+              <div class="cardHeader">
+                <strong>Prompt Oluştur</strong>
+                <span class="tag">Günlük 2 Free</span>
+              </div>
+              <div class="cardBody">Ne yapmak istediğini yaz. Sistem promptu hazır verir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('prompt')">Seç</button>
+                <button class="ghost" onclick="alert('Yakında')">Detay</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="cardHeader">
+                <strong>Başlık Üret</strong>
+                <span class="tag">Günlük 2 Free</span>
+              </div>
+              <div class="cardBody">YouTube/Shorts için SEO başlık üretimi.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('baslik')">Seç</button>
+                <button class="ghost" onclick="alert('Yakında')">Detay</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="cardHeader">
+                <strong>Hashtag Bul</strong>
+                <span class="tag">Günlük 2 Free</span>
+              </div>
+              <div class="cardBody">İçeriğe göre hashtag seti üretimi.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('hashtag')">Seç</button>
+                <button class="ghost" onclick="alert('Yakında')">Detay</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="cardHeader">
+                <strong>Görsel Üret</strong>
+                <span class="tag">Günlük 2 Free</span>
+              </div>
+              <div class="cardBody">Backend bağlanınca görsel üretim aktif olacak.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="setMode('gorsel')">Seç</button>
+                <button class="ghost" onclick="alert('Yakında')">Detay</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="cardHeader">
+                <strong>Ders 30dk</strong>
+                <span class="tag">Pomodoro</span>
+              </div>
+              <div class="cardBody">25 dk çalışma + 5 dk mola.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="goPage('ders-30dk')">Aç</button>
+                <button class="ghost" onclick="alert('Yakında')">Detay</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="cardHeader">
+                <strong>Video</strong>
+                <span class="tag">Kanal</span>
+              </div>
+              <div class="cardBody">Kanal videoları / tanıtım.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="goPage('video')">Aç</button>
+                <button class="ghost" onclick="alert('Yakında')">Detay</button>
+              </div>
+            </div>
+          </div>
+
+          <footer>
+            <a href="/privacy.html">Gizlilik Politikası</a>
+            &nbsp;|&nbsp;
+            <a href="/terms.html">Hizmet Şartları</a>
+          </footer>
         </div>
 
-        <div class="grid">
-          <div class="card">
-            <div class="cardHeader">
-              <strong>Prompt Oluştur</strong>
-              <span class="tag">Günlük 2 Free</span>
-            </div>
-            <div class="cardBody">Ne yapmak istediğini yaz. Sistem promptu temizler ve hazır verir.</div>
-            <div class="cardFooter">
-              <button class="primary">Seç</button>
-              <button class="ghost">Tanıtım</button>
+        <div id="page-ders-30dk" class="page" style="display:none">
+          <div class="pageTitle">
+            <div>
+              <h2>Ders 30dk</h2>
+              <p>Pomodoro</p>
             </div>
           </div>
 
-          <div class="card">
-            <div class="cardHeader">
-              <strong>Başlık Üret</strong>
-              <span class="tag">Günlük 2 Free</span>
+          <div class="card" style="grid-column: span 12; max-width:800px">
+            <div class="cardHeader"><strong>Pomodoro</strong><span class="tag" id="timerState">Hazır</span></div>
+            <div class="cardBody">
+              <div style="font-size:44px; font-weight:900; letter-spacing:2px" id="timer">25:00</div>
+              <p style="color:var(--muted); font-size:13px;">Start ile başlat.</p>
             </div>
-            <div class="cardBody">YouTube/Shorts için SEO odaklı başlık üretimi.</div>
             <div class="cardFooter">
-              <button class="primary">Seç</button>
-              <button class="ghost">Tanıtım</button>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="cardHeader">
-              <strong>Hashtag Bul</strong>
-              <span class="tag">Günlük 2 Free</span>
-            </div>
-            <div class="cardBody">İçeriğe göre hashtag seti üretimi.</div>
-            <div class="cardFooter">
-              <button class="primary">Seç</button>
-              <button class="ghost">Tanıtım</button>
+              <button class="primary" id="startTimer">Start</button>
+              <button class="ghost" id="resetTimer">Reset</button>
             </div>
           </div>
         </div>
+
+        <div id="page-baslik" class="page" style="display:none">
+          <div class="pageTitle"><div><h2>Başlık</h2><p>Yakında</p></div></div>
+        </div>
+
+        <div id="page-hashtag" class="page" style="display:none">
+          <div class="pageTitle"><div><h2>Hashtag</h2><p>Yakında</p></div></div>
+        </div>
+
+        <div id="page-gorsel" class="page" style="display:none">
+          <div class="pageTitle"><div><h2>Görsel</h2><p>Yakında</p></div></div>
+        </div>
+
+        <div id="page-video" class="page" style="display:none">
+          <div class="pageTitle"><div><h2>Video</h2><p>Yakında</p></div></div>
+        </div>
+
       </section>
 
+      <!-- PROMPT BAR -->
       <div class="promptBar">
         <div class="promptInner">
+          <button class="modeSelect" id="modeBtn">Mod: Prompt</button>
           <textarea id="promptInput" placeholder="Buraya yaz..."></textarea>
           <button class="sendBtn" id="sendBtn">Oluştur</button>
         </div>
@@ -275,31 +528,134 @@
     </main>
   </div>
 
-  <!-- PROMPT BUTTON -->
-  <script>
-    document.getElementById("sendBtn").addEventListener("click", () => {
-      const txt = document.getElementById("promptInput").value.trim();
-      if(!txt) return alert("Bir şey yaz.");
-      alert("Şu an sadece tasarım. Backend bağlayınca üretim yapılacak.");
-    });
-  </script>
+  <!-- Supabase JS (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- GOOGLE LOGIN (SUPABASE) -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <script>
+    // --- SUPABASE AYARLARI (SENİN PROJE) ---
     const SUPABASE_URL = "https://cdzxzgwvebmvccfkvfll.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_QDz16Zn2HeoOw7Sf25PENA_FgZL0P-F";
 
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    document.getElementById("loginBtn").addEventListener("click", async () => {
-      const { error } = await supabase.auth.signInWithOAuth({
+    // --- SIMPLE ROUTER (pages) ---
+    const nav = document.getElementById('nav');
+    const pages = {
+      "ai-tools": document.getElementById('page-ai-tools'),
+      "ders-30dk": document.getElementById('page-ders-30dk'),
+      "baslik": document.getElementById('page-baslik'),
+      "hashtag": document.getElementById('page-hashtag'),
+      "gorsel": document.getElementById('page-gorsel'),
+      "video": document.getElementById('page-video'),
+    };
+
+    function goPage(key){
+      Object.values(pages).forEach(p => p.style.display = 'none');
+      pages[key].style.display = 'block';
+      [...nav.querySelectorAll('button')].forEach(b => b.classList.toggle('active', b.dataset.page === key));
+    }
+
+    nav.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-page]');
+      if(!btn) return;
+      goPage(btn.dataset.page);
+    });
+
+    // --- TOP TABS (placeholder) ---
+    document.getElementById('tabs').addEventListener('click', (e)=>{
+      const t = e.target.closest('.tab');
+      if(!t) return;
+      [...document.querySelectorAll('.tab')].forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+    });
+
+    // --- MODE ---
+    let mode = 'prompt';
+    const modeBtn = document.getElementById('modeBtn');
+    function setMode(m){
+      mode = m;
+      const map = {prompt:'Prompt', baslik:'Başlık', hashtag:'Hashtag', gorsel:'Görsel'};
+      modeBtn.textContent = 'Mod: ' + (map[m] || 'Prompt');
+    }
+    modeBtn.addEventListener('click', ()=>{
+      const order = ['prompt','baslik','hashtag','gorsel'];
+      const idx = (order.indexOf(mode)+1) % order.length;
+      setMode(order[idx]);
+    });
+
+    // --- SEND (placeholder) ---
+    document.getElementById('sendBtn').addEventListener('click', ()=>{
+      const txt = document.getElementById('promptInput').value.trim();
+      if(!txt) return alert('Bir şey yaz.');
+      alert('Şu an tasarım. Backend bağlanınca: ' + mode + ' üretilecek.');
+    });
+
+    // --- GOOGLE LOGIN ---
+    async function signInWithGoogle(){
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { redirectTo: "https://www.jarvisheyrose.com" }
+        options: {
+          redirectTo: "https://www.jarvisheyrose.com"
+        }
       });
 
-      if (error) alert(error.message);
+      if(error){
+        alert("Google giriş hatası: " + error.message);
+        return;
+      }
+    }
+
+    document.getElementById("loginBtn").addEventListener("click", signInWithGoogle);
+
+    // --- LOGIN DURUMU GÖSTER ---
+    async function refreshUser(){
+      const { data: { user } } = await supabase.auth.getUser();
+      const btn = document.getElementById("loginBtn");
+      if(user){
+        btn.textContent = "Çıkış Yap";
+        btn.onclick = async () => {
+          await supabase.auth.signOut();
+          location.reload();
+        };
+      }else{
+        btn.textContent = "Google ile Giriş";
+        btn.onclick = signInWithGoogle;
+      }
+    }
+    refreshUser();
+
+    // --- SIMPLE POMODORO (25/5) ---
+    let timerInt = null;
+    let seconds = 25*60;
+    let working = true;
+
+    function renderTimer(){
+      const m = String(Math.floor(seconds/60)).padStart(2,'0');
+      const s = String(seconds%60).padStart(2,'0');
+      document.getElementById('timer').textContent = `${m}:${s}`;
+      document.getElementById('timerState').textContent = working ? 'Çalışma' : 'Mola';
+    }
+    function resetTimer(){
+      clearInterval(timerInt); timerInt=null;
+      working = true; seconds = 25*60; renderTimer();
+    }
+    document.getElementById('startTimer').addEventListener('click', ()=>{
+      if(timerInt) return;
+      timerInt = setInterval(()=>{
+        seconds--;
+        if(seconds <= 0){
+          working = !working;
+          seconds = working ? 25*60 : 5*60;
+        }
+        renderTimer();
+      }, 1000);
     });
+    document.getElementById('resetTimer').addEventListener('click', resetTimer);
+    renderTimer();
+
+    // expose
+    window.setMode = setMode;
+    window.goPage = goPage;
   </script>
 </body>
 </html>
