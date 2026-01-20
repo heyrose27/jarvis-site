@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     if (!key) return res.status(500).json({ error: "GEMINI_API_KEY eksik" });
 
     const url =
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + key;
+      "https://generativelanguage.googleapis.com/v1beta/gemini-1.5-flash:generateContent?key=" + key;
 
     const r = await fetch(url, {
       method: "POST",
