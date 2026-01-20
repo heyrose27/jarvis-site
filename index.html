@@ -1,74 +1,47 @@
-export const config = { runtime: "edge" };
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jarvis Heyrose</title>
+  <style>
+    body{margin:0;font-family:system-ui;background:#0b0f14;color:#e6edf6;height:100vh;display:flex;align-items:center;justify-content:center}
+    .box{width:min(720px,95%);background:#0f1520;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px}
+    textarea{width:100%;height:90px;background:transparent;color:#e6edf6;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px;outline:none}
+    button{margin-top:10px;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(124,58,237,.22);color:#e6edf6;font-weight:800;cursor:pointer}
+    button:hover{background:rgba(124,58,237,.30)}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2 style="margin:0 0 10px 0;">Jarvis (Gemini Test)</h2>
+    <textarea id="promptInput" placeholder="Buraya yaz..."></textarea>
+    <button id="sendBtn">Oluştur</button>
+  </div>
 
-export default async function handler(req) {
-  try {
-    if (req.method !== "POST") {
-      return new Response(JSON.stringify({ error: "Method not allowed" }), {
-        status: 405,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
+  <script>
+    document.getElementById("sendBtn").addEventListener("click", async () => {
+      const txt = document.getElementById("promptInput").value.trim();
+      if (!txt) return alert("Bir şey yaz.");
 
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      return new Response(JSON.stringify({ error: "GEMINI_API_KEY missing" }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
+      try {
+        const r = await fetch("/api/gemini", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: txt })
+        });
 
-    const body = await req.json().catch(() => ({}));
-    const prompt = body?.prompt;
-    if (!prompt) {
-      return new Response(JSON.stringify({ error: "Prompt missing" }), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
+        const raw = await r.text();
+        let data;
+        try { data = JSON.parse(raw); } catch { data = { error: raw }; }
 
-    const url =
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" +
-      apiKey;
-
-    const r = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-      }),
+        if (!r.ok) return alert(data.error || "Hata");
+        alert(data.reply || "Cevap yok");
+      } catch (e) {
+        alert("Bağlantı hatası: " + e);
+      }
     });
+  </script>
+</body>
+</html>
 
-    const raw = await r.text();
-    let data;
-    try {
-      data = JSON.parse(raw);
-    } catch {
-      data = { error: raw };
-    }
-
-    if (!r.ok) {
-      return new Response(
-        JSON.stringify({
-          error:
-            data?.error?.message ||
-            data?.error ||
-            `Gemini error (${r.status})`,
-        }),
-        { status: 500, headers: { "Content-Type": "application/json" } }
-      );
-    }
-
-    const reply =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text || "Cevap gelmedi.";
-
-    return new Response(JSON.stringify({ ok: true, reply }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
-  } catch (e) {
-    return new Response(JSON.stringify({ error: String(e) }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-}
