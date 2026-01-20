@@ -1,0 +1,60 @@
+export const config = { runtime: "edge" };
+
+export default async function handler(req) {
+  if (req.method !== "POST") {
+    return new Response(JSON.stringify({ error: "Method not allowed" }), {
+      status: 405,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return new Response(JSON.stringify({ error: "GEMINI_API_KEY missing" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
+  const body = await req.json().catch(() => ({}));
+  const prompt = body?.prompt;
+  if (!prompt) {
+    return new Response(JSON.stringify({ error: "Prompt missing" }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
+  const url =
+    "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=" +
+    apiKey;
+
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contents: [{ role: "user", parts: [{ text: prompt }] }]
+    })
+  });
+
+  const raw = await r.text();
+
+  if (!r.ok) {
+    let err;
+    try { err = JSON.parse(raw); } catch { err = { error: raw }; }
+    return new Response(JSON.stringify({ error: err?.error?.message || err?.error || "Gemini error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" }
+    });
+  }
+
+  let data;
+  try { data = JSON.parse(raw); } catch { data = {}; }
+
+  const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Cevap gelmedi.";
+
+  return new Response(JSON.stringify({ ok: true, reply }), {
+    status: 200,
+    headers: { "Content-Type": "application/json" }
+  });
+}
