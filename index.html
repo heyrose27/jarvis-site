@@ -27,12 +27,12 @@
     .topbar{height:64px; display:flex; align-items:center; justify-content:space-between; padding:0 18px; border-bottom:1px solid var(--border);}
     .content{flex:1; overflow:auto; padding:18px; padding-bottom:120px;}
     .grid{display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:14px;}
-    .card{background: rgba(255,255,255,0.03); border:1px solid var(--border); border-radius: var(--radius); padding:12px; display:flex; flex-direction:column; gap:10px;}
-    .primary{all:unset; cursor:pointer; padding:9px 14px; border-radius:12px; background: rgba(34,197,94,0.14); border:1px solid rgba(34,197,94,0.28); text-align:center; font-weight:800; font-size:13px;}
+    .card{background: rgba(255,255,255,0.03); border:1px solid var(--border); border-radius: var(--radius); padding:15px; display:flex; flex-direction:column; gap:10px;}
+    .primary{all:unset; cursor:pointer; padding:10px; border-radius:12px; background: rgba(34,197,94,0.14); border:1px solid rgba(34,197,94,0.28); text-align:center; font-weight:800; font-size:13px; color: #fff;}
     .promptBar{position:fixed; left:260px; right:0; bottom:0; padding:14px 18px; background: rgba(11,15,20,0.95); backdrop-filter: blur(10px); border-top:1px solid var(--border);}
     .promptInner{max-width:1100px; margin:0 auto; display:flex; gap:10px; background: rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:18px; padding:10px;}
     textarea{width:100%; background:transparent; border:none; color:var(--text); resize:none; outline:none; padding:10px; font-size:14px;}
-    .sendBtn{all:unset; cursor:pointer; padding:10px 20px; border-radius:14px; background: var(--accent); font-weight:900; font-size:13px;}
+    .sendBtn{all:unset; cursor:pointer; padding:10px 20px; border-radius:14px; background: var(--accent); font-weight:900; font-size:13px; color: #fff;}
     .outBox{margin-top:14px; padding:14px; border-radius:14px; background: rgba(255,255,255,0.03); border:1px solid var(--border); display:none; white-space:pre-wrap; font-size:13px;}
     @media (max-width: 720px){ .sidebar{width:78px;} .promptBar{left:78px;} .brand h1, .brand p, .label{display:none;} }
   </style>
@@ -42,10 +42,10 @@
     <aside class="sidebar">
       <div class="brand"><div class="logo"></div><div><h1>JARVIS</h1><p>AI Panel</p></div></div>
       <nav class="nav" id="nav">
-        <button class="active" data-page="youtube"><span class="label">YouTube</span></button>
-        <button data-page="instagram"><span class="label">Instagram</span></button>
-        <button data-page="tiktok"><span class="label">TikTok</span></button>
-        <button data-page="analiz"><span class="label">Analiz</span></button>
+        <button class="active" onclick="showPage('youtube')"><span class="label">YouTube</span></button>
+        <button onclick="showPage('instagram')"><span class="label">Instagram</span></button>
+        <button onclick="showPage('tiktok')"><span class="label">TikTok</span></button>
+        <button onclick="showPage('analiz')"><span class="label">Analiz</span></button>
       </nav>
       <div class="sidebarFooter"><button class="primary" id="logoutBtn" style="background:rgba(239,68,68,0.1); border-color:rgba(239,68,68,0.2); color:#fca5a5;">Çıkış Yap</button></div>
     </aside>
@@ -58,4 +58,96 @@
         <div id="page-youtube" class="page">
           <h2>YouTube Odası</h2>
           <div class="grid">
-            <div class="card"><strong>Başlık</strong><p>Kısa
+            <div class="card"><strong>Başlık</strong><p>Kısa SEO başlık.</p><button class="primary" onclick="changeMode('baslik')">Seç</button></div>
+            <div class="card"><strong>Hashtag</strong><p>Popüler etiketler.</p><button class="primary" onclick="changeMode('hashtag')">Seç</button></div>
+          </div>
+          <div class="outBox" id="output-youtube"></div>
+        </div>
+        <div id="page-instagram" class="page" style="display:none"><h2>Instagram Odası</h2><div class="outBox" id="output-instagram"></div></div>
+        <div id="page-tiktok" class="page" style="display:none"><h2>TikTok Odası</h2><div class="outBox" id="output-tiktok"></div></div>
+        <div id="page-analiz" class="page" style="display:none"><h2>Kanal Analiz</h2><div class="outBox" id="output-analiz"></div></div>
+      </section>
+      <div class="promptBar">
+        <div class="promptInner">
+          <textarea id="promptInput" placeholder="Konunuzu yazın..."></textarea>
+          <button class="sendBtn" id="sendBtn">Oluştur</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+    
+    // Konfigürasyon
+    const supabase = createClient("https://cdzxzgwvebmvccfkvfll.supabase.co", "sb_publishable_QDz16Zn2HeoOw7Sf25PENA_FgZL0P-F");
+    let currentPlatform = 'youtube';
+    let currentMode = 'baslik';
+    let userIP = 'unknown';
+
+    // Fonksiyonları Pencereye Bağla (Dışarıdan erişim için)
+    window.showPage = (page) => {
+      document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+      document.getElementById('page-' + page).style.display = 'block';
+      currentPlatform = page;
+    };
+
+    window.changeMode = (mode) => {
+      currentMode = mode;
+      document.getElementById('promptInput').placeholder = mode.toUpperCase() + " için konu yazın...";
+      document.getElementById('promptInput').focus();
+    };
+
+    // IP Adresini Al
+    fetch('https://api.ipify.org?format=json').then(r => r.json()).then(d => userIP = d.ip).catch(() => {});
+
+    // Giriş/Çıkış
+    const loginBtn = document.getElementById("googleLoginBtn");
+    loginBtn.onclick = () => supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo: window.location.origin } });
+    document.getElementById("logoutBtn").onclick = () => { supabase.auth.signOut(); location.reload(); };
+
+    // Oturum Kontrolü
+    supabase.auth.getSession().then(({data}) => {
+      if (data?.session) loginBtn.innerText = data.session.user.email;
+    });
+
+    // OLUŞTURMA İŞLEMİ
+    document.getElementById('sendBtn').onclick = async () => {
+      const { data } = await supabase.auth.getSession();
+      const out = document.getElementById('output-' + currentPlatform);
+      
+      if (!data?.session) {
+        out.style.display = 'block';
+        out.innerText = "⚠️ Lütfen önce Google ile giriş yapın.";
+        return;
+      }
+
+      const val = document.getElementById('promptInput').value.trim();
+      if(val.length < 2) return;
+
+      const usage = JSON.parse(localStorage.getItem('usage_' + userIP) || '0');
+      if(usage >= 10) {
+        out.style.display = 'block';
+        out.innerText = "🚫 Limit doldu (Günlük 10).";
+        return;
+      }
+
+      out.style.display = 'block';
+      out.innerText = "⏳ Üretiliyor...";
+
+      try {
+        const res = await fetch('/api/gemini', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ prompt: val, mode: currentMode, platform: currentPlatform })
+        });
+        const result = await res.json();
+        out.innerText = (result.reply || 'Hata.').substring(0, 100);
+        localStorage.setItem('usage_' + userIP, usage + 1);
+      } catch (e) {
+        out.innerText = "Sunucuya bağlanılamadı.";
+      }
+    };
+  </script>
+</body>
+</html>
