@@ -26,9 +26,12 @@ export default async function handler(req) {
       });
     }
 
-    // ✅ MODEL BURADA
+    const MODEL = "gemini-2.0-flash"; // ✅ burada
+
     const url =
-      "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=" +
+      "https://generativelanguage.googleapis.com/v1/models/" +
+      MODEL +
+      ":generateContent?key=" +
       apiKey;
 
     const r = await fetch(url, {
@@ -45,9 +48,7 @@ export default async function handler(req) {
       let err;
       try { err = JSON.parse(raw); } catch { err = { error: raw }; }
       return new Response(
-        JSON.stringify({
-          error: err?.error?.message || err?.error || `Gemini error (${r.status})`,
-        }),
+        JSON.stringify({ error: err?.error?.message || err?.error || `Gemini error (${r.status})`, model: MODEL }),
         { status: 500, headers: { "Content-Type": "application/json" } }
       );
     }
@@ -55,10 +56,9 @@ export default async function handler(req) {
     let data;
     try { data = JSON.parse(raw); } catch { data = {}; }
 
-    const reply =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text || "Cevap gelmedi.";
+    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Cevap gelmedi.";
 
-    return new Response(JSON.stringify({ ok: true, reply }), {
+    return new Response(JSON.stringify({ ok: true, reply, model: MODEL }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
