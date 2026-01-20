@@ -27,8 +27,8 @@ export default async function handler(req) {
     }
 
     const url =
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + apiKey
-
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" +
+      apiKey;
 
     const r = await fetch(url, {
       method: "POST",
@@ -40,16 +40,23 @@ export default async function handler(req) {
 
     const raw = await r.text();
     let data;
-    try { data = JSON.parse(raw); } catch { data = { error: raw }; }
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      data = { error: raw };
+    }
 
     if (!r.ok) {
       return new Response(
-        JSON.stringify({ error: data?.error?.message || data?.error || "Gemini error" }),
+        JSON.stringify({
+          error: data?.error?.message || data?.error || `Gemini error (${r.status})`,
+        }),
         { status: 500, headers: { "Content-Type": "application/json" } }
       );
     }
 
-    const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Cevap gelmedi.";
+    const reply =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text || "Cevap gelmedi.";
 
     return new Response(JSON.stringify({ ok: true, reply }), {
       status: 200,
@@ -62,4 +69,3 @@ export default async function handler(req) {
     });
   }
 }
-
