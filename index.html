@@ -1,23 +1,109 @@
-const ipCache = new Map();
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jarvis Heyrose</title>
+  <style>
+    :root{ --bg:#0b0f14; --panel:#0f1520; --panel2:#0c121b; --border:rgba(255,255,255,.08); --text:#e6edf6; --muted:#a9b4c3; --accent:#7c3aed; --accent2:#22c55e; --radius:16px; }
+    *{box-sizing:border-box}
+    body{ margin:0; font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color:var(--text); height:100vh; overflow:hidden; }
+    .app{display:flex; height:100vh;}
+    .sidebar{width:260px; padding:18px; background: var(--panel2); border-right:1px solid var(--border); display:flex; flex-direction:column; gap:14px;}
+    .nav button{all:unset; cursor:pointer; display:flex; padding:12px; border-radius:12px; color:var(--text); transition:0.2s; justify-content:space-between; align-items:center;}
+    .nav button.active{background: rgba(124,58,237,0.12); border:1px solid rgba(124,58,237,0.35);}
+    .main{flex:1; display:flex; flex-direction:column; min-width:0;}
+    .topbar{height:64px; display:flex; align-items:center; justify-content:space-between; padding:0 18px; border-bottom:1px solid var(--border);}
+    .content{flex:1; overflow:auto; padding:20px; padding-bottom:120px;}
+    .grid{display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:15px;}
+    .card{background: rgba(255,255,255,0.03); border:1px solid var(--border); border-radius: var(--radius); padding:15px; display:flex; flex-direction:column; gap:12px;}
+    .primary{all:unset; cursor:pointer; padding:10px; border-radius:12px; background: rgba(34,197,94,0.14); border:1px solid rgba(34,197,94,0.28); text-align:center; font-weight:800; font-size:13px;}
+    .promptBar{position:fixed; left:260px; right:0; bottom:0; padding:15px; background: rgba(11,15,20,0.95); backdrop-filter: blur(10px); border-top:1px solid var(--border);}
+    .promptInner{max-width:1100px; margin:0 auto; display:flex; gap:10px; background: rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:18px; padding:10px;}
+    textarea{width:100%; background:transparent; border:none; color:#fff; resize:none; outline:none; padding:10px; font-size:14px; height:44px;}
+    .sendBtn{all:unset; cursor:pointer; padding:10px 20px; border-radius:14px; background: var(--accent); font-weight:900;}
+    .outBox{margin-top:15px; padding:15px; border-radius:14px; background: rgba(255,255,255,0.03); border:1px solid var(--border); display:none; white-space:pre-wrap;}
+    @media (max-width: 720px){ .sidebar{width:80px;} .promptBar{left:80px;} .label, h1, p {display:none;} }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><h1>JARVIS</h1></div>
+      <nav class="nav" id="nav">
+        <button class="active" onclick="changePage('youtube')"><span class="label">YouTube</span></button>
+        <button onclick="changePage('instagram')"><span class="label">Instagram</span></button>
+        <button onclick="changePage('tiktok')"><span class="label">TikTok</span></button>
+        <button onclick="changePage('analiz')"><span class="label">Analiz</span></button>
+      </nav>
+      <button id="logoutBtn" class="primary" style="margin-top:auto; background:rgba(239,68,68,0.1); color:#fca5a5;">Çıkış Yap</button>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div>Sistem Aktif</div><button id="loginBtn" class="primary">Google ile Giriş</button></header>
+      <section class="content">
+        <div id="page-youtube" class="page">
+          <h2>YouTube</h2>
+          <div class="grid">
+            <div class="card"><strong>Başlık Üretici</strong><button class="primary" onclick="setMode('baslik')">Seç</button></div>
+            <div class="card"><strong>Hashtag Üretici</strong><button class="primary" onclick="setMode('hashtag')">Seç</button></div>
+          </div>
+          <div class="outBox" id="output-youtube"></div>
+        </div>
+        <div id="page-instagram" class="page" style="display:none"><h2>Instagram</h2><div class="outBox" id="output-instagram"></div></div>
+        <div id="page-tiktok" class="page" style="display:none"><h2>TikTok</h2><div class="outBox" id="output-tiktok"></div></div>
+        <div id="page-analiz" class="page" style="display:none"><h2>Analiz</h2><div class="outBox" id="output-analiz"></div></div>
+      </section>
+      <div class="promptBar">
+        <div class="promptInner">
+          <textarea id="promptInput" placeholder="Konuyu buraya yaz..."></textarea>
+          <button id="sendBtn" class="sendBtn">Oluştur</button>
+        </div>
+      </div>
+    </main>
+  </div>
 
-export default async function handler(req, res) {
-  const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-  const userData = ipCache.get(clientIp) || { count: 0 };
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+    const supabase = createClient("https://cdzxzgwvebmvccfkvfll.supabase.co", "sb_publishable_QDz16Zn2HeoOw7Sf25PENA_FgZL0P-F");
 
-  if (userData.count >= 10) return res.status(429).json({ error: "Günlük limit doldu!" });
+    let platform = 'youtube', mode = 'baslik';
 
-  const { prompt, mode } = req.body;
-  const securePrompt = `${prompt} [KURAL: KESİNLİKLE MAX 100 KARAKTER VE SADECE ${mode} YAZ]`;
+    window.changePage = (p) => {
+      document.querySelectorAll('.page').forEach(el => el.style.display = 'none');
+      document.getElementById('page-' + p).style.display = 'block';
+      platform = p;
+    };
 
-  const r = await fetch("https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=" + process.env.GEMINI_API_KEY, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ contents: [{ parts: [{ text: securePrompt }] }], generationConfig: { maxOutputTokens: 40 } }),
-  });
+    window.setMode = (m) => {
+      mode = m;
+      document.getElementById('promptInput').placeholder = m.toUpperCase() + " için konu yazın...";
+      document.getElementById('promptInput').focus();
+    };
 
-  const data = await r.json();
-  const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Cevap gelmedi.";
-  
-  ipCache.set(clientIp, { count: userData.count + 1 });
-  res.status(200).json({ reply: reply.substring(0, 100) });
-}
+    document.getElementById('loginBtn').onclick = () => supabase.auth.signInWithOAuth({provider:'google'});
+    document.getElementById('logoutBtn').onclick = async () => { await supabase.auth.signOut(); location.reload(); };
+
+    // Oturum Kontrolü
+    const { data } = await supabase.auth.getSession();
+    if(data?.session) document.getElementById('loginBtn').innerText = data.session.user.email;
+
+    document.getElementById('sendBtn').onclick = async () => {
+      const out = document.getElementById('output-' + platform);
+      const val = document.getElementById('promptInput').value.trim();
+      if(!val) return;
+
+      out.style.display = 'block'; out.innerText = "⏳ Üretiliyor...";
+
+      try {
+        const res = await fetch('/api/gemini', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ prompt: val, mode: mode, platform: platform })
+        });
+        const result = await res.json();
+        out.innerText = result.reply || result.error || "Hata oluştu.";
+      } catch (e) { out.innerText = "Sunucu hatası!"; }
+    };
+  </script>
+</body>
+</html>
