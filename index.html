@@ -68,15 +68,16 @@
       color:var(--text);
       background:transparent;
       border:1px solid transparent;
+      transition: all 0.2s;
     }
     .nav button:hover{
-      background: rgba(255,255,255,.04);
-      border-color: rgba(255,255,255,.06);
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.06);
     }
     .nav button.active{
-      background: rgba(124,58,237,.12);
-      border-color: rgba(124,58,237,.35);
-      box-shadow: 0 0 0 1px rgba(124,58,237,.18) inset;
+      background: rgba(124,58,237,0.12);
+      border-color: rgba(124,58,237,0.35);
+      box-shadow: 0 0 0 1px rgba(124,58,237,0.18) inset;
     }
     .sidebarFooter{
       margin-top:auto;
@@ -90,14 +91,14 @@
       cursor:pointer;
       padding:10px 12px;
       border-radius:12px;
-      background: rgba(239,68,68,.12);
-      border:1px solid rgba(239,68,68,.25);
+      background: rgba(239,68,68,0.12);
+      border:1px solid rgba(239,68,68,0.25);
       color:#fca5a5;
       font-size:13px;
       text-align:center;
       font-weight:600;
     }
-    .logoutBtn:hover{background: rgba(239,68,68,.18)}
+    .logoutBtn:hover{background: rgba(239,68,68,0.18)}
 
     .main{
       flex:1;
@@ -113,7 +114,7 @@
       justify-content:space-between;
       padding:0 18px;
       border-bottom:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 70%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent 70%);
     }
     .tabs{
       display:flex;
@@ -127,16 +128,16 @@
       padding:8px 12px;
       border-radius:999px;
       color:var(--muted);
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
       white-space:nowrap;
       font-size:13px;
     }
-    .tab:hover{border-color: rgba(255,255,255,.16)}
+    .tab:hover{border-color: rgba(255,255,255,0.16)}
     .tab.active{
       color:var(--text);
-      background: rgba(124,58,237,.18);
-      border-color: rgba(124,58,237,.35);
+      background: rgba(124,58,237,0.18);
+      border-color: rgba(124,58,237,0.35);
     }
     .topActions{
       display:flex; gap:10px; align-items:center;
@@ -145,26 +146,26 @@
       display:flex; align-items:center; gap:8px;
       padding:8px 10px;
       border-radius:12px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
       color:var(--text);
       font-size:13px;
     }
-    .dot{width:8px; height:8px; border-radius:50%; background: var(--accent2); box-shadow:0 0 14px rgba(34,197,94,.55)}
+    .dot{width:8px; height:8px; border-radius:50%; background: var(--accent2); box-shadow:0 0 14px rgba(34,197,94,0.55)}
 
     .loginBtn{
       all:unset; cursor:pointer;
       padding:10px 12px;
       border-radius:12px;
-      background: rgba(124,58,237,.20);
-      border:1px solid rgba(124,58,237,.35);
+      background: rgba(124,58,237,0.20);
+      border:1px solid rgba(124,58,237,0.35);
       font-weight:800;
       font-size:13px;
       display:flex;
       align-items:center;
       gap:8px;
     }
-    .loginBtn:hover{background: rgba(124,58,237,.28)}
+    .loginBtn:hover{background: rgba(124,58,237,0.28)}
     .googleIcon{
       width:16px;height:16px;display:inline-block;
       border-radius:4px;
@@ -191,8 +192,8 @@
       gap:14px;
     }
     .card{
-      background: rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.08);
       border-radius: var(--radius);
       overflow:hidden;
       box-shadow: var(--shadow);
@@ -209,15 +210,15 @@
       font-size:11px;
       padding:4px 8px;
       border-radius:999px;
-      background: rgba(34,197,94,.10);
-      border:1px solid rgba(34,197,94,.22);
+      background: rgba(34,197,94,0.10);
+      border:1px solid rgba(34,197,94,0.22);
       color:#86efac;
       white-space:nowrap;
       font-weight:600;
     }
     .tag.warn{
-      background: rgba(251,191,36,.10);
-      border-color: rgba(251,191,36,.22);
+      background: rgba(251,191,36,0.10);
+      border-color: rgba(251,191,36,0.22);
       color:#fcd34d;
     }
     .cardBody{
@@ -229,7 +230,7 @@
     }
     .cardFooter{
       padding:12px;
-      border-top:1px solid rgba(255,255,255,.07);
+      border-top:1px solid rgba(255,255,255,0.07);
       display:flex; justify-content:flex-end;
       gap:10px;
     }
@@ -237,12 +238,12 @@
       all:unset; cursor:pointer;
       padding:9px 14px;
       border-radius:12px;
-      background: rgba(34,197,94,.14);
-      border:1px solid rgba(34,197,94,.28);
+      background: rgba(34,197,94,0.14);
+      border:1px solid rgba(34,197,94,0.28);
       font-weight:800;
       font-size:13px;
     }
-    .primary:hover{background: rgba(34,197,94,.20)}
+    .primary:hover{background: rgba(34,197,94,0.20)}
     .primary:disabled{
       opacity:0.4;
       cursor:not-allowed;
@@ -255,8 +256,9 @@
       bottom:0;
       padding:14px 18px;
       border-top:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(11,15,20,.30), rgba(11,15,20,.90) 25%, rgba(11,15,20,.96));
+      background: linear-gradient(180deg, rgba(11,15,20,0.30), rgba(11,15,20,0.90) 25%, rgba(11,15,20,0.96));
       backdrop-filter: blur(10px);
+      z-index: 100;
     }
     .promptInner{
       max-width:1100px;
@@ -264,8 +266,8 @@
       display:flex;
       gap:10px;
       align-items:center;
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.10);
       border-radius:18px;
       padding:10px;
       box-shadow: var(--shadow);
@@ -287,19 +289,19 @@
       all:unset; cursor:pointer;
       padding:10px 14px;
       border-radius:14px;
-      background: rgba(124,58,237,.22);
-      border:1px solid rgba(124,58,237,.38);
+      background: rgba(124,58,237,0.22);
+      border:1px solid rgba(124,58,237,0.38);
       font-weight:900;
       font-size:13px;
       white-space:nowrap;
     }
-    .sendBtn:hover{background: rgba(124,58,237,.30)}
+    .sendBtn:hover{background: rgba(124,58,237,0.30)}
     .modeSelect{
       all:unset; cursor:pointer;
       padding:10px 12px;
       border-radius:14px;
-      background: rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.10);
       color:var(--text);
       font-size:13px;
       white-space:nowrap;
@@ -309,8 +311,8 @@
       margin-top:14px;
       padding:14px;
       border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
       color: var(--text);
       font-size:13px;
       line-height:1.45;
@@ -318,13 +320,13 @@
       display:none;
     }
     .outBox.error{
-      background: rgba(239,68,68,.08);
-      border-color: rgba(239,68,68,.22);
+      background: rgba(239,68,68,0.08);
+      border-color: rgba(239,68,68,0.22);
       color:#fca5a5;
     }
     .outBox.warn{
-      background: rgba(251,191,36,.08);
-      border-color: rgba(251,191,36,.22);
+      background: rgba(251,191,36,0.08);
+      border-color: rgba(251,191,36,0.22);
       color:#fcd34d;
     }
 
@@ -391,42 +393,23 @@
               <p>Başlık (3) • Hashtag (3) • Açıklama (2)</p>
             </div>
           </div>
-
           <div class="grid">
             <div class="card">
-              <div class="cardHeader">
-                <strong>Başlık</strong>
-                <span class="tag" data-mode="baslik" data-platform="youtube">3 Hak</span>
-              </div>
+              <div class="cardHeader"><strong>Başlık</strong><span class="tag" data-mode="baslik" data-platform="youtube">3 Hak</span></div>
               <div class="cardBody">Kısa, net, SEO uyumlu başlık üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('baslik')">Seç</button>
-              </div>
+              <div class="cardFooter"><button class="primary" onclick="setMode('baslik')">Seç</button></div>
             </div>
-
             <div class="card">
-              <div class="cardHeader">
-                <strong>Hashtag</strong>
-                <span class="tag" data-mode="hashtag" data-platform="youtube">3 Hak</span>
-              </div>
+              <div class="cardHeader"><strong>Hashtag</strong><span class="tag" data-mode="hashtag" data-platform="youtube">3 Hak</span></div>
               <div class="cardBody">İçeriğe uygun 8-12 hashtag üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('hashtag')">Seç</button>
-              </div>
+              <div class="cardFooter"><button class="primary" onclick="setMode('hashtag')">Seç</button></div>
             </div>
-
             <div class="card">
-              <div class="cardHeader">
-                <strong>Açıklama</strong>
-                <span class="tag warn" data-mode="aciklama" data-platform="youtube">2 Hak</span>
-              </div>
+              <div class="cardHeader"><strong>Açıklama</strong><span class="tag warn" data-mode="aciklama" data-platform="youtube">2 Hak</span></div>
               <div class="cardBody">Kısa kanal açıklaması üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('aciklama')">Seç</button>
-              </div>
+              <div class="cardFooter"><button class="primary" onclick="setMode('aciklama')">Seç</button></div>
             </div>
           </div>
-
           <div class="outBox" id="output-youtube"></div>
         </div>
 
@@ -437,42 +420,23 @@
               <p>Başlık (3) • Hashtag (3) • Açıklama (2)</p>
             </div>
           </div>
-
           <div class="grid">
             <div class="card">
-              <div class="cardHeader">
-                <strong>Başlık</strong>
-                <span class="tag" data-mode="baslik" data-platform="instagram">3 Hak</span>
-              </div>
+              <div class="cardHeader"><strong>Başlık</strong><span class="tag" data-mode="baslik" data-platform="instagram">3 Hak</span></div>
               <div class="cardBody">Reels için kısa başlık üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('baslik')">Seç</button>
-              </div>
+              <div class="cardFooter"><button class="primary" onclick="setMode('baslik')">Seç</button></div>
             </div>
-
             <div class="card">
-              <div class="cardHeader">
-                <strong>Hashtag</strong>
-                <span class="tag" data-mode="hashtag" data-platform="instagram">3 Hak</span>
-              </div>
+              <div class="cardHeader"><strong>Hashtag</strong><span class="tag" data-mode="hashtag" data-platform="instagram">3 Hak</span></div>
               <div class="cardBody">Reels için hashtag üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('hashtag')">Seç</button>
-              </div>
+              <div class="cardFooter"><button class="primary" onclick="setMode('hashtag')">Seç</button></div>
             </div>
-
             <div class="card">
-              <div class="cardHeader">
-                <strong>Açıklama</strong>
-                <span class="tag warn" data-mode="aciklama" data-platform="instagram">2 Hak</span>
-              </div>
+              <div class="cardHeader"><strong>Açıklama</strong><span class="tag warn" data-mode="aciklama" data-platform="instagram">2 Hak</span></div>
               <div class="cardBody">Kısa caption üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('aciklama')">Seç</button>
-              </div>
+              <div class="cardFooter"><button class="primary" onclick="setMode('aciklama')">Seç</button></div>
             </div>
           </div>
-
           <div class="outBox" id="output-instagram"></div>
         </div>
 
@@ -483,42 +447,23 @@
               <p>Başlık (3) • Hashtag (3) • Açıklama (2)</p>
             </div>
           </div>
-
           <div class="grid">
             <div class="card">
-              <div class="cardHeader">
-                <strong>Başlık</strong>
-                <span class="tag" data-mode="baslik" data-platform="tiktok">3 Hak</span>
-              </div>
+              <div class="cardHeader"><strong>Başlık</strong><span class="tag" data-mode="baslik" data-platform="tiktok">3 Hak</span></div>
               <div class="cardBody">TikTok için hızlı başlık üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('baslik')">Seç</button>
-              </div>
+              <div class="cardFooter"><button class="primary" onclick="setMode('baslik')">Seç</button></div>
             </div>
-
             <div class="card">
-              <div class="cardHeader">
-                <strong>Hashtag</strong>
-                <span class="tag" data-mode="hashtag" data-platform="tiktok">3 Hak</span>
-              </div>
+              <div class="cardHeader"><strong>Hashtag</strong><span class="tag" data-mode="hashtag" data-platform="tiktok">3 Hak</span></div>
               <div class="cardBody">TikTok trend hashtag üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('hashtag')">Seç</button>
-              </div>
+              <div class="cardFooter"><button class="primary" onclick="setMode('hashtag')">Seç</button></div>
             </div>
-
             <div class="card">
-              <div class="cardHeader">
-                <strong>Açıklama</strong>
-                <span class="tag warn" data-mode="aciklama" data-platform="tiktok">2 Hak</span>
-              </div>
+              <div class="cardHeader"><strong>Açıklama</strong><span class="tag warn" data-mode="aciklama" data-platform="tiktok">2 Hak</span></div>
               <div class="cardBody">Kısa açıklama üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('aciklama')">Seç</button>
-              </div>
+              <div class="cardFooter"><button class="primary" onclick="setMode('aciklama')">Seç</button></div>
             </div>
           </div>
-
           <div class="outBox" id="output-tiktok"></div>
         </div>
 
@@ -529,20 +474,13 @@
               <p>Kısa analiz + 3 öneri (3 hak)</p>
             </div>
           </div>
-
           <div class="grid">
             <div class="card">
-              <div class="cardHeader">
-                <strong>Analiz</strong>
-                <span class="tag" data-mode="analiz" data-platform="analiz">3 Hak</span>
-              </div>
+              <div class="cardHeader"><strong>Analiz</strong><span class="tag" data-mode="analiz" data-platform="analiz">3 Hak</span></div>
               <div class="cardBody">Kısa analiz + 3 öneri verir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('analiz')">Seç</button>
-              </div>
+              <div class="cardFooter"><button class="primary" onclick="setMode('analiz')">Seç</button></div>
             </div>
           </div>
-
           <div class="outBox" id="output-analiz"></div>
         </div>
       </section>
@@ -644,23 +582,25 @@
         const remaining = getRemainingCount(platform, mode);
         tag.textContent = `${remaining} Hak`;
         
-        if(remaining === 0){
-          tag.classList.add('warn');
-        } else {
-          tag.classList.remove('warn');
-        }
+        if(remaining === 0) tag.classList.add('warn');
+        else tag.classList.remove('warn');
       });
     }
 
     function goPage(platform){
       document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-      document.getElementById(`page-${platform}`).style.display = 'block';
+      const targetPage = document.getElementById(`page-${platform}`);
+      if(targetPage) targetPage.style.display = 'block';
       
       document.querySelectorAll('#nav button').forEach(b => {
         b.classList.toggle('active', b.dataset.page === platform);
       });
       
       currentPlatform = platform;
+      // Eğer analiz sayfasına geçtiysek modu otomatik analiz yap
+      if(platform === 'analiz') window.setMode('analiz');
+      else if(currentMode === 'analiz') window.setMode('baslik');
+      
       updateUI();
     }
 
@@ -668,6 +608,11 @@
       currentMode = mode;
       const map = {baslik:'Başlık', hashtag:'Hashtag', aciklama:'Açıklama', analiz:'Kanal Analiz'};
       document.getElementById('modeBtn').textContent = 'Mod: ' + (map[mode] || 'Başlık');
+      
+      // Üretim Yap (Seç) butonuna basıldığında inputa odaklan
+      const input = document.getElementById('promptInput');
+      input.placeholder = `${map[mode]} için konuyu buraya yazın...`;
+      input.focus();
     };
 
     document.getElementById('nav').addEventListener('click', (e) => {
@@ -683,7 +628,7 @@
 
     function buildPrompt(text){
       if(currentMode === 'baslik'){
-        return `Konu: ${text}\n\nSadece 1 adet kısa ${currentPlatform === 'youtube' ? 'YouTube' : currentPlatform === 'instagram' ? 'Instagram' : 'TikTok'} başlığı yaz. Maksimum 40 kelime. Emoji yok.`;
+        return `Konu: ${text}\n\nSadece 1 adet kısa ${currentPlatform.toUpperCase()} başlığı yaz. Maksimum 40 kelime. Emoji yok.`;
       }
       if(currentMode === 'hashtag'){
         return `Konu: ${text}\n\nSadece 8-12 hashtag yaz. Tek satır. Liste yok.`;
@@ -761,41 +706,12 @@
         e.preventDefault();
         document.getElementById('sendBtn').click();
       }
-// Mevcut kodun en altına ekleyiniz
+    });
 
-    // Sayfa Başlatma ve UI Güncelleme (Odaların açılması için)
-    window.addEventListener('DOMContentLoaded', () => {
-        updateUI();
-        // Varsayılan olarak youtube sayfasını aç
+    // Sayfa açılışında ilk yükleme
+    window.onload = () => {
         goPage('youtube');
-    });
-
-    // "Üretim Yap" (Seç) butonları için tetikleyici
-    // Bu fonksiyon mevcut onclick="window.setMode('...')" yapılarını dinler 
-    // ve promptInput alanına odaklanarak kullanıcıyı yönlendirir.
-    const originalSetMode = window.setMode;
-    window.setMode = function(mode) {
-        originalSetMode(mode);
-        const inputField = document.getElementById('promptInput');
-        inputField.placeholder = `${mode.toUpperCase()} için konunuzu yazın ve Oluştur'a basın...`;
-        inputField.focus();
-        
-        // Görsel geri bildirim: Butona tıklandığında input alanını parlat
-        inputField.style.boxShadow = '0 0 15px var(--accent)';
-        setTimeout(() => inputField.style.boxShadow = '', 500);
     };
-
-    // Navigasyon butonlarının (Odaların) çalışmasını garanti altına alan ek dinleyici
-    document.querySelectorAll('.nav button').forEach(btn => {
-        btn.onclick = () => {
-            const page = btn.getAttribute('data-page');
-            if(page) goPage(page);
-        };
-    });
-
-    // Metin alanının otomatik büyümesi (Kullanıcı deneyimi için)
-    const tx = document.getElementById('promptInput');
-    tx.addEventListener("input", function() {
-        this.style.height = '44px';
-        this.style.height = (this.scrollHeight) + 'px';
-    }, false);
+  </script>
+</body>
+</html>
