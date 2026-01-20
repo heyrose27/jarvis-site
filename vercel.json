@@ -1,6 +1,9 @@
 {
+  "rewrites": [
+    { "source": "/api/gemini", "destination": "/api/gemini" }
+  ],
   "functions": {
-    "api/*.js": {
+    "api/*": {
       "runtime": "edge"
     }
   }
