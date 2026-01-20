@@ -761,3 +761,41 @@
         e.preventDefault();
         document.getElementById('sendBtn').click();
       }
+// Mevcut kodun en altına ekleyiniz
+
+    // Sayfa Başlatma ve UI Güncelleme (Odaların açılması için)
+    window.addEventListener('DOMContentLoaded', () => {
+        updateUI();
+        // Varsayılan olarak youtube sayfasını aç
+        goPage('youtube');
+    });
+
+    // "Üretim Yap" (Seç) butonları için tetikleyici
+    // Bu fonksiyon mevcut onclick="window.setMode('...')" yapılarını dinler 
+    // ve promptInput alanına odaklanarak kullanıcıyı yönlendirir.
+    const originalSetMode = window.setMode;
+    window.setMode = function(mode) {
+        originalSetMode(mode);
+        const inputField = document.getElementById('promptInput');
+        inputField.placeholder = `${mode.toUpperCase()} için konunuzu yazın ve Oluştur'a basın...`;
+        inputField.focus();
+        
+        // Görsel geri bildirim: Butona tıklandığında input alanını parlat
+        inputField.style.boxShadow = '0 0 15px var(--accent)';
+        setTimeout(() => inputField.style.boxShadow = '', 500);
+    };
+
+    // Navigasyon butonlarının (Odaların) çalışmasını garanti altına alan ek dinleyici
+    document.querySelectorAll('.nav button').forEach(btn => {
+        btn.onclick = () => {
+            const page = btn.getAttribute('data-page');
+            if(page) goPage(page);
+        };
+    });
+
+    // Metin alanının otomatik büyümesi (Kullanıcı deneyimi için)
+    const tx = document.getElementById('promptInput');
+    tx.addEventListener("input", function() {
+        this.style.height = '44px';
+        this.style.height = (this.scrollHeight) + 'px';
+    }, false);
