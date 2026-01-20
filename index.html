@@ -789,3 +789,18 @@
 
     // PROMPT BUILDER
     function buildPrompt(userText){
+      const maxWords = 40; // KISA CEVAP İÇİN
+      
+      if(mode === 'baslik'){
+        return `Konu: ${userText}\n\nSadece 1 adet kısa YouTube başlığı yaz. Maksimum ${maxWords} kelime. Emoji yok.`;
+      }
+      if(mode === 'hashtag'){
+        return `Konu: ${userText}\n\nSadece 8-12 hashtag yaz. Tek satır. Liste yok.`;
+      }
+      if(mode === 'aciklama'){
+        return `Konu: ${userText}\n\nKısa açıklama yaz. Maksimum 2 cümle, ${maxWords} kelime.`;
+      }
+      if(mode === 'analiz'){
+        return `Konu: ${userText}\n\nKısa analiz + 3 öneri. Maksimum 80 kelime. Madde işaretli liste kullan.`;
+      }
+      return userText;
