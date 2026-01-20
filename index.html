@@ -33,7 +33,6 @@
 
     .app{display:flex; height:100vh; width:100vw;}
 
-    /* Sidebar */
     .sidebar{
       width:260px;
       padding:18px 14px;
@@ -100,7 +99,6 @@
     }
     .logoutBtn:hover{background: rgba(239,68,68,.18)}
 
-    /* Main */
     .main{
       flex:1;
       display:flex;
@@ -108,7 +106,6 @@
       min-width:0;
     }
 
-    /* Top bar */
     .topbar{
       height:64px;
       display:flex;
@@ -174,7 +171,6 @@
       background:conic-gradient(from 0deg, #4285F4 0 25%, #34A853 0 50%, #FBBC05 0 75%, #EA4335 0 100%);
     }
 
-    /* Content */
     .content{
       flex:1;
       overflow:auto;
@@ -252,7 +248,6 @@
       cursor:not-allowed;
     }
 
-    /* Prompt Bar */
     .promptBar{
       position:fixed;
       left:260px;
@@ -333,7 +328,6 @@
       color:#fcd34d;
     }
 
-    /* Responsive */
     @media (max-width: 980px){
       .sidebar{width:220px}
       .promptBar{left:220px}
@@ -351,10 +345,9 @@
 
 <body>
   <div class="app">
-    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
+        <div class="logo"></div>
         <div>
           <h1>JARVIS HEYROSE</h1>
           <p>AI • Sosyal Medya</p>
@@ -373,30 +366,24 @@
       </div>
     </aside>
 
-    <!-- MAIN -->
     <main class="main">
-      <!-- TOPBAR -->
       <header class="topbar">
-        <div class="tabs" id="tabs">
-          <button class="tab active" data-tab="hepsi">Hepsi</button>
-          <button class="tab" data-tab="viral">Viral</button>
-          <button class="tab" data-tab="seo">SEO</button>
+        <div class="tabs">
+          <button class="tab active">Hepsi</button>
+          <button class="tab">Viral</button>
+          <button class="tab">SEO</button>
         </div>
 
         <div class="topActions">
           <div class="badge"><span class="dot"></span> Sistem Aktif</div>
-
-          <button class="loginBtn" id="googleLoginBtn" title="Google ile giriş">
-            <span class="googleIcon" aria-hidden="true"></span>
+          <button class="loginBtn" id="googleLoginBtn">
+            <span class="googleIcon"></span>
             Google ile Giriş
           </button>
         </div>
       </header>
 
-      <!-- CONTENT -->
       <section class="content">
-
-        <!-- YOUTUBE -->
         <div id="page-youtube" class="page">
           <div class="pageTitle">
             <div>
@@ -409,41 +396,40 @@
             <div class="card">
               <div class="cardHeader">
                 <strong>Başlık</strong>
-                <span class="tag" id="yt-baslik-tag">3 Hak</span>
+                <span class="tag" data-mode="baslik" data-platform="youtube">3 Hak</span>
               </div>
               <div class="cardBody">Kısa, net, SEO uyumlu başlık üretir.</div>
               <div class="cardFooter">
-                <button class="primary" onclick="setMode('baslik')" id="yt-baslik-btn">Seç</button>
+                <button class="primary" onclick="window.setMode('baslik')">Seç</button>
               </div>
             </div>
 
             <div class="card">
               <div class="cardHeader">
                 <strong>Hashtag</strong>
-                <span class="tag" id="yt-hashtag-tag">3 Hak</span>
+                <span class="tag" data-mode="hashtag" data-platform="youtube">3 Hak</span>
               </div>
               <div class="cardBody">İçeriğe uygun 8-12 hashtag üretir.</div>
               <div class="cardFooter">
-                <button class="primary" onclick="setMode('hashtag')" id="yt-hashtag-btn">Seç</button>
+                <button class="primary" onclick="window.setMode('hashtag')">Seç</button>
               </div>
             </div>
 
             <div class="card">
               <div class="cardHeader">
                 <strong>Açıklama</strong>
-                <span class="tag warn" id="yt-aciklama-tag">2 Hak</span>
+                <span class="tag warn" data-mode="aciklama" data-platform="youtube">2 Hak</span>
               </div>
               <div class="cardBody">Kısa kanal açıklaması üretir.</div>
               <div class="cardFooter">
-                <button class="primary" onclick="setMode('aciklama')" id="yt-aciklama-btn">Seç</button>
+                <button class="primary" onclick="window.setMode('aciklama')">Seç</button>
               </div>
             </div>
           </div>
 
-          <div class="outBox" id="yt-output"></div>
+          <div class="outBox" id="output-youtube"></div>
         </div>
 
-        <!-- INSTAGRAM -->
         <div id="page-instagram" class="page" style="display:none">
           <div class="pageTitle">
             <div>
@@ -456,41 +442,40 @@
             <div class="card">
               <div class="cardHeader">
                 <strong>Başlık</strong>
-                <span class="tag" id="ig-baslik-tag">3 Hak</span>
+                <span class="tag" data-mode="baslik" data-platform="instagram">3 Hak</span>
               </div>
               <div class="cardBody">Reels için kısa başlık üretir.</div>
               <div class="cardFooter">
-                <button class="primary" onclick="setMode('baslik')" id="ig-baslik-btn">Seç</button>
+                <button class="primary" onclick="window.setMode('baslik')">Seç</button>
               </div>
             </div>
 
             <div class="card">
               <div class="cardHeader">
                 <strong>Hashtag</strong>
-                <span class="tag" id="ig-hashtag-tag">3 Hak</span>
+                <span class="tag" data-mode="hashtag" data-platform="instagram">3 Hak</span>
               </div>
               <div class="cardBody">Reels için hashtag üretir.</div>
               <div class="cardFooter">
-                <button class="primary" onclick="setMode('hashtag')" id="ig-hashtag-btn">Seç</button>
+                <button class="primary" onclick="window.setMode('hashtag')">Seç</button>
               </div>
             </div>
 
             <div class="card">
               <div class="cardHeader">
                 <strong>Açıklama</strong>
-                <span class="tag warn" id="ig-aciklama-tag">2 Hak</span>
+                <span class="tag warn" data-mode="aciklama" data-platform="instagram">2 Hak</span>
               </div>
               <div class="cardBody">Kısa caption üretir.</div>
               <div class="cardFooter">
-                <button class="primary" onclick="setMode('aciklama')" id="ig-aciklama-btn">Seç</button>
+                <button class="primary" onclick="window.setMode('aciklama')">Seç</button>
               </div>
             </div>
           </div>
 
-          <div class="outBox" id="ig-output"></div>
+          <div class="outBox" id="output-instagram"></div>
         </div>
 
-        <!-- TIKTOK -->
         <div id="page-tiktok" class="page" style="display:none">
           <div class="pageTitle">
             <div>
@@ -503,41 +488,40 @@
             <div class="card">
               <div class="cardHeader">
                 <strong>Başlık</strong>
-                <span class="tag" id="tt-baslik-tag">3 Hak</span>
+                <span class="tag" data-mode="baslik" data-platform="tiktok">3 Hak</span>
               </div>
               <div class="cardBody">TikTok için hızlı başlık üretir.</div>
               <div class="cardFooter">
-                <button class="primary" onclick="setMode('baslik')" id="tt-baslik-btn">Seç</button>
+                <button class="primary" onclick="window.setMode('baslik')">Seç</button>
               </div>
             </div>
 
             <div class="card">
               <div class="cardHeader">
                 <strong>Hashtag</strong>
-                <span class="tag" id="tt-hashtag-tag">3 Hak</span>
+                <span class="tag" data-mode="hashtag" data-platform="tiktok">3 Hak</span>
               </div>
               <div class="cardBody">TikTok trend hashtag üretir.</div>
               <div class="cardFooter">
-                <button class="primary" onclick="setMode('hashtag')" id="tt-hashtag-btn">Seç</button>
+                <button class="primary" onclick="window.setMode('hashtag')">Seç</button>
               </div>
             </div>
 
             <div class="card">
               <div class="cardHeader">
                 <strong>Açıklama</strong>
-                <span class="tag warn" id="tt-aciklama-tag">2 Hak</span>
+                <span class="tag warn" data-mode="aciklama" data-platform="tiktok">2 Hak</span>
               </div>
               <div class="cardBody">Kısa açıklama üretir.</div>
               <div class="cardFooter">
-                <button class="primary" onclick="setMode('aciklama')" id="tt-aciklama-btn">Seç</button>
+                <button class="primary" onclick="window.setMode('aciklama')">Seç</button>
               </div>
             </div>
           </div>
 
-          <div class="outBox" id="tt-output"></div>
+          <div class="outBox" id="output-tiktok"></div>
         </div>
 
-        <!-- ANALIZ -->
         <div id="page-analiz" class="page" style="display:none">
           <div class="pageTitle">
             <div>
@@ -550,21 +534,19 @@
             <div class="card">
               <div class="cardHeader">
                 <strong>Analiz</strong>
-                <span class="tag" id="analiz-tag">3 Hak</span>
+                <span class="tag" data-mode="analiz" data-platform="analiz">3 Hak</span>
               </div>
               <div class="cardBody">Kısa analiz + 3 öneri verir.</div>
               <div class="cardFooter">
-                <button class="primary" onclick="setMode('analiz')" id="analiz-btn">Seç</button>
+                <button class="primary" onclick="window.setMode('analiz')">Seç</button>
               </div>
             </div>
           </div>
 
-          <div class="outBox" id="analiz-output"></div>
+          <div class="outBox" id="output-analiz"></div>
         </div>
-
       </section>
 
-      <!-- PROMPT BAR -->
       <div class="promptBar">
         <div class="promptInner">
           <button class="modeSelect" id="modeBtn">Mod: Başlık</button>
@@ -575,7 +557,6 @@
     </main>
   </div>
 
-  <!-- GOOGLE LOGIN -->
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
@@ -588,17 +569,13 @@
 
     googleBtn.addEventListener("click", async () => {
       googleBtn.style.opacity = "0.7";
-      googleBtn.style.pointerEvents = "none";
-
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { redirectTo: "https://www.jarvisheyrose.com" }
+        options: { redirectTo: window.location.origin }
       });
-
       if (error) {
-        alert("Google giriş hatası: " + error.message);
+        alert("Giriş hatası: " + error.message);
         googleBtn.style.opacity = "1";
-        googleBtn.style.pointerEvents = "auto";
       }
     });
 
@@ -620,165 +597,128 @@
   </script>
 
   <script>
-    const currentPage = { name: 'youtube' };
-    let mode = 'baslik';
-    const modeBtn = document.getElementById('modeBtn');
-    const nav = document.getElementById('nav');
-    const pages = {
-      youtube: document.getElementById('page-youtube'),
-      instagram: document.getElementById('page-instagram'),
-      tiktok: document.getElementById('page-tiktok'),
-      analiz: document.getElementById('page-analiz'),
-    };
+    let currentPlatform = 'youtube';
+    let currentMode = 'baslik';
 
-    // HAK LİMİTLERİ
-    const LIMITS = {
-      baslik: 3,
-      hashtag: 3,
-      aciklama: 2,
-      analiz: 3
-    };
+    const LIMITS = { baslik: 3, hashtag: 3, aciklama: 2, analiz: 3 };
 
-    // SAYFA GEÇİŞİ
-    function goPage(key){
-      Object.values(pages).forEach(p => p.style.display = 'none');
-      pages[key].style.display = 'block';
-      [...nav.querySelectorAll('button')].forEach(b => b.classList.toggle('active', b.dataset.page === key));
-      currentPage.name = key;
-      setMode('baslik');
-      clearOutput();
-      updateUI();
-    }
-
-    nav.addEventListener('click', (e) => {
-      const btn = e.target.closest('button[data-page]');
-      if(!btn) return;
-      goPage(btn.dataset.page);
-    });
-
-    // TABS
-    document.getElementById('tabs').addEventListener('click', (e)=>{
-      const t = e.target.closest('.tab');
-      if(!t) return;
-      [...document.querySelectorAll('.tab')].forEach(x=>x.classList.remove('active'));
-      t.classList.add('active');
-    });
-
-    // MOD
-    function setMode(m){
-      mode = m;
-      const map = {
-        baslik:'Başlık',
-        hashtag:'Hashtag',
-        aciklama:'Açıklama',
-        analiz:'Kanal Analiz'
-      };
-      modeBtn.textContent = 'Mod: ' + (map[m] || 'Başlık');
-      updateUI();
-    }
-    window.setMode = setMode;
-
-    modeBtn.addEventListener('click', ()=>{
-      const order = currentPage.name === 'analiz' ? ['analiz'] : ['baslik','hashtag','aciklama'];
-      const idx = (order.indexOf(mode)+1) % order.length;
-      setMode(order[idx]);
-    });
-
-    // HAK SİSTEMİ (LOCAL + IP)
     function todayKey(){
       const d = new Date();
       return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     }
 
     function getUsage(){
-      const raw = localStorage.getItem('jarvis_usage');
-      if(!raw) return {};
-      try { return JSON.parse(raw) || {}; } catch { return {}; }
+      try { return JSON.parse(localStorage.getItem('jarvis_usage') || '{}'); } 
+      catch { return {}; }
     }
 
     function setUsage(obj){
       localStorage.setItem('jarvis_usage', JSON.stringify(obj));
     }
 
-    function getModeCount(platform, m){
+    function getModeCount(platform, mode){
       const data = getUsage();
-      const t = todayKey();
-      const key = `${platform}_${m}`;
-      if(!data[t]) data[t] = {};
-      return Number(data[t][key] || 0);
+      const key = `${platform}_${mode}`;
+      const today = todayKey();
+      if(!data[today]) data[today] = {};
+      return Number(data[today][key] || 0);
     }
 
-    function incModeCount(platform, m){
+    function incModeCount(platform, mode){
       const data = getUsage();
-      const t = todayKey();
-      const key = `${platform}_${m}`;
-      if(!data[t]) data[t] = {};
-      data[t][key] = Number(data[t][key] || 0) + 1;
+      const key = `${platform}_${mode}`;
+      const today = todayKey();
+      if(!data[today]) data[today] = {};
+      data[today][key] = Number(data[today][key] || 0) + 1;
       setUsage(data);
     }
 
-    function isLimitOver(platform, m){
-      return getModeCount(platform, m) >= LIMITS[m];
+    function getRemainingCount(platform, mode){
+      return Math.max(0, LIMITS[mode] - getModeCount(platform, mode));
     }
 
-    function getRemainingCount(platform, m){
-      return Math.max(0, LIMITS[m] - getModeCount(platform, m));
-    }
-
-    // UI GÜNCELLEME
     function updateUI(){
-      const platform = currentPage.name;
-      
-      if(platform === 'analiz'){
-        const remaining = getRemainingCount(platform, 'analiz');
-        const tag = document.getElementById('analiz-tag');
-        const btn = document.getElementById('analiz-btn');
-        
+      document.querySelectorAll('.tag[data-mode][data-platform]').forEach(tag => {
+        const mode = tag.dataset.mode;
+        const platform = tag.dataset.platform;
+        const remaining = getRemainingCount(platform, mode);
         tag.textContent = `${remaining} Hak`;
+        
         if(remaining === 0){
-          tag.classList.remove('tag');
-          tag.classList.add('tag', 'warn');
-          btn.disabled = true;
+          tag.classList.add('warn');
         } else {
-          tag.className = 'tag';
-          btn.disabled = false;
+          tag.classList.remove('warn');
         }
-      } else {
-        ['baslik', 'hashtag', 'aciklama'].forEach(m => {
-          const remaining = getRemainingCount(platform, m);
-          const tag = document.getElementById(`${platform.slice(0,2)}-${m}-tag`);
-          const btn = document.getElementById(`${platform.slice(0,2)}-${m}-btn`);
-          
-          if(!tag || !btn) return;
-          
-          tag.textContent = `${remaining} Hak`;
-          if(remaining === 0){
-            btn.disabled = true;
-            tag.classList.add('warn');
-          } else {
-            btn.disabled = false;
-            tag.classList.remove('warn');
-          }
-        });
+      });
+    }
+
+    function goPage(platform){
+      document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+      document.getElementById(`page-${platform}`).style.display = 'block';
+      
+      document.querySelectorAll('#nav button').forEach(b => {
+        b.classList.toggle('active', b.dataset.page === platform);
+      });
+      
+      currentPlatform = platform;
+      updateUI();
+    }
+
+    window.setMode = function(mode){
+      currentMode = mode;
+      const map = {baslik:'Başlık', hashtag:'Hashtag', aciklama:'Açıklama', analiz:'Kanal Analiz'};
+      document.getElementById('modeBtn').textContent = 'Mod: ' + (map[mode] || 'Başlık');
+    };
+
+    document.getElementById('nav').addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-page]');
+      if(btn) goPage(btn.dataset.page);
+    });
+
+    document.getElementById('modeBtn').addEventListener('click', () => {
+      const modes = currentPlatform === 'analiz' ? ['analiz'] : ['baslik','hashtag','aciklama'];
+      const idx = (modes.indexOf(currentMode) + 1) % modes.length;
+      window.setMode(modes[idx]);
+    });
+
+    function buildPrompt(text){
+      if(currentMode === 'baslik'){
+        return `Konu: ${text}\n\nSadece 1 adet kısa ${currentPlatform === 'youtube' ? 'YouTube' : currentPlatform === 'instagram' ? 'Instagram' : 'TikTok'} başlığı yaz. Maksimum 40 kelime. Emoji yok.`;
       }
+      if(currentMode === 'hashtag'){
+        return `Konu: ${text}\n\nSadece 8-12 hashtag yaz. Tek satır. Liste yok.`;
+      }
+      if(currentMode === 'aciklama'){
+        return `Konu: ${text}\n\nKısa açıklama yaz. Maksimum 2 cümle, 40 kelime.`;
+      }
+      if(currentMode === 'analiz'){
+        return `Konu: ${text}\n\nKısa analiz + 3 öneri. Maksimum 80 kelime. Madde işaretli liste kullan.`;
+      }
+      return text;
     }
 
-    // OUTPUT
-    function currentOutputBox(){
-      const platform = currentPage.name;
-      return document.getElementById(`${platform === 'youtube' ? 'yt' : platform === 'instagram' ? 'ig' : platform === 'tiktok' ? 'tt' : 'analiz'}-output`);
-    }
+    async function callGemini(text){
+      const r = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ prompt: buildPrompt(text) })
+      });
 
-    function clearOutput(){
-      const box = currentOutputBox();
-      if(!box) return;
-      box.style.display = 'none';
-      box.textContent = '';
-      box.className = 'outBox';
+      const raw = await r.text();
+      let data = {};
+      try { data = JSON.parse(raw); } catch { data = { error: raw }; }
+
+      if(!r.ok){
+        if(raw.includes('quota') || raw.includes('Quota')){
+          throw new Error('⚠️ Günlük API limitiniz doldu. Lütfen yarın tekrar deneyin.');
+        }
+        throw new Error(data?.error || 'Bağlantı hatası');
+      }
+      return data?.reply || 'Cevap gelmedi.';
     }
 
     function showOutput(text, type = 'normal'){
-      const box = currentOutputBox();
+      const box = document.getElementById(`output-${currentPlatform}`);
       if(!box) return;
       box.style.display = 'block';
       box.textContent = text;
@@ -787,20 +727,37 @@
       if(type === 'warn') box.classList.add('warn');
     }
 
-    // PROMPT BUILDER
-    function buildPrompt(userText){
-      const maxWords = 40; // KISA CEVAP İÇİN
-      
-      if(mode === 'baslik'){
-        return `Konu: ${userText}\n\nSadece 1 adet kısa YouTube başlığı yaz. Maksimum ${maxWords} kelime. Emoji yok.`;
+    document.getElementById('sendBtn').addEventListener('click', async () => {
+      const text = document.getElementById('promptInput').value.trim();
+      if(!text) return showOutput('❌ Lütfen bir konu yazın.', 'warn');
+
+      if(getRemainingCount(currentPlatform, currentMode) === 0){
+        return showOutput('⚠️ Bu mod için hakkınız bitti. Yarın tekrar deneyin.', 'warn');
       }
-      if(mode === 'hashtag'){
-        return `Konu: ${userText}\n\nSadece 8-12 hashtag yaz. Tek satır. Liste yok.`;
+
+      showOutput('⏳ Hazırlanıyor...');
+
+      try{
+        const reply = await callGemini(text);
+        incModeCount(currentPlatform, currentMode);
+        
+        const shortReply = String(reply).slice(0, 600);
+        showOutput(shortReply);
+        
+        updateUI();
+
+        if(getRemainingCount(currentPlatform, currentMode) === 0){
+          setTimeout(() => {
+            showOutput(shortReply + '\n\n⚠️ Bu mod için hakkınız bitti.', 'warn');
+          }, 300);
+        }
+      }catch(e){
+        showOutput('❌ ' + e.message, 'error');
       }
-      if(mode === 'aciklama'){
-        return `Konu: ${userText}\n\nKısa açıklama yaz. Maksimum 2 cümle, ${maxWords} kelime.`;
+    });
+
+    document.getElementById('promptInput').addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' && !e.shiftKey){
+        e.preventDefault();
+        document.getElementById('sendBtn').click();
       }
-      if(mode === 'analiz'){
-        return `Konu: ${userText}\n\nKısa analiz + 3 öneri. Maksimum 80 kelime. Madde işaretli liste kullan.`;
-      }
-      return userText;
