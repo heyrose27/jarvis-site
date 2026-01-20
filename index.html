@@ -1,565 +1,74 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jarvis Heyrose</title>
+export const config = { runtime: "edge" };
 
-  <style>
-    :root{
-      --bg:#0b0f14;
-      --panel:#0f1520;
-      --panel2:#0c121b;
-      --border:rgba(255,255,255,.08);
-      --text:#e6edf6;
-      --muted:#a9b4c3;
-      --accent:#7c3aed;
-      --accent2:#22c55e;
-      --shadow: 0 10px 30px rgba(0,0,0,.55);
-      --radius:16px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: radial-gradient(1200px 700px at 30% 10%, rgba(124,58,237,.18), transparent 55%),
-                  radial-gradient(900px 600px at 80% 70%, rgba(34,197,94,.10), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-      height:100vh;
-      overflow:hidden;
-    }
-    .app{display:flex; height:100vh; width:100vw;}
-
-    /* Sidebar */
-    .sidebar{
-      width:260px;
-      padding:18px 14px;
-      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 35%), var(--panel2);
-      border-right:1px solid var(--border);
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
-    .brand{display:flex; align-items:center; gap:10px; padding:10px 10px 14px;}
-    .logo{
-      width:38px; height:38px; border-radius:12px;
-      background: radial-gradient(circle at 30% 30%, rgba(124,58,237,.9), rgba(34,197,94,.6));
-      box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 10px 20px rgba(0,0,0,.35);
-    }
-    .brand h1{font-size:14px; margin:0; letter-spacing:.6px}
-    .brand p{margin:2px 0 0; font-size:12px; color:var(--muted)}
-
-    .nav{
-      display:flex; flex-direction:column; gap:6px;
-      padding:0 6px;
-      overflow:auto;
-    }
-    .nav button{
-      all:unset;
-      cursor:pointer;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 12px;
-      border-radius:12px;
-      color:var(--text);
-      background:transparent;
-      border:1px solid transparent;
-    }
-    .nav button:hover{
-      background: rgba(255,255,255,.04);
-      border-color: rgba(255,255,255,.06);
-    }
-    .nav button.active{
-      background: rgba(124,58,237,.12);
-      border-color: rgba(124,58,237,.35);
-      box-shadow: 0 0 0 1px rgba(124,58,237,.18) inset;
-    }
-    .pill{
-      font-size:11px;
-      padding:3px 8px;
-      border-radius:999px;
-      color:rgba(255,255,255,.9);
-      background: rgba(34,197,94,.12);
-      border:1px solid rgba(34,197,94,.25);
-    }
-
-    /* Sidebar Çıkış (giriş yokken gizli) */
-    .nav button.logoutNav{
-      display:none;
-      justify-content:flex-start;
-      background: rgba(239,68,68,.10);
-      border:1px solid rgba(239,68,68,.25);
-    }
-    .nav button.logoutNav:hover{
-      background: rgba(239,68,68,.18);
-      border-color: rgba(239,68,68,.35);
-    }
-
-    .sidebarFooter{
-      margin-top:auto;
-      padding:10px 6px 6px;
-      color:var(--muted);
-      font-size:12px;
-      display:flex; gap:8px; flex-wrap:wrap;
-      align-items:center;
-    }
-    .miniBtn{
-      all:unset;
-      cursor:pointer;
-      padding:8px 10px;
-      border-radius:12px;
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.07);
-      color:var(--text);
-      font-size:12px;
-    }
-    .miniBtn:hover{border-color: rgba(255,255,255,.14)}
-
-    /* Main */
-    .main{flex:1; display:flex; flex-direction:column; min-width:0;}
-
-    /* Top bar */
-    .topbar{
-      height:64px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:0 18px;
-      border-bottom:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 70%);
-    }
-    .tabs{display:flex; gap:8px; overflow:auto; padding-bottom:2px;}
-    .tab{
-      all:unset; cursor:pointer;
-      padding:8px 12px;
-      border-radius:999px;
-      color:var(--muted);
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-      white-space:nowrap;
-      font-size:13px;
-    }
-    .tab:hover{border-color: rgba(255,255,255,.16)}
-    .tab.active{
-      color:var(--text);
-      background: rgba(124,58,237,.18);
-      border-color: rgba(124,58,237,.35);
-    }
-    .topActions{display:flex; gap:10px; align-items:center;}
-    .badge{
-      display:flex; align-items:center; gap:8px;
-      padding:8px 10px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-      color:var(--text);
-      font-size:13px;
-    }
-    .dot{width:8px; height:8px; border-radius:50%; background: var(--accent2); box-shadow:0 0 14px rgba(34,197,94,.55)}
-
-    .loginBtn{
-      all:unset; cursor:pointer;
-      padding:10px 12px;
-      border-radius:12px;
-      background: rgba(124,58,237,.20);
-      border:1px solid rgba(124,58,237,.35);
-      font-weight:800;
-      font-size:13px;
-      display:flex; align-items:center; gap:8px;
-    }
-    .loginBtn:hover{background: rgba(124,58,237,.28)}
-    .googleIcon{
-      width:16px;height:16px;display:inline-block;
-      border-radius:4px;
-      background:conic-gradient(from 0deg, #4285F4 0 25%, #34A853 0 50%, #FBBC05 0 75%, #EA4335 0 100%);
-    }
-
-    /* Content */
-    .content{flex:1; overflow:auto; padding:18px; padding-bottom:140px;}
-    .pageTitle{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin:4px 0 14px;}
-    .pageTitle h2{margin:0; font-size:20px}
-    .pageTitle p{margin:0; color:var(--muted); font-size:13px}
-
-    .grid{display:grid; grid-template-columns: repeat(12, 1fr); gap:14px;}
-    .card{
-      grid-column: span 4;
-      background: rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius);
-      overflow:hidden;
-      box-shadow: var(--shadow);
-      min-height:150px;
-      display:flex; flex-direction:column;
-    }
-    .cardHeader{padding:12px 12px 8px; display:flex; justify-content:space-between; align-items:center; gap:10px;}
-    .tag{
-      font-size:11px;
-      padding:4px 8px;
-      border-radius:999px;
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.08);
-      color:var(--muted);
-      white-space:nowrap;
-    }
-    .cardBody{padding:0 12px 12px; color:var(--muted); font-size:13px; line-height:1.35; flex:1;}
-    .cardFooter{padding:12px; border-top:1px solid rgba(255,255,255,.07); display:flex; justify-content:space-between; align-items:center; gap:10px;}
-    .primary{
-      all:unset; cursor:pointer;
-      padding:9px 12px;
-      border-radius:12px;
-      background: rgba(34,197,94,.14);
-      border:1px solid rgba(34,197,94,.28);
-      font-weight:800;
-      font-size:13px;
-    }
-    .primary:hover{background: rgba(34,197,94,.20)}
-    .ghost{
-      all:unset; cursor:pointer;
-      padding:9px 12px;
-      border-radius:12px;
-      background: rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.10);
-      color:var(--text);
-      font-size:13px;
-    }
-    .ghost:hover{border-color: rgba(255,255,255,.18)}
-
-    /* Prompt Bar */
-    .promptBar{
-      position:fixed;
-      left:260px;
-      right:0;
-      bottom:0;
-      padding:14px 18px;
-      border-top:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(11,15,20,.30), rgba(11,15,20,.90) 25%, rgba(11,15,20,.96));
-      backdrop-filter: blur(10px);
-    }
-    .promptInner{
-      max-width:1100px;
-      margin:0 auto;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:18px;
-      padding:10px;
-      box-shadow: var(--shadow);
-    }
-    .promptInner textarea{
-      width:100%;
-      resize:none;
-      height:44px;
-      max-height:120px;
-      background: transparent;
-      border:none;
-      outline:none;
-      color:var(--text);
-      font-size:14px;
-      padding:10px 10px;
-      line-height:1.25;
-    }
-    .sendBtn{
-      all:unset; cursor:pointer;
-      padding:10px 14px;
-      border-radius:14px;
-      background: rgba(124,58,237,.22);
-      border:1px solid rgba(124,58,237,.38);
-      font-weight:900;
-      font-size:13px;
-      white-space:nowrap;
-    }
-    .sendBtn:hover{background: rgba(124,58,237,.30)}
-    .modeSelect{
-      all:unset; cursor:pointer;
-      padding:10px 12px;
-      border-radius:14px;
-      background: rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.10);
-      color:var(--text);
-      font-size:13px;
-      white-space:nowrap;
-    }
-
-    @media (max-width: 980px){
-      .sidebar{width:220px}
-      .promptBar{left:220px}
-      .card{grid-column: span 6}
-    }
-    @media (max-width: 720px){
-      .sidebar{width:78px; padding:14px 10px}
-      .brand h1,.brand p{display:none}
-      .nav button span.label{display:none}
-      .pill{display:none}
-      .promptBar{left:78px; padding:12px}
-      .card{grid-column: span 12}
-      .topbar{padding:0 12px}
-      .badge{display:none}
-    }
-  </style>
-</head>
-
-<body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1>JARVIS HEYROSE</h1>
-          <p>Odalar • AI • Ders</p>
-        </div>
-      </div>
-
-      <nav class="nav" id="nav">
-        <button class="active" data-page="youtube"><span class="label">YouTube Odası</span><span class="pill">3 Free</span></button>
-        <button data-page="instagram"><span class="label">Instagram Reels</span></button>
-        <button data-page="tiktok"><span class="label">TikTok Odası</span></button>
-        <button data-page="facebook"><span class="label">Facebook Odası</span></button>
-        <button data-page="x"><span class="label">X Odası</span></button>
-        <button data-page="ders"><span class="label">Ders Odası (30dk)</span></button>
-        <button data-page="uni"><span class="label">Üniversite Aday</span></button>
-        <button data-page="kpss"><span class="label">KPSS Test</span></button>
-        <button data-page="analiz"><span class="label">Kanal Analiz</span></button>
-
-        <button id="sidebarLogoutBtn" class="logoutNav"><span class="label">Çıkış</span></button>
-      </nav>
-
-      <div class="sidebarFooter">
-        <button class="miniBtn" id="helpBtn">Yardım</button>
-      </div>
-    </aside>
-
-    <main class="main">
-      <header class="topbar">
-        <div class="tabs" id="tabs">
-          <button class="tab active" data-tab="hepsi">Hepsi</button>
-          <button class="tab" data-tab="viral">Viral</button>
-          <button class="tab" data-tab="seo">SEO</button>
-          <button class="tab" data-tab="ders">Ders</button>
-        </div>
-
-        <div class="topActions">
-          <div class="badge"><span class="dot"></span> Sistem Aktif</div>
-
-          <button class="loginBtn" id="googleLoginBtn" title="Google ile giriş">
-            <span class="googleIcon" aria-hidden="true"></span>
-            Google ile Giriş
-          </button>
-        </div>
-      </header>
-
-      <section class="content">
-        <div id="page-youtube" class="page">
-          <div class="pageTitle">
-            <div>
-              <h2>YouTube Odası</h2>
-              <p>Başlık • Hashtag • Kanal açıklaması (demo)</p>
-            </div>
-          </div>
-
-          <div class="grid">
-            <div class="card">
-              <div class="cardHeader"><strong>Başlık Üret</strong><span class="tag">AI</span></div>
-              <div class="cardBody">Gemini ile başlık üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="setMode('baslik')">Seç</button>
-                <button class="ghost" onclick="openPromo()">Tanıtım</button>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="cardHeader"><strong>Hashtag Üret</strong><span class="tag">AI</span></div>
-              <div class="cardBody">Gemini ile hashtag seti üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="setMode('hashtag')">Seç</button>
-                <button class="ghost" onclick="openPromo()">Tanıtım</button>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="cardHeader"><strong>Kanal Açıklaması</strong><span class="tag">AI</span></div>
-              <div class="cardBody">Gemini ile açıklama üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="setMode('aciklama')">Seç</button>
-                <button class="ghost" onclick="openPromo()">Tanıtım</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="page-instagram" class="page" style="display:none"></div>
-        <div id="page-tiktok" class="page" style="display:none"></div>
-        <div id="page-facebook" class="page" style="display:none"></div>
-        <div id="page-x" class="page" style="display:none"></div>
-        <div id="page-ders" class="page" style="display:none"></div>
-        <div id="page-uni" class="page" style="display:none"></div>
-        <div id="page-kpss" class="page" style="display:none"></div>
-        <div id="page-analiz" class="page" style="display:none"></div>
-      </section>
-
-      <div class="promptBar">
-        <div class="promptInner">
-          <button class="modeSelect" id="modeBtn">Mod: Başlık</button>
-          <textarea id="promptInput" placeholder="Buraya yaz..."></textarea>
-          <button class="sendBtn" id="sendBtn">Oluştur</button>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <div class="modalBackdrop" id="promoModal" style="position:fixed;inset:0;background:rgba(0,0,0,.60);display:none;align-items:center;justify-content:center;padding:16px;z-index:50;">
-    <div style="width:min(720px,100%);background:rgba(15,21,32,.92);border:1px solid rgba(255,255,255,.10);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;">
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.08);">
-        <h3 style="margin:0;font-size:14px;">Tanıtım</h3>
-        <button style="all:unset;cursor:pointer;width:34px;height:34px;display:grid;place-items:center;border-radius:12px;border:1px solid rgba(255,255,255,.10);background: rgba(255,255,255,.04);" onclick="closePromo()">✕</button>
-      </div>
-      <div style="padding:14px;color:var(--muted);font-size:13px;">Demo.</div>
-      <div style="display:flex;gap:10px;justify-content:flex-end;padding:12px 14px 14px;border-top:1px solid rgba(255,255,255,.08);">
-        <button class="ghost" onclick="closePromo()">Kapat</button>
-        <button class="primary" onclick="closePromo()">Tamam</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SUPABASE + GOOGLE LOGIN + SIDEBAR CIKIS -->
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-
-    const SUPABASE_URL = "https://cdzxzgwvebmvccfkvfll.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_QDz16Zn2HeoOw7Sf25PENA_FgZL0P-F";
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    const googleBtn = document.getElementById("googleLoginBtn");
-    const sidebarLogoutBtn = document.getElementById("sidebarLogoutBtn");
-    const defaultGoogleBtnHTML = `<span class="googleIcon" aria-hidden="true"></span> Google ile Giriş`;
-
-    function setLoggedInUI(email){
-      googleBtn.innerHTML = `<span class="googleIcon"></span> ${email}`;
-      sidebarLogoutBtn.style.display = "flex";
-    }
-    function setLoggedOutUI(){
-      googleBtn.innerHTML = defaultGoogleBtnHTML;
-      googleBtn.style.opacity = "1";
-      googleBtn.style.pointerEvents = "auto";
-      sidebarLogoutBtn.style.display = "none";
-    }
-
-    googleBtn.addEventListener("click", async () => {
-      googleBtn.style.opacity = "0.7";
-      googleBtn.style.pointerEvents = "none";
-
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: { redirectTo: window.location.origin }
+export default async function handler(req) {
+  try {
+    if (req.method !== "POST") {
+      return new Response(JSON.stringify({ error: "Method not allowed" }), {
+        status: 405,
+        headers: { "Content-Type": "application/json" },
       });
-
-      if (error) {
-        alert("Google giriş hatası: " + error.message);
-        googleBtn.style.opacity = "1";
-        googleBtn.style.pointerEvents = "auto";
-      }
-    });
-
-    sidebarLogoutBtn.addEventListener("click", async () => {
-      const { error } = await supabase.auth.signOut();
-      if (error) return alert("Çıkış hatası: " + error.message);
-      setLoggedOutUI();
-      location.reload();
-    });
-
-    const { data } = await supabase.auth.getSession();
-    if (data?.session?.user?.email) setLoggedInUI(data.session.user.email);
-    else setLoggedOutUI();
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user?.email) setLoggedInUI(session.user.email);
-      else setLoggedOutUI();
-    });
-  </script>
-
-  <script>
-    // Router
-    const nav = document.getElementById('nav');
-    const pages = {
-      youtube: document.getElementById('page-youtube'),
-      instagram: document.getElementById('page-instagram'),
-      tiktok: document.getElementById('page-tiktok'),
-      facebook: document.getElementById('page-facebook'),
-      x: document.getElementById('page-x'),
-      ders: document.getElementById('page-ders'),
-      uni: document.getElementById('page-uni'),
-      kpss: document.getElementById('page-kpss'),
-      analiz: document.getElementById('page-analiz'),
-    };
-    function goPage(key){
-      Object.values(pages).forEach(p => p.style.display = 'none');
-      pages[key].style.display = 'block';
-      [...nav.querySelectorAll('button')].forEach(b => b.classList.toggle('active', b.dataset.page === key));
     }
-    nav.addEventListener('click', (e) => {
-      const btn = e.target.closest('button[data-page]');
-      if(!btn) return;
-      goPage(btn.dataset.page);
-    });
 
-    // Tabs
-    document.getElementById('tabs').addEventListener('click', (e)=>{
-      const t = e.target.closest('.tab');
-      if(!t) return;
-      [...document.querySelectorAll('.tab')].forEach(x=>x.classList.remove('active'));
-      t.classList.add('active');
-    });
-
-    // Mode
-    let mode = 'baslik';
-    const modeBtn = document.getElementById('modeBtn');
-    function setMode(m){
-      mode = m;
-      const map = { baslik:'Başlık', hashtag:'Hashtag', aciklama:'Açıklama', analiz:'Analiz', oneriler:'Öneri', plan:'Plan' };
-      modeBtn.textContent = 'Mod: ' + (map[m] || 'Başlık');
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return new Response(JSON.stringify({ error: "GEMINI_API_KEY missing" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
     }
-    window.setMode = setMode;
 
-    modeBtn.addEventListener('click', ()=>{
-      const order = ['baslik','hashtag','aciklama'];
-      const idx = (order.indexOf(mode)+1) % order.length;
-      setMode(order[idx]);
+    const body = await req.json().catch(() => ({}));
+    const prompt = body?.prompt;
+    if (!prompt) {
+      return new Response(JSON.stringify({ error: "Prompt missing" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const url =
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" +
+      apiKey;
+
+    const r = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+      }),
     });
 
-    // Modal
-    const promoModal = document.getElementById('promoModal');
-    function openPromo(){ promoModal.style.display = 'flex'; }
-    function closePromo(){ promoModal.style.display = 'none'; }
-    window.openPromo = openPromo;
-    window.closePromo = closePromo;
+    const raw = await r.text();
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      data = { error: raw };
+    }
 
-    document.getElementById('helpBtn').addEventListener('click', ()=>alert('Menüden oda seç, alttan yazıp üret.'));
+    if (!r.ok) {
+      return new Response(
+        JSON.stringify({
+          error:
+            data?.error?.message ||
+            data?.error ||
+            `Gemini error (${r.status})`,
+        }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      );
+    }
 
-    // GEMINI (hata mesajını net gösterir)
-    document.getElementById('sendBtn').addEventListener('click', async ()=>{
-      const txt = document.getElementById('promptInput').value.trim();
-      if(!txt) return alert('Bir şey yaz.');
+    const reply =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text || "Cevap gelmedi.";
 
-      try{
-        const r = await fetch('/api/gemini', {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({ prompt: `Mod: ${mode}\nİstek: ${txt}` })
-        });
-
-        const raw = await r.text();
-        let data = null;
-        try { data = JSON.parse(raw); } catch {}
-
-        if(!r.ok){
-          return alert((data && data.error) ? data.error : raw);
-        }
-        alert((data && data.text) ? data.text : raw);
-      }catch(e){
-        alert('Bağlantı hatası: ' + (e?.message || e));
-      }
+    return new Response(JSON.stringify({ ok: true, reply }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
     });
-  </script>
-</body>
-</html>
+  } catch (e) {
+    return new Response(JSON.stringify({ error: String(e) }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}
