@@ -534,4 +534,247 @@
             <div class="card">
               <div class="cardHeader">
                 <strong>Analiz</strong>
-                <span class
+                <span class="tag" data-mode="analiz" data-platform="analiz">3 Hak</span>
+              </div>
+              <div class="cardBody">Kısa analiz + 3 öneri verir.</div>
+              <div class="cardFooter">
+                <button class="primary" onclick="window.setMode('analiz')">Seç</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="outBox" id="output-analiz"></div>
+        </div>
+      </section>
+
+      <div class="promptBar">
+        <div class="promptInner">
+          <button class="modeSelect" id="modeBtn">Mod: Başlık</button>
+          <textarea id="promptInput" placeholder="Konunuzu yazın..."></textarea>
+          <button class="sendBtn" id="sendBtn">Oluştur</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    const SUPABASE_URL = "https://cdzxzgwvebmvccfkvfll.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_QDz16Zn2HeoOw7Sf25PENA_FgZL0P-F";
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    window.supabase = supabase; // Diğer script erişimi için
+    const googleBtn = document.getElementById("googleLoginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    googleBtn.addEventListener("click", async () => {
+      googleBtn.style.opacity = "0.7";
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo: window.location.origin }
+      });
+      if (error) {
+        alert("Giriş hatası: " + error.message);
+        googleBtn.style.opacity = "1";
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      location.reload();
+    });
+
+    const { data } = await supabase.auth.getSession();
+    if (data?.session?.user?.email) {
+      googleBtn.innerHTML = `<span class="googleIcon"></span> ${data.session.user.email}`;
+    }
+
+    supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user?.email) {
+        googleBtn.innerHTML = `<span class="googleIcon"></span> ${session.user.email}`;
+      }
+    });
+  </script>
+
+  <script>
+    let currentPlatform = 'youtube';
+    let currentMode = 'baslik';
+
+    const LIMITS = { baslik: 3, hashtag: 3, aciklama: 2, analiz: 3 };
+
+    function todayKey(){
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+
+    function getUsage(){
+      try { return JSON.parse(localStorage.getItem('jarvis_usage') || '{}'); } 
+      catch { return {}; }
+    }
+
+    function setUsage(obj){
+      localStorage.setItem('jarvis_usage', JSON.stringify(obj));
+    }
+
+    function getModeCount(platform, mode){
+      const data = getUsage();
+      const key = `${platform}_${mode}`;
+      const today = todayKey();
+      if(!data[today]) data[today] = {};
+      return Number(data[today][key] || 0);
+    }
+
+    function incModeCount(platform, mode){
+      const data = getUsage();
+      const key = `${platform}_${mode}`;
+      const today = todayKey();
+      if(!data[today]) data[today] = {};
+      data[today][key] = Number(data[today][key] || 0) + 1;
+      setUsage(data);
+    }
+
+    function getRemainingCount(platform, mode){
+      return Math.max(0, LIMITS[mode] - getModeCount(platform, mode));
+    }
+
+    function updateUI(){
+      document.querySelectorAll('.tag[data-mode][data-platform]').forEach(tag => {
+        const mode = tag.dataset.mode;
+        const platform = tag.dataset.platform;
+        const remaining = getRemainingCount(platform, mode);
+        tag.textContent = `${remaining} Hak`;
+        
+        if(remaining === 0){
+          tag.classList.add('warn');
+        } else {
+          tag.classList.remove('warn');
+        }
+      });
+    }
+
+    function goPage(platform){
+      document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+      document.getElementById(`page-${platform}`).style.display = 'block';
+      
+      document.querySelectorAll('#nav button').forEach(b => {
+        b.classList.toggle('active', b.dataset.page === platform);
+      });
+      
+      currentPlatform = platform;
+      updateUI();
+    }
+
+    window.setMode = function(mode){
+      currentMode = mode;
+      const map = {baslik:'Başlık', hashtag:'Hashtag', aciklama:'Açıklama', analiz:'Kanal Analiz'};
+      document.getElementById('modeBtn').textContent = 'Mod: ' + (map[mode] || 'Başlık');
+    };
+
+    document.getElementById('nav').addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-page]');
+      if(btn) goPage(btn.dataset.page);
+    });
+
+    document.getElementById('modeBtn').addEventListener('click', () => {
+      const modes = currentPlatform === 'analiz' ? ['analiz'] : ['baslik','hashtag','aciklama'];
+      const idx = (modes.indexOf(currentMode) + 1) % modes.length;
+      window.setMode(modes[idx]);
+    });
+
+    function buildPrompt(text){
+      if(currentMode === 'baslik'){
+        return `Konu: ${text}\n\nSadece 1 adet kısa ${currentPlatform === 'youtube' ? 'YouTube' : currentPlatform === 'instagram' ? 'Instagram' : 'TikTok'} başlığı yaz. Maksimum 40 kelime. Emoji yok.`;
+      }
+      if(currentMode === 'hashtag'){
+        return `Konu: ${text}\n\nSadece 8-12 hashtag yaz. Tek satır. Liste yok.`;
+      }
+      if(currentMode === 'aciklama'){
+        return `Konu: ${text}\n\nKısa açıklama yaz. Maksimum 2 cümle, 40 kelime.`;
+      }
+      if(currentMode === 'analiz'){
+        return `Konu: ${text}\n\nKısa analiz + 3 öneri. Maksimum 80 kelime. Madde işaretli liste kullan.`;
+      }
+      return text;
+    }
+
+    async function callGemini(text){
+      const r = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ prompt: buildPrompt(text) })
+      });
+
+      const raw = await r.text();
+      let data = {};
+      try { data = JSON.parse(raw); } catch { data = { error: raw }; }
+
+      if(!r.ok){
+        if(raw.includes('quota') || raw.includes('Quota')){
+          throw new Error('⚠️ Günlük API limitiniz doldu. Lütfen yarın tekrar deneyin.');
+        }
+        throw new Error(data?.error || 'Bağlantı hatası');
+      }
+      return data?.reply || 'Cevap gelmedi.';
+    }
+
+    function showOutput(text, type = 'normal'){
+      const box = document.getElementById(`output-${currentPlatform}`);
+      if(!box) return;
+      box.style.display = 'block';
+      box.textContent = text;
+      box.className = 'outBox';
+      if(type === 'error') box.classList.add('error');
+      if(type === 'warn') box.classList.add('warn');
+    }
+
+    document.getElementById('sendBtn').addEventListener('click', async () => {
+      // --- YENİ EKLENEN KONTROLLER ---
+      // 1. Üye Girişi Kontrolü
+      const { data: { session } } = await window.supabase.auth.getSession();
+      if (!session) {
+        return showOutput('❌ İşlem yapmak için lütfen Google ile giriş yapın.', 'error');
+      }
+
+      const text = document.getElementById('promptInput').value.trim();
+      
+      // 2. 100 Karakter Sınırı Kontrolü
+      if(!text) return showOutput('❌ Lütfen bir konu yazın.', 'warn');
+      if(text.length > 100) {
+        return showOutput('❌ Konu 100 karakterden fazla olamaz!', 'error');
+      }
+
+      if(getRemainingCount(currentPlatform, currentMode) === 0){
+        return showOutput('⚠️ Bu mod için hakkınız bitti. Yarın tekrar deneyin.', 'warn');
+      }
+
+      showOutput('⏳ Hazırlanıyor...');
+
+      try{
+        const reply = await callGemini(text);
+        incModeCount(currentPlatform, currentMode);
+        
+        const shortReply = String(reply).slice(0, 600);
+        showOutput(shortReply);
+        
+        updateUI();
+
+        if(getRemainingCount(currentPlatform, currentMode) === 0){
+          setTimeout(() => {
+            showOutput(shortReply + '\n\n⚠️ Bu mod için hakkınız bitti.', 'warn');
+          }, 300);
+        }
+      }catch(e){
+        showOutput('❌ ' + e.message, 'error');
+      }
+    });
+
+    document.getElementById('promptInput').addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' && !e.shiftKey){
+        e.preventDefault();
+        document.getElementById('sendBtn').click();
+      }
+    });
+  </script>
+</body>
+</html>
