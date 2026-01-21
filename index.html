@@ -1,109 +1,199 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jarvis Heyrose</title>
-  <style>
-    :root{ --bg:#0b0f14; --panel:#0f1520; --panel2:#0c121b; --border:rgba(255,255,255,.08); --text:#e6edf6; --muted:#a9b4c3; --accent:#7c3aed; --accent2:#22c55e; --radius:16px; }
-    *{box-sizing:border-box}
-    body{ margin:0; font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color:var(--text); height:100vh; overflow:hidden; }
-    .app{display:flex; height:100vh;}
-    .sidebar{width:260px; padding:18px; background: var(--panel2); border-right:1px solid var(--border); display:flex; flex-direction:column; gap:14px;}
-    .nav button{all:unset; cursor:pointer; display:flex; padding:12px; border-radius:12px; color:var(--text); transition:0.2s; justify-content:space-between; align-items:center;}
-    .nav button.active{background: rgba(124,58,237,0.12); border:1px solid rgba(124,58,237,0.35);}
-    .main{flex:1; display:flex; flex-direction:column; min-width:0;}
-    .topbar{height:64px; display:flex; align-items:center; justify-content:space-between; padding:0 18px; border-bottom:1px solid var(--border);}
-    .content{flex:1; overflow:auto; padding:20px; padding-bottom:120px;}
-    .grid{display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:15px;}
-    .card{background: rgba(255,255,255,0.03); border:1px solid var(--border); border-radius: var(--radius); padding:15px; display:flex; flex-direction:column; gap:12px;}
-    .primary{all:unset; cursor:pointer; padding:10px; border-radius:12px; background: rgba(34,197,94,0.14); border:1px solid rgba(34,197,94,0.28); text-align:center; font-weight:800; font-size:13px;}
-    .promptBar{position:fixed; left:260px; right:0; bottom:0; padding:15px; background: rgba(11,15,20,0.95); backdrop-filter: blur(10px); border-top:1px solid var(--border);}
-    .promptInner{max-width:1100px; margin:0 auto; display:flex; gap:10px; background: rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:18px; padding:10px;}
-    textarea{width:100%; background:transparent; border:none; color:#fff; resize:none; outline:none; padding:10px; font-size:14px; height:44px;}
-    .sendBtn{all:unset; cursor:pointer; padding:10px 20px; border-radius:14px; background: var(--accent); font-weight:900;}
-    .outBox{margin-top:15px; padding:15px; border-radius:14px; background: rgba(255,255,255,0.03); border:1px solid var(--border); display:none; white-space:pre-wrap;}
-    @media (max-width: 720px){ .sidebar{width:80px;} .promptBar{left:80px;} .label, h1, p {display:none;} }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sosyal Medya Asistanı</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f4f4f9; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        
+        /* GİRİŞ EKRANI TASARIMI */
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #2c3e50; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; color: white; }
+        #login-screen input { padding: 10px; margin: 10px 0; width: 250px; border-radius: 5px; border: none; }
+        #login-screen button { padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        
+        /* ANA PANEL TASARIMI */
+        #main-panel { display: none; width: 90%; max-width: 800px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        
+        /* ODA SEKMELERİ */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab-btn { flex: 1; padding: 15px; border: none; cursor: pointer; font-weight: bold; color: white; border-radius: 5px; transition: 0.3s; }
+        
+        /* Renkler */
+        .btn-ytb { background-color: #ff0000; }
+        .btn-insta { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .btn-tiktok { background-color: #000000; }
+        .btn-x { background-color: #1da1f2; }
+        .tab-btn:hover { opacity: 0.8; }
+
+        /* İÇERİK ALANI */
+        .room-content { display: none; border: 1px solid #ddd; padding: 20px; border-radius: 5px; }
+        .active-room { display: block; }
+        
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .input-group input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        
+        .generate-btn { width: 100%; padding: 12px; background-color: #34495e; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        .generate-btn:hover { background-color: #2c3e50; }
+
+        /* SONUÇ KUTULARI */
+        .results-area { margin-top: 20px; }
+        .result-box { background: #f9f9f9; border-left: 5px solid #3498db; padding: 10px; margin-bottom: 10px; font-size: 14px; }
+        .limit-warning { color: red; font-size: 12px; font-weight: bold; }
+        h3 { border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+    </style>
 </head>
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand"><h1>JARVIS</h1></div>
-      <nav class="nav" id="nav">
-        <button class="active" onclick="changePage('youtube')"><span class="label">YouTube</span></button>
-        <button onclick="changePage('instagram')"><span class="label">Instagram</span></button>
-        <button onclick="changePage('tiktok')"><span class="label">TikTok</span></button>
-        <button onclick="changePage('analiz')"><span class="label">Analiz</span></button>
-      </nav>
-      <button id="logoutBtn" class="primary" style="margin-top:auto; background:rgba(239,68,68,0.1); color:#fca5a5;">Çıkış Yap</button>
-    </aside>
-    <main class="main">
-      <header class="topbar"><div>Sistem Aktif</div><button id="loginBtn" class="primary">Google ile Giriş</button></header>
-      <section class="content">
-        <div id="page-youtube" class="page">
-          <h2>YouTube</h2>
-          <div class="grid">
-            <div class="card"><strong>Başlık Üretici</strong><button class="primary" onclick="setMode('baslik')">Seç</button></div>
-            <div class="card"><strong>Hashtag Üretici</strong><button class="primary" onclick="setMode('hashtag')">Seç</button></div>
-          </div>
-          <div class="outBox" id="output-youtube"></div>
+
+    <div id="login-screen">
+        <h2>Sisteme Giriş Yap</h2>
+        <p>Lütfen üye girişi yapınız.</p>
+        <input type="text" id="username" placeholder="Kullanıcı Adı (Örn: admin)">
+        <input type="password" id="password" placeholder="Şifre (Örn: 1234)">
+        <button onclick="login()">Giriş Yap</button>
+        <p id="login-error" style="color: #e74c3c; display: none;">Hatalı kullanıcı adı veya şifre!</p>
+    </div>
+
+    <div id="main-panel">
+        <h2 style="text-align: center;">Sosyal Medya İçerik Asistanı</h2>
+        
+        <div class="tabs">
+            <button class="tab-btn btn-ytb" onclick="openRoom('ytb')">YouTube Odası</button>
+            <button class="tab-btn btn-insta" onclick="openRoom('insta')">Instagram Odası</button>
+            <button class="tab-btn btn-tiktok" onclick="openRoom('tiktok')">TikTok Odası</button>
+            <button class="tab-btn btn-x" onclick="openRoom('x')">X (Twitter) Odası</button>
         </div>
-        <div id="page-instagram" class="page" style="display:none"><h2>Instagram</h2><div class="outBox" id="output-instagram"></div></div>
-        <div id="page-tiktok" class="page" style="display:none"><h2>TikTok</h2><div class="outBox" id="output-tiktok"></div></div>
-        <div id="page-analiz" class="page" style="display:none"><h2>Analiz</h2><div class="outBox" id="output-analiz"></div></div>
-      </section>
-      <div class="promptBar">
-        <div class="promptInner">
-          <textarea id="promptInput" placeholder="Konuyu buraya yaz..."></textarea>
-          <button id="sendBtn" class="sendBtn">Oluştur</button>
+
+        <div id="ytb" class="room-content">
+            <h3>YouTube İçerik Üretimi</h3>
+            <div class="input-group">
+                <label>Konu Nedir?</label>
+                <input type="text" id="topic-ytb" placeholder="Örn: Yemek Tarifi">
+            </div>
+            <button class="generate-btn" onclick="generateContent('ytb')">Komut Ver ve Üret</button>
+            <div id="output-ytb" class="results-area"></div>
         </div>
-      </div>
-    </main>
-  </div>
 
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-    const supabase = createClient("https://cdzxzgwvebmvccfkvfll.supabase.co", "sb_publishable_QDz16Zn2HeoOw7Sf25PENA_FgZL0P-F");
+        <div id="insta" class="room-content">
+            <h3>Instagram İçerik Üretimi</h3>
+            <div class="input-group">
+                <label>Konu Nedir?</label>
+                <input type="text" id="topic-insta" placeholder="Örn: Doğa Gezisi">
+            </div>
+            <button class="generate-btn" onclick="generateContent('insta')">Komut Ver ve Üret</button>
+            <div id="output-insta" class="results-area"></div>
+        </div>
 
-    let platform = 'youtube', mode = 'baslik';
+        <div id="tiktok" class="room-content">
+            <h3>TikTok İçerik Üretimi</h3>
+            <div class="input-group">
+                <label>Konu Nedir?</label>
+                <input type="text" id="topic-tiktok" placeholder="Örn: Komik Anlar">
+            </div>
+            <button class="generate-btn" onclick="generateContent('tiktok')">Komut Ver ve Üret</button>
+            <div id="output-tiktok" class="results-area"></div>
+        </div>
 
-    window.changePage = (p) => {
-      document.querySelectorAll('.page').forEach(el => el.style.display = 'none');
-      document.getElementById('page-' + p).style.display = 'block';
-      platform = p;
-    };
+        <div id="x" class="room-content">
+            <h3>X (Twitter) İçerik Üretimi</h3>
+            <div class="input-group">
+                <label>Konu Nedir?</label>
+                <input type="text" id="topic-x" placeholder="Örn: Teknoloji Haberleri">
+            </div>
+            <button class="generate-btn" onclick="generateContent('x')">Komut Ver ve Üret</button>
+            <div id="output-x" class="results-area"></div>
+        </div>
+    </div>
 
-    window.setMode = (m) => {
-      mode = m;
-      document.getElementById('promptInput').placeholder = m.toUpperCase() + " için konu yazın...";
-      document.getElementById('promptInput').focus();
-    };
+    <script>
+        // GİRİŞ KONTROLÜ
+        function login() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
 
-    document.getElementById('loginBtn').onclick = () => supabase.auth.signInWithOAuth({provider:'google'});
-    document.getElementById('logoutBtn').onclick = async () => { await supabase.auth.signOut(); location.reload(); };
+            // Basit bir kontrol (Gerçek projede veritabanı gerekir)
+            if(user === "admin" && pass === "1234") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-panel').style.display = 'block';
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+        }
 
-    // Oturum Kontrolü
-    const { data } = await supabase.auth.getSession();
-    if(data?.session) document.getElementById('loginBtn').innerText = data.session.user.email;
+        // ODA DEĞİŞTİRME
+        function openRoom(roomName) {
+            var i;
+            var x = document.getElementsByClassName("room-content");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none"; 
+            }
+            document.getElementById(roomName).style.display = "block"; 
+        }
 
-    document.getElementById('sendBtn').onclick = async () => {
-      const out = document.getElementById('output-' + platform);
-      const val = document.getElementById('promptInput').value.trim();
-      if(!val) return;
+        // İÇERİK ÜRETME FONKSİYONU
+        function generateContent(platform) {
+            const topic = document.getElementById('topic-' + platform).value;
+            const outputDiv = document.getElementById('output-' + platform);
+            
+            if(!topic) { alert("Lütfen bir konu giriniz!"); return; }
 
-      out.style.display = 'block'; out.innerText = "⏳ Üretiliyor...";
+            // Platforma özel taslaklar
+            let titles = [];
+            let hashtags = [];
+            let descs = [];
 
-      try {
-        const res = await fetch('/api/gemini', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ prompt: val, mode: mode, platform: platform })
-        });
-        const result = await res.json();
-        out.innerText = result.reply || result.error || "Hata oluştu.";
-      } catch (e) { out.innerText = "Sunucu hatası!"; }
-    };
-  </script>
+            // Basit Üretim Mantığı (Yapay Zeka olmadan şablon kullanarak)
+            if(platform === 'ytb') {
+                titles = [`${topic} Hakkında Bilinmeyenler`, `5 Dakikada ${topic}`, `En İyi ${topic} Taktikleri`];
+                hashtags = [`#${topic.replace(/\s/g, '')} #youtube #video`, `#shorts #${topic.replace(/\s/g, '')} #trend`, `#vlog #${topic.replace(/\s/g, '')} #yeni`];
+                descs = [`Bu videoda ${topic} konusunu inceledik. Abone olmayı unutmayın!`, `${topic} hakkında merak edilen her şey bu videoda!`];
+            } else if (platform === 'insta') {
+                titles = [`✨ ${topic} Zamanı!`, `📸 ${topic} İçin Harika Fikir`, `🔥 ${topic} Trendi`];
+                hashtags = [`#${topic.replace(/\s/g, '')} #instagood #keşfet`, `#reels #${topic.replace(/\s/g, '')} #daily`, `#tbt #${topic.replace(/\s/g, '')} #photo`];
+                descs = [`${topic} severler buraya! Beğenmeyi unutma.`, `Bugünün konusu: ${topic}. Siz ne düşünüyorsunuz?`];
+            } else if (platform === 'tiktok') {
+                titles = [`😱 ${topic} ÇILGINLIĞI`, `Hızlıca ${topic} Öğren`, `${topic} Challenge`];
+                hashtags = [`#fyp #${topic.replace(/\s/g, '')} #tiktok`, `#keşfet #${topic.replace(/\s/g, '')} #viral`, `#foryou #${topic.replace(/\s/g, '')}`];
+                descs = [`Bunu denemelisin! ${topic}`, `${topic} hakkında kimler bunu biliyordu?`];
+            } else { // X Odası
+                titles = [`📢 ${topic} Gündemi`, `💡 ${topic} Analizi`, `🔥 ${topic} Son Dakika`];
+                hashtags = [`#${topic.replace(/\s/g, '')} #haber #gündem`, `#tt #${topic.replace(/\s/g, '')} #bilgi`, `#analiz #${topic.replace(/\s/g, '')}`];
+                descs = [`${topic} hakkında düşüncelerim flood'da 👇`, `${topic} ile ilgili önemli gelişmeler var.`];
+            }
+
+            // HTML Olarak Yazdırma ve 100 Karakter Kontrolü
+            let html = `<h4>Üretilen Sonuçlar (Konu: ${topic})</h4>`;
+            
+            // Başlıklar
+            html += `<strong>📝 3 Adet Başlık:</strong><br>`;
+            titles.forEach(t => html += `<div class='result-box'>${t}</div>`);
+
+            // Hashtag Grupları (100 Karakter Kontrolü ile)
+            html += `<strong>#️⃣ 3 Adet Hashtag Grubu (Başlık + Tag < 100kr):</strong><br>`;
+            hashtags.forEach((tags, index) => {
+                let combined = titles[index] + " " + tags;
+                let warning = "";
+                
+                // 100 Karakter Sınırı Mantığı
+                if(combined.length > 100) {
+                    combined = combined.substring(0, 97) + "..."; // Kes ve nokta koy
+                    warning = " <span class='limit-warning'>(Kısaltıldı: Sınır aşıldı)</span>";
+                }
+                
+                html += `<div class='result-box'>${combined} [${combined.length} kr] ${warning}</div>`;
+            });
+
+            // Açıklamalar
+            html += `<strong>📄 2 Adet Kanal Açıklaması:</strong><br>`;
+            descs.forEach(d => html += `<div class='result-box'>${d}</div>`);
+
+            outputDiv.innerHTML = html;
+        }
+
+        // Varsayılan olarak YTB odasını aç
+        // openRoom('ytb'); (Giriş yapınca açılacak)
+    </script>
+
 </body>
 </html>
