@@ -2,143 +2,109 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jarvis Heyrose - Google Auth</title>
+    <title>Jarvis - Sosyal Medya Odaları</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root { --bg: #0b0f14; --panel: #151a23; --border: rgba(255,255,255,0.1); --text: #e6edf6; --accent: #7c3aed; --danger: #ef4444; }
-        * { box-sizing: border-box; }
-        body { margin: 0; font-family: sans-serif; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
-
-        /* GİRİŞ EKRANI */
-        #auth-screen {
-            position: fixed; inset: 0; background: var(--bg); z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .google-btn {
-            background: white; color: #000; padding: 12px 24px; border-radius: 8px;
-            cursor: pointer; font-weight: bold; border: none; display: flex; align-items: center; gap: 10px;
-        }
-
-        /* ANA YAPI */
-        .app { display: none; height: 100vh; } /* Giriş yapılmadan görünmez */
-        .sidebar { width: 250px; background: #0c121b; border-right: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; }
-        .main { flex: 1; padding: 25px; overflow-y: auto; }
-        
-        .nav-btn {
-            all: unset; padding: 12px; margin-bottom: 5px; border-radius: 8px; 
-            cursor: pointer; transition: 0.2s; color: #a9b4c3;
-        }
-        .nav-btn.active { background: rgba(124, 58, 237, 0.15); color: var(--accent); border: 1px solid rgba(124, 58, 237, 0.3); }
-
-        /* İÇERİK ALANI */
-        .room { display: none; }
-        .room.active { display: block; }
-        .input-group { background: var(--panel); padding: 15px; border-radius: 12px; display: flex; gap: 10px; margin-bottom: 20px; border: 1px solid var(--border); }
-        input { flex: 1; background: transparent; border: none; color: white; outline: none; }
-        
-        .card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 15px; border-radius: 12px; margin-bottom: 10px; }
-        .limit-info { font-size: 11px; color: var(--danger); margin-top: 5px; font-weight: bold; }
-        .user-info { font-size: 12px; margin-bottom: 20px; color: var(--accent); }
+        body { background: #0a0a0a; color: #00ffcc; font-family: 'Courier New', monospace; text-align: center; }
+        .container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; padding: 20px; }
+        .room { border: 2px solid #00ffcc; padding: 20px; width: 200px; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        .room:hover { background: #00ffcc; color: #0a0a0a; }
+        .input-group { margin-top: 20px; }
+        input { padding: 10px; border-radius: 5px; border: none; width: 250px; margin: 5px; }
+        button { padding: 10px 20px; background: #00ffcc; color: #000; border: none; cursor: pointer; font-weight: bold; }
+        #auth-section { margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="auth-screen">
-        <h1 style="letter-spacing: 4px;">JARVIS</h1>
-        <p>Devam etmek için Google ile giriş yapın</p>
-        <button class="google-btn" onclick="signInWithGoogle()">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
-            Google ile Giriş Yap
-        </button>
+    <div id="auth-section">
+        <h2>JARVIS GİRİŞ SİSTEMİ</h2>
+        <button onclick="login()">Google ile Giriş Yap</button>
+        <button onclick="logout()">Çıkış Yap</button>
+        <p id="user-status">Durum: Giriş yapılmadı</p>
     </div>
 
-    <div class="app" id="app-body">
-        <div style="display:flex; height:100%;">
-            <aside class="sidebar">
-                <h2>JARVIS</h2>
-                <div id="user-mail" class="user-info"></div>
-                <button class="nav-btn active" onclick="showRoom('ytb', this)">YouTube Odası</button>
-                <button class="nav-btn" onclick="showRoom('insta', this)">Instagram Odası</button>
-                <button class="nav-btn" onclick="showRoom('tiktok', this)">TikTok Odası</button>
-                <button class="nav-btn" onclick="showRoom('x', this)">X Odası</button>
-                <button onclick="signOut()" style="margin-top:auto; color:var(--danger); background:none; border:none; cursor:pointer;">Çıkış Yap</button>
-            </aside>
+    <div class="container">
+        <div class="room" onclick="selectRoom('TikTok')">TIKTOK ODASI</div>
+        <div class="room" onclick="selectRoom('Instagram')">INSTAGRAM ODASI</div>
+        <div class="room" onclick="selectRoom('YouTube')">YOUTUBE ODASI</div>
+        <div class="room" onclick="selectRoom('X / Twitter')">X ODASI</div>
+    </div>
 
-            <main class="main">
-                <div id="ytb" class="room active">
-                    <h3>🔴 YouTube İçerik Paneli</h3>
-                    <div class="input-group">
-                        <input type="text" id="in-ytb" placeholder="Konu yazın...">
-                        <button onclick="create('ytb')" style="background:var(--accent); color:white; border:none; border-radius:8px; padding:0 20px; cursor:pointer;">Üret</button>
-                    </div>
-                    <div id="out-ytb"></div>
-                </div>
-                <div id="insta" class="room"><h3>🟣 Instagram İçerik Paneli</h3><div class="input-group"><input type="text" id="in-insta" placeholder="Konu..."><button onclick="create('insta')">Üret</button></div><div id="out-insta"></div></div>
-                <div id="tiktok" class="room"><h3>⚫ TikTok İçerik Paneli</h3><div class="input-group"><input type="text" id="in-tiktok" placeholder="Konu..."><button onclick="create('tiktok')">Üret</button></div><div id="out-tiktok"></div></div>
-                <div id="x" class="room"><h3>🔵 X İçerik Paneli</h3><div class="input-group"><input type="text" id="in-x" placeholder="Konu..."><button onclick="create('x')">Üret</button></div><div id="out-x"></div></div>
-            </main>
-        </div>
+    <div class="input-group">
+        <h3 id="selected-room-name">Lütfen Oda Seçin</h3>
+        <input type="text" id="title" placeholder="Başlık Yazın..."><br>
+        <input type="text" id="hashtag" placeholder="#Hashtag Yazın..."><br>
+        <button onclick="paylas()">PAYLAŞ</button>
     </div>
 
     <script>
-        // Supabase Bağlantısı (Kendi bilgilerini buraya yazmalısın)
-        const _supabase = supabase.createClient("https://YOUR_PROJECT_ID.supabase.co", "YOUR_ANON_KEY");
+        // SUPABASE BAĞLANTISI
+        const _supabase = supabase.createClient("BURAYA_PROJECT_URL", "BURAYA_PUBLISHABLE_KEY");
 
-        // GİRİŞ FONKSİYONU
-        async function signInWithGoogle() {
+        let seciliOda = "";
+
+        // ODA SEÇİMİ
+        function selectRoom(roomName) {
+            seciliOda = roomName;
+            document.getElementById('selected-room-name').innerText = "Seçili Oda: " + roomName;
+        }
+
+        // GOOGLE GİRİŞ
+        async function login() {
             await _supabase.auth.signInWithOAuth({ provider: 'google' });
         }
 
-        // ÇIKIŞ FONKSİYONU
-        async function signOut() {
+        async function logout() {
             await _supabase.auth.signOut();
             location.reload();
         }
 
-        // OTURUM KONTROLÜ
+        // GİRİŞ DURUMU KONTROLÜ
         _supabase.auth.onAuthStateChange((event, session) => {
             if (session) {
-                document.getElementById('auth-screen').style.display = 'none';
-                document.getElementById('app-body').style.display = 'block';
-                document.getElementById('user-mail').innerText = "Aktif: " + session.user.email;
+                document.getElementById('user-status').innerText = "Hoş geldin: " + session.user.email;
             }
         });
 
-        // ODA DEĞİŞTİRME
-        function showRoom(id, btn) {
-            document.querySelectorAll('.room').forEach(r => r.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            btn.classList.add('active');
-        }
-
-        // ÜRETİM MOTORU (100 KARAKTER SINIRLI)
-        function create(platform) {
-            const val = document.getElementById('in-' + platform).value;
-            const out = document.getElementById('out-' + platform);
-            if(!val) return;
-
-            // Örnek Taslaklar
-            let title = val + " Hakkında Her Şey!";
-            let tags = "#" + val.replace(/ /g,'') + " #trend #kesfet";
-            let desc1 = val + " içeriğimizi izlediniz mi?";
-            let desc2 = "Daha fazlası için takipte kalın: " + val;
-
-            // Karakter Sınırı Kontrolü (Başlık + Etiket)
-            let combined = title + " " + tags;
-            let warning = "";
-            if(combined.length > 100) {
-                combined = combined.substring(0, 97) + "...";
-                warning = "<div class='limit-info'>⚠️ 100 Karakter sınırı nedeniyle kısaltıldı!</div>";
+        // PAYLAŞ BUTONU (SENİN İSTEDİĞİN KISITLAMALAR BURADA)
+        async function paylas() {
+            // 1. KONTROL: Üye Girişi
+            const { data: { session } } = await _supabase.auth.getSession();
+            if (!session) {
+                alert("HATA: İşlem yapmak için önce giriş yapmalısınız!");
+                return;
             }
 
-            out.innerHTML = `
-                <div class="card"><strong>Başlık:</strong><br>${title}</div>
-                <div class="card"><strong>Kombinasyon (Başlık+Tag):</strong><br>${combined} ${warning}</div>
-                <div class="card"><strong>Açıklama 1:</strong><br>${desc1}</div>
-                <div class="card"><strong>Açıklama 2:</strong><br>${desc2}</div>
-            `;
+            if (seciliOda === "") {
+                alert("Lütfen bir oda seçin!");
+                return;
+            }
+
+            const baslik = document.getElementById('title').value;
+            const hashtag = document.getElementById('hashtag').value;
+
+            // 2. KONTROL: 100 Karakter Sınırı
+            if ((baslik.length + hashtag.length) > 100) {
+                alert("HATA: Başlık ve Hashtag toplamı 100 karakteri geçemez!");
+                return;
+            }
+
+            // HER ŞEY TAMAMSA VERİTABANINA KAYDET
+            const { error } = await _supabase.from('paylasimlar').insert([
+                { 
+                    oda: seciliOda, 
+                    baslik: baslik, 
+                    hashtag: hashtag, 
+                    user_email: session.user.email 
+                }
+            ]);
+
+            if (!error) {
+                alert("Başarıyla Paylaşıldı!");
+            } else {
+                alert("Bir hata oluştu: " + error.message);
+            }
         }
     </script>
 </body>
