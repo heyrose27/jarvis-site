@@ -1,780 +1,705 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jarvis Heyrose</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis Heyrose - AI Sosyal Medya</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <style>
-    :root{
-      --bg:#0b0f14;
-      --panel:#0f1520;
-      --panel2:#0c121b;
-      --border:rgba(255,255,255,.08);
-      --text:#e6edf6;
-      --muted:#a9b4c3;
-      --accent:#7c3aed;
-      --accent2:#22c55e;
-      --warn:#fbbf24;
-      --shadow: 0 10px 30px rgba(0,0,0,.55);
-      --radius:16px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: radial-gradient(1200px 700px at 30% 10%, rgba(124,58,237,.18), transparent 55%),
-                  radial-gradient(900px 600px at 80% 70%, rgba(34,197,94,.10), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-      height:100vh;
-      overflow:hidden;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #581c87 50%, #1e293b 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-    .app{display:flex; height:100vh; width:100vw;}
+        /* Animasyonlu Arka Plan */
+        .bg-effects {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
 
-    .sidebar{
-      width:260px;
-      padding:18px 14px;
-      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 35%), var(--panel2);
-      border-right:1px solid var(--border);
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
-    .brand{
-      display:flex; align-items:center; gap:10px;
-      padding:10px 10px 14px;
-    }
-    .logo{
-      width:38px; height:38px; border-radius:12px;
-      background: radial-gradient(circle at 30% 30%, rgba(124,58,237,.9), rgba(34,197,94,.6));
-      box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 10px 20px rgba(0,0,0,.35);
-    }
-    .brand h1{font-size:14px; margin:0; letter-spacing:.6px}
-    .brand p{margin:2px 0 0; font-size:12px; color:var(--muted)}
+        .blob {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.2;
+            mix-blend-mode: multiply;
+            animation: blob 7s infinite;
+        }
 
-    .nav{
-      display:flex; flex-direction:column; gap:6px;
-      padding:0 6px;
-      overflow:auto;
-    }
-    .nav button{
-      all:unset;
-      cursor:pointer;
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 12px;
-      border-radius:12px;
-      color:var(--text);
-      background:transparent;
-      border:1px solid transparent;
-    }
-    .nav button:hover{
-      background: rgba(255,255,255,.04);
-      border-color: rgba(255,255,255,.06);
-    }
-    .nav button.active{
-      background: rgba(124,58,237,.12);
-      border-color: rgba(124,58,237,.35);
-      box-shadow: 0 0 0 1px rgba(124,58,237,.18) inset;
-    }
-    .sidebarFooter{
-      margin-top:auto;
-      padding:10px 6px 6px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    .logoutBtn{
-      all:unset;
-      cursor:pointer;
-      padding:10px 12px;
-      border-radius:12px;
-      background: rgba(239,68,68,.12);
-      border:1px solid rgba(239,68,68,.25);
-      color:#fca5a5;
-      font-size:13px;
-      text-align:center;
-      font-weight:600;
-    }
-    .logoutBtn:hover{background: rgba(239,68,68,.18)}
+        .blob-1 {
+            top: -160px;
+            right: -160px;
+            background: #a855f7;
+        }
 
-    .main{
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      min-width:0;
-    }
+        .blob-2 {
+            bottom: -160px;
+            left: -160px;
+            background: #3b82f6;
+            animation-delay: 2s;
+        }
 
-    .topbar{
-      height:64px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:0 18px;
-      border-bottom:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,.03), transparent 70%);
-    }
-    .tabs{
-      display:flex;
-      gap:8px;
-      overflow:auto;
-      padding-bottom:2px;
-    }
-    .tab{
-      all:unset;
-      cursor:pointer;
-      padding:8px 12px;
-      border-radius:999px;
-      color:var(--muted);
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-      white-space:nowrap;
-      font-size:13px;
-    }
-    .tab:hover{border-color: rgba(255,255,255,.16)}
-    .tab.active{
-      color:var(--text);
-      background: rgba(124,58,237,.18);
-      border-color: rgba(124,58,237,.35);
-    }
-    .topActions{
-      display:flex; gap:10px; align-items:center;
-    }
-    .badge{
-      display:flex; align-items:center; gap:8px;
-      padding:8px 10px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-      color:var(--text);
-      font-size:13px;
-    }
-    .dot{width:8px; height:8px; border-radius:50%; background: var(--accent2); box-shadow:0 0 14px rgba(34,197,94,.55)}
+        .blob-3 {
+            top: 50%;
+            left: 50%;
+            background: #ec4899;
+            animation-delay: 4s;
+        }
 
-    .loginBtn{
-      all:unset; cursor:pointer;
-      padding:10px 12px;
-      border-radius:12px;
-      background: rgba(124,58,237,.20);
-      border:1px solid rgba(124,58,237,.35);
-      font-weight:800;
-      font-size:13px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    .loginBtn:hover{background: rgba(124,58,237,.28)}
-    .googleIcon{
-      width:16px;height:16px;display:inline-block;
-      border-radius:4px;
-      background:conic-gradient(from 0deg, #4285F4 0 25%, #34A853 0 50%, #FBBC05 0 75%, #EA4335 0 100%);
-    }
+        @keyframes blob {
+            0%, 100% {
+                transform: translate(0px, 0px) scale(1);
+            }
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
 
-    .content{
-      flex:1;
-      overflow:auto;
-      padding:18px;
-      padding-bottom:120px;
-    }
-    .pageTitle{
-      display:flex; align-items:flex-end; justify-content:space-between;
-      gap:16px;
-      margin:4px 0 14px;
-    }
-    .pageTitle h2{margin:0; font-size:20px}
-    .pageTitle p{margin:0; color:var(--muted); font-size:13px}
+        .dot-pattern {
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+            z-index: 2;
+            pointer-events: none;
+        }
 
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap:14px;
-    }
-    .card{
-      background: rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius);
-      overflow:hidden;
-      box-shadow: var(--shadow);
-      min-height:140px;
-      display:flex;
-      flex-direction:column;
-    }
-    .cardHeader{
-      padding:12px 12px 8px;
-      display:flex; justify-content:space-between; align-items:center;
-      gap:10px;
-    }
-    .tag{
-      font-size:11px;
-      padding:4px 8px;
-      border-radius:999px;
-      background: rgba(34,197,94,.10);
-      border:1px solid rgba(34,197,94,.22);
-      color:#86efac;
-      white-space:nowrap;
-      font-weight:600;
-    }
-    .tag.warn{
-      background: rgba(251,191,36,.10);
-      border-color: rgba(251,191,36,.22);
-      color:#fcd34d;
-    }
-    .cardBody{
-      padding:0 12px 12px;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.35;
-      flex:1;
-    }
-    .cardFooter{
-      padding:12px;
-      border-top:1px solid rgba(255,255,255,.07);
-      display:flex; justify-content:flex-end;
-      gap:10px;
-    }
-    .primary{
-      all:unset; cursor:pointer;
-      padding:9px 14px;
-      border-radius:12px;
-      background: rgba(34,197,94,.14);
-      border:1px solid rgba(34,197,94,.28);
-      font-weight:800;
-      font-size:13px;
-    }
-    .primary:hover{background: rgba(34,197,94,.20)}
-    .primary:disabled{
-      opacity:0.4;
-      cursor:not-allowed;
-    }
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
 
-    .promptBar{
-      position:fixed;
-      left:260px;
-      right:0;
-      bottom:0;
-      padding:14px 18px;
-      border-top:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(11,15,20,.30), rgba(11,15,20,.90) 25%, rgba(11,15,20,.96));
-      backdrop-filter: blur(10px);
-    }
-    .promptInner{
-      max-width:1100px;
-      margin:0 auto;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:18px;
-      padding:10px;
-      box-shadow: var(--shadow);
-    }
-    .promptInner textarea{
-      width:100%;
-      resize:none;
-      height:44px;
-      max-height:120px;
-      background: transparent;
-      border:none;
-      outline:none;
-      color:var(--text);
-      font-size:14px;
-      padding:10px 10px;
-      line-height:1.25;
-    }
-    .sendBtn{
-      all:unset; cursor:pointer;
-      padding:10px 14px;
-      border-radius:14px;
-      background: rgba(124,58,237,.22);
-      border:1px solid rgba(124,58,237,.38);
-      font-weight:900;
-      font-size:13px;
-      white-space:nowrap;
-    }
-    .sendBtn:hover{background: rgba(124,58,237,.30)}
-    .modeSelect{
-      all:unset; cursor:pointer;
-      padding:10px 12px;
-      border-radius:14px;
-      background: rgba(255,255,255,.03);
-      border:1px solid rgba(255,255,255,.10);
-      color:var(--text);
-      font-size:13px;
-      white-space:nowrap;
-    }
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
 
-    .outBox{
-      margin-top:14px;
-      padding:14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      color: var(--text);
-      font-size:13px;
-      line-height:1.45;
-      white-space:pre-wrap;
-      display:none;
-    }
-    .outBox.error{
-      background: rgba(239,68,68,.08);
-      border-color: rgba(239,68,68,.22);
-      color:#fca5a5;
-    }
-    .outBox.warn{
-      background: rgba(251,191,36,.08);
-      border-color: rgba(251,191,36,.22);
-      color:#fcd34d;
-    }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
 
-    @media (max-width: 980px){
-      .sidebar{width:220px}
-      .promptBar{left:220px}
-    }
-    @media (max-width: 720px){
-      .sidebar{width:78px; padding:14px 10px}
-      .brand h1,.brand p{display:none}
-      .nav button span.label{display:none}
-      .promptBar{left:78px; padding:12px}
-      .topbar{padding:0 12px}
-      .badge{display:none}
-    }
-  </style>
+        .logo-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.5);
+        }
+
+        .logo-text h1 {
+            font-size: 1.875rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logo-text p {
+            color: #d8b4fe;
+            font-size: 0.875rem;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(34, 197, 94, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .status-text {
+            color: #86efac;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.5);
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .room-btn {
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            color: #d1d5db;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .room-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .room-btn.active {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3));
+            backdrop-filter: blur(10px);
+            color: white;
+            border-color: rgba(168, 85, 247, 0.5);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
+        }
+
+        .logout-btn {
+            margin-top: 1.5rem;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(249, 115, 22, 0.2));
+            backdrop-filter: blur(10px);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .logout-btn:hover {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(249, 115, 22, 0.3));
+        }
+
+        /* Content */
+        .content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            color: #d1d5db;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            color: white;
+            border: none;
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
+        }
+
+        .room-header h2 {
+            font-size: 1.875rem;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .room-header p {
+            color: #d8b4fe;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Feature Cards */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 60px rgba(168, 85, 247, 0.2);
+        }
+
+        .feature-card.purple::before {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+        }
+
+        .feature-card.blue::before {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+        }
+
+        .feature-card.green::before {
+            background: linear-gradient(135deg, #22c55e, #10b981);
+        }
+
+        .feature-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .feature-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .feature-header h3 {
+            font-size: 1.25rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .badge {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .feature-description {
+            color: #9ca3af;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .progress-section {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            transition: width 0.5s;
+            border-radius: 9999px;
+        }
+
+        .progress-fill.purple {
+            background: linear-gradient(90deg, #a855f7, #ec4899);
+        }
+
+        .progress-fill.blue {
+            background: linear-gradient(90deg, #3b82f6, #06b6d4);
+        }
+
+        .progress-fill.green {
+            background: linear-gradient(90deg, #22c55e, #10b981);
+        }
+
+        .feature-actions {
+            display: flex;
+            gap: 0.5rem;
+            position: relative;
+        }
+
+        .btn-generate {
+            flex: 1;
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-generate.purple {
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+        }
+
+        .btn-generate.blue {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+        }
+
+        .btn-generate.green {
+            background: linear-gradient(135deg, #22c55e, #10b981);
+        }
+
+        .btn-generate:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.3);
+        }
+
+        .btn-copy {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-copy:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid;
+        }
+
+        .stat-card.purple {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
+            border-color: rgba(168, 85, 247, 0.2);
+        }
+
+        .stat-card.blue {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1));
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        .stat-card.green {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1));
+            border-color: rgba(34, 197, 94, 0.2);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card.purple .stat-label {
+            color: #d8b4fe;
+        }
+
+        .stat-card.blue .stat-label {
+            color: #93c5fd;
+        }
+
+        .stat-card.green .stat-label {
+            color: #86efac;
+        }
+
+        .stat-value {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .stat-change {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 0.25rem;
+        }
+
+        /* Icons */
+        .icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="logo"></div>
-        <div>
-          <h1>JARVIS HEYROSE</h1>
-          <p>AI • Sosyal Medya</p>
-        </div>
-      </div>
+    <div class="bg-effects">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+    <div class="dot-pattern"></div>
 
-      <nav class="nav" id="nav">
-        <button class="active" data-page="youtube"><span class="label">YouTube Odası</span></button>
-        <button data-page="instagram"><span class="label">Instagram Reels</span></button>
-        <button data-page="tiktok"><span class="label">TikTok Odası</span></button>
-        <button data-page="analiz"><span class="label">Kanal Analiz</span></button>
-      </nav>
-
-      <div class="sidebarFooter">
-        <button class="logoutBtn" id="logoutBtn">Çıkış Yap</button>
-      </div>
-    </aside>
-
-    <main class="main">
-      <header class="topbar">
-        <div class="tabs">
-          <button class="tab active">Hepsi</button>
-          <button class="tab">Viral</button>
-          <button class="tab">SEO</button>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">✨</div>
+                <div class="logo-text">
+                    <h1>JARVIS HEYROSE</h1>
+                    <p>AI • Sosyal Medya</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="status-badge">
+                    <div class="status-dot"></div>
+                    <span class="status-text">Sistem Aktif</span>
+                </div>
+                <button class="btn-primary">Google ile Giriş</button>
+            </div>
         </div>
 
-        <div class="topActions">
-          <div class="badge"><span class="dot"></span> Sistem Aktif</div>
-          <button class="loginBtn" id="googleLoginBtn">
-            <span class="googleIcon"></span>
-            Google ile Giriş
-          </button>
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <button class="room-btn active" onclick="setActiveRoom(this, 'YouTube Odası')">
+                    📺 YouTube Odası
+                </button>
+                <button class="room-btn" onclick="setActiveRoom(this, 'Instagram Reels')">
+                    📱 Instagram Reels
+                </button>
+                <button class="room-btn" onclick="setActiveRoom(this, 'TikTok Odası')">
+                    🎵 TikTok Odası
+                </button>
+                <button class="room-btn" onclick="setActiveRoom(this, 'Kanal Analiz')">
+                    📊 Kanal Analiz
+                </button>
+                <button class="room-btn logout-btn">Çıkış Yap</button>
+            </div>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Tabs -->
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="setActiveTab(this)">Hepsi</button>
+                    <button class="tab-btn" onclick="setActiveTab(this)">Viral</button>
+                    <button class="tab-btn" onclick="setActiveTab(this)">SEO</button>
+                </div>
+
+                <!-- Room Header -->
+                <div class="room-header">
+                    <h2 id="roomTitle">YouTube Odası</h2>
+                    <p>Başlık (3) • Hashtag (3) • Açıklama (2)</p>
+                </div>
+
+                <!-- Feature Cards -->
+                <div class="features-grid">
+                    <!-- Başlık -->
+                    <div class="feature-card purple">
+                        <div class="feature-header">
+                            <h3>Başlık</h3>
+                            <span class="badge">3 Hak</span>
+                        </div>
+                        <p class="feature-description">Kısa, net, SEO uyumlu başlık üretir.</p>
+                        <div class="progress-section">
+                            <div class="progress-label">
+                                <span>Kullanım</span>
+                                <span>3/3</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill purple" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="feature-actions">
+                            <button class="btn-generate purple">
+                                🎤 Üret
+                            </button>
+                            <button class="btn-copy" onclick="copyToClipboard(this)">📋</button>
+                        </div>
+                    </div>
+
+                    <!-- Hashtag -->
+                    <div class="feature-card blue">
+                        <div class="feature-header">
+                            <h3>Hashtag</h3>
+                            <span class="badge">3 Hak</span>
+                        </div>
+                        <p class="feature-description">İçeriğe uygun 8-12 hashtag üretir.</p>
+                        <div class="progress-section">
+                            <div class="progress-label">
+                                <span>Kullanım</span>
+                                <span>3/3</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill blue" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div class="feature-actions">
+                            <button class="btn-generate blue">
+                                🎤 Üret
+                            </button>
+                            <button class="btn-copy" onclick="copyToClipboard(this)">📋</button>
+                        </div>
+                    </div>
+
+                    <!-- Açıklama -->
+                    <div class="feature-card green">
+                        <div class="feature-header">
+                            <h3>Açıklama</h3>
+                            <span class="badge">2 Hak</span>
+                        </div>
+                        <p class="feature-description">Kısa kanal açıklaması üretir.</p>
+                        <div class="progress-section">
+                            <div class="progress-label">
+                                <span>Kullanım</span>
+                                <span>2/3</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill green" style="width: 66.67%"></div>
+                            </div>
+                        </div>
+                        <div class="feature-actions">
+                            <button class="btn-generate green">
+                                🎤 Üret
+                            </button>
+                            <button class="btn-copy" onclick="copyToClipboard(this)">📋</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card purple">
+                        <div class="stat-label">Toplam Kullanım</div>
+                        <div class="stat-value">247</div>
+                        <div class="stat-change">+12% bu hafta</div>
+                    </div>
+                    <div class="stat-card blue">
+                        <div class="stat-label">Kalan Hak</div>
+                        <div class="stat-value">8</div>
+                        <div class="stat-change">Bugün için</div>
+                    </div>
+                    <div class="stat-card green">
+                        <div class="stat-label">Başarı Oranı</div>
+                        <div class="stat-value">94%</div>
+                        <div class="stat-change">Kalite skoru</div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </header>
+    </div>
 
-      <section class="content">
-        <div id="page-youtube" class="page">
-          <div class="pageTitle">
-            <div>
-              <h2>YouTube Odası</h2>
-              <p>Başlık (3) • Hashtag (3) • Açıklama (2)</p>
-            </div>
-          </div>
-
-          <div class="grid">
-            <div class="card">
-              <div class="cardHeader">
-                <strong>Başlık</strong>
-                <span class="tag" data-mode="baslik" data-platform="youtube">3 Hak</span>
-              </div>
-              <div class="cardBody">Kısa, net, SEO uyumlu başlık üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('baslik')">Seç</button>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="cardHeader">
-                <strong>Hashtag</strong>
-                <span class="tag" data-mode="hashtag" data-platform="youtube">3 Hak</span>
-              </div>
-              <div class="cardBody">İçeriğe uygun 8-12 hashtag üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('hashtag')">Seç</button>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="cardHeader">
-                <strong>Açıklama</strong>
-                <span class="tag warn" data-mode="aciklama" data-platform="youtube">2 Hak</span>
-              </div>
-              <div class="cardBody">Kısa kanal açıklaması üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('aciklama')">Seç</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="outBox" id="output-youtube"></div>
-        </div>
-
-        <div id="page-instagram" class="page" style="display:none">
-          <div class="pageTitle">
-            <div>
-              <h2>Instagram Reels</h2>
-              <p>Başlık (3) • Hashtag (3) • Açıklama (2)</p>
-            </div>
-          </div>
-
-          <div class="grid">
-            <div class="card">
-              <div class="cardHeader">
-                <strong>Başlık</strong>
-                <span class="tag" data-mode="baslik" data-platform="instagram">3 Hak</span>
-              </div>
-              <div class="cardBody">Reels için kısa başlık üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('baslik')">Seç</button>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="cardHeader">
-                <strong>Hashtag</strong>
-                <span class="tag" data-mode="hashtag" data-platform="instagram">3 Hak</span>
-              </div>
-              <div class="cardBody">Reels için hashtag üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('hashtag')">Seç</button>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="cardHeader">
-                <strong>Açıklama</strong>
-                <span class="tag warn" data-mode="aciklama" data-platform="instagram">2 Hak</span>
-              </div>
-              <div class="cardBody">Kısa caption üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('aciklama')">Seç</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="outBox" id="output-instagram"></div>
-        </div>
-
-        <div id="page-tiktok" class="page" style="display:none">
-          <div class="pageTitle">
-            <div>
-              <h2>TikTok Odası</h2>
-              <p>Başlık (3) • Hashtag (3) • Açıklama (2)</p>
-            </div>
-          </div>
-
-          <div class="grid">
-            <div class="card">
-              <div class="cardHeader">
-                <strong>Başlık</strong>
-                <span class="tag" data-mode="baslik" data-platform="tiktok">3 Hak</span>
-              </div>
-              <div class="cardBody">TikTok için hızlı başlık üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('baslik')">Seç</button>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="cardHeader">
-                <strong>Hashtag</strong>
-                <span class="tag" data-mode="hashtag" data-platform="tiktok">3 Hak</span>
-              </div>
-              <div class="cardBody">TikTok trend hashtag üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('hashtag')">Seç</button>
-              </div>
-            </div>
-
-            <div class="card">
-              <div class="cardHeader">
-                <strong>Açıklama</strong>
-                <span class="tag warn" data-mode="aciklama" data-platform="tiktok">2 Hak</span>
-              </div>
-              <div class="cardBody">Kısa açıklama üretir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('aciklama')">Seç</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="outBox" id="output-tiktok"></div>
-        </div>
-
-        <div id="page-analiz" class="page" style="display:none">
-          <div class="pageTitle">
-            <div>
-              <h2>Kanal Analiz</h2>
-              <p>Kısa analiz + 3 öneri (3 hak)</p>
-            </div>
-          </div>
-
-          <div class="grid">
-            <div class="card">
-              <div class="cardHeader">
-                <strong>Analiz</strong>
-                <span class="tag" data-mode="analiz" data-platform="analiz">3 Hak</span>
-              </div>
-              <div class="cardBody">Kısa analiz + 3 öneri verir.</div>
-              <div class="cardFooter">
-                <button class="primary" onclick="window.setMode('analiz')">Seç</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="outBox" id="output-analiz"></div>
-        </div>
-      </section>
-
-      <div class="promptBar">
-        <div class="promptInner">
-          <button class="modeSelect" id="modeBtn">Mod: Başlık</button>
-          <textarea id="promptInput" placeholder="Konunuzu yazın..."></textarea>
-          <button class="sendBtn" id="sendBtn">Oluştur</button>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-
-    const SUPABASE_URL = "https://cdzxzgwvebmvccfkvfll.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_QDz16Zn2HeoOw7Sf25PENA_FgZL0P-F";
-
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    window.supabase = supabase; // Diğer script erişimi için
-    const googleBtn = document.getElementById("googleLoginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    googleBtn.addEventListener("click", async () => {
-      googleBtn.style.opacity = "0.7";
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: { redirectTo: window.location.origin }
-      });
-      if (error) {
-        alert("Giriş hatası: " + error.message);
-        googleBtn.style.opacity = "1";
-      }
-    });
-
-    logoutBtn.addEventListener("click", async () => {
-      await supabase.auth.signOut();
-      location.reload();
-    });
-
-    const { data } = await supabase.auth.getSession();
-    if (data?.session?.user?.email) {
-      googleBtn.innerHTML = `<span class="googleIcon"></span> ${data.session.user.email}`;
-    }
-
-    supabase.auth.onAuthStateChange(async (_event, session) => {
-      if (session?.user?.email) {
-        googleBtn.innerHTML = `<span class="googleIcon"></span> ${session.user.email}`;
-      }
-    });
-  </script>
-
-  <script>
-    let currentPlatform = 'youtube';
-    let currentMode = 'baslik';
-
-    const LIMITS = { baslik: 3, hashtag: 3, aciklama: 2, analiz: 3 };
-
-    function todayKey(){
-      const d = new Date();
-      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    }
-
-    function getUsage(){
-      try { return JSON.parse(localStorage.getItem('jarvis_usage') || '{}'); } 
-      catch { return {}; }
-    }
-
-    function setUsage(obj){
-      localStorage.setItem('jarvis_usage', JSON.stringify(obj));
-    }
-
-    function getModeCount(platform, mode){
-      const data = getUsage();
-      const key = `${platform}_${mode}`;
-      const today = todayKey();
-      if(!data[today]) data[today] = {};
-      return Number(data[today][key] || 0);
-    }
-
-    function incModeCount(platform, mode){
-      const data = getUsage();
-      const key = `${platform}_${mode}`;
-      const today = todayKey();
-      if(!data[today]) data[today] = {};
-      data[today][key] = Number(data[today][key] || 0) + 1;
-      setUsage(data);
-    }
-
-    function getRemainingCount(platform, mode){
-      return Math.max(0, LIMITS[mode] - getModeCount(platform, mode));
-    }
-
-    function updateUI(){
-      document.querySelectorAll('.tag[data-mode][data-platform]').forEach(tag => {
-        const mode = tag.dataset.mode;
-        const platform = tag.dataset.platform;
-        const remaining = getRemainingCount(platform, mode);
-        tag.textContent = `${remaining} Hak`;
-        
-        if(remaining === 0){
-          tag.classList.add('warn');
-        } else {
-          tag.classList.remove('warn');
+    <script>
+        function setActiveRoom(btn, roomName) {
+            // Remove active from all room buttons
+            document.querySelectorAll('.room-btn').forEach(b => {
+                if (!b.classList.contains('logout-btn')) {
+                    b.classList.remove('active');
+                }
+            });
+            // Add active to clicked button
+            btn.classList.add('active');
+            // Update room title
+            document.getElementById('roomTitle').textContent = roomName;
         }
-      });
-    }
 
-    function goPage(platform){
-      document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-      document.getElementById(`page-${platform}`).style.display = 'block';
-      
-      document.querySelectorAll('#nav button').forEach(b => {
-        b.classList.toggle('active', b.dataset.page === platform);
-      });
-      
-      currentPlatform = platform;
-      updateUI();
-    }
-
-    window.setMode = function(mode){
-      currentMode = mode;
-      const map = {baslik:'Başlık', hashtag:'Hashtag', aciklama:'Açıklama', analiz:'Kanal Analiz'};
-      document.getElementById('modeBtn').textContent = 'Mod: ' + (map[mode] || 'Başlık');
-    };
-
-    document.getElementById('nav').addEventListener('click', (e) => {
-      const btn = e.target.closest('button[data-page]');
-      if(btn) goPage(btn.dataset.page);
-    });
-
-    document.getElementById('modeBtn').addEventListener('click', () => {
-      const modes = currentPlatform === 'analiz' ? ['analiz'] : ['baslik','hashtag','aciklama'];
-      const idx = (modes.indexOf(currentMode) + 1) % modes.length;
-      window.setMode(modes[idx]);
-    });
-
-    function buildPrompt(text){
-      if(currentMode === 'baslik'){
-        return `Konu: ${text}\n\nSadece 1 adet kısa ${currentPlatform === 'youtube' ? 'YouTube' : currentPlatform === 'instagram' ? 'Instagram' : 'TikTok'} başlığı yaz. Maksimum 40 kelime. Emoji yok.`;
-      }
-      if(currentMode === 'hashtag'){
-        return `Konu: ${text}\n\nSadece 8-12 hashtag yaz. Tek satır. Liste yok.`;
-      }
-      if(currentMode === 'aciklama'){
-        return `Konu: ${text}\n\nKısa açıklama yaz. Maksimum 2 cümle, 40 kelime.`;
-      }
-      if(currentMode === 'analiz'){
-        return `Konu: ${text}\n\nKısa analiz + 3 öneri. Maksimum 80 kelime. Madde işaretli liste kullan.`;
-      }
-      return text;
-    }
-
-    async function callGemini(text){
-      const r = await fetch('/api/gemini', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ prompt: buildPrompt(text) })
-      });
-
-      const raw = await r.text();
-      let data = {};
-      try { data = JSON.parse(raw); } catch { data = { error: raw }; }
-
-      if(!r.ok){
-        if(raw.includes('quota') || raw.includes('Quota')){
-          throw new Error('⚠️ Günlük API limitiniz doldu. Lütfen yarın tekrar deneyin.');
+        function setActiveTab(btn) {
+            // Remove active from all tabs
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            // Add active to clicked tab
+            btn.classList.add('active');
         }
-        throw new Error(data?.error || 'Bağlantı hatası');
-      }
-      return data?.reply || 'Cevap gelmedi.';
-    }
 
-    function showOutput(text, type = 'normal'){
-      const box = document.getElementById(`output-${currentPlatform}`);
-      if(!box) return;
-      box.style.display = 'block';
-      box.textContent = text;
-      box.className = 'outBox';
-      if(type === 'error') box.classList.add('error');
-      if(type === 'warn') box.classList.add('warn');
-    }
-
-    document.getElementById('sendBtn').addEventListener('click', async () => {
-      // --- YENİ EKLENEN KONTROLLER ---
-      // 1. Üye Girişi Kontrolü
-      const { data: { session } } = await window.supabase.auth.getSession();
-      if (!session) {
-        return showOutput('❌ İşlem yapmak için lütfen Google ile giriş yapın.', 'error');
-      }
-
-      const text = document.getElementById('promptInput').value.trim();
-      
-      // 2. 100 Karakter Sınırı Kontrolü
-      if(!text) return showOutput('❌ Lütfen bir konu yazın.', 'warn');
-      if(text.length > 100) {
-        return showOutput('❌ Konu 100 karakterden fazla olamaz!', 'error');
-      }
-
-      if(getRemainingCount(currentPlatform, currentMode) === 0){
-        return showOutput('⚠️ Bu mod için hakkınız bitti. Yarın tekrar deneyin.', 'warn');
-      }
-
-      showOutput('⏳ Hazırlanıyor...');
-
-      try{
-        const reply = await callGemini(text);
-        incModeCount(currentPlatform, currentMode);
-        
-        const shortReply = String(reply).slice(0, 600);
-        showOutput(shortReply);
-        
-        updateUI();
-
-        if(getRemainingCount(currentPlatform, currentMode) === 0){
-          setTimeout(() => {
-            showOutput(shortReply + '\n\n⚠️ Bu mod için hakkınız bitti.', 'warn');
-          }, 300);
+        function copyToClipboard(btn) {
+            // Visual feedback
+            const originalText = btn.textContent;
+            btn.textContent = '✅';
+            btn.style.background = 'rgba(34, 197, 94, 0.2)';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 2000);
         }
-      }catch(e){
-        showOutput('❌ ' + e.message, 'error');
-      }
-    });
-
-    document.getElementById('promptInput').addEventListener('keydown', (e) => {
-      if(e.key === 'Enter' && !e.shiftKey){
-        e.preventDefault();
-        document.getElementById('sendBtn').click();
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
