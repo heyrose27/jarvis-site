@@ -25,6 +25,18 @@
             color: white;
             line-height: 1.6;
             overflow-x: hidden;
+            position: relative; /* Canvas'ı konumlandırmak için */
+        }
+
+        /* Matrix Canvas */
+        #matrixCanvas {
+            position: fixed; /* Sabit arka plan */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2; /* Diğer tüm içeriklerin altında kalacak */
+            opacity: 0.3; /* Hafif saydamlık */
         }
 
         /* Navigation */
@@ -115,6 +127,8 @@
         .hero-content {
             max-width: 800px;
             padding: 0 2rem;
+            position: relative; /* İçeriğin canvas üzerinde kalması için */
+            z-index: 1;
         }
 
         .hero-title {
@@ -142,7 +156,7 @@
         }
 
         /* App Section */
-        section { padding: 100px 2rem; }
+        section { padding: 100px 2rem; position: relative; z-index: 1; /* İçeriğin canvas üzerinde kalması için */ }
         .section-container { max-width: 1400px; margin: 0 auto; }
         .section-header { text-align: center; margin-bottom: 4rem; }
         .section-title { font-size: 2.5rem; margin-bottom: 1rem; }
@@ -233,6 +247,8 @@
     </style>
 </head>
 <body>
+
+    <canvas id="matrixCanvas"></canvas>
 
     <nav class="navbar">
         <div class="nav-container">
@@ -341,6 +357,55 @@
     </footer>
 
     <script>
+        // Matrix Efekti için Canvas Kodu
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:",./<>?`~'; // Matrix karakterleri
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+
+        const drops = [];
+        for (let i = 0; i < columns; i++) {
+            drops[i] = 1; // Her sütunun başlangıç y konumunu 1 olarak ayarla
+        }
+
+        function drawMatrix() {
+            // Arka planı hafifçe karartarak eski karakterlerin solmasını sağla
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.05)'; // Koyu arka plan rengi ve düşük opaklık
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0'; // Yeşil karakter rengi
+            ctx.font = `${fontSize}px monospace`; // Monospace font matrix için ideal
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                // Karakter ekranın altına ulaştığında veya rastgele bir şansa göre başa dön
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0; // Başa dön
+                }
+                drops[i]++; // Bir sonraki karakter için y konumunu artır
+            }
+        }
+
+        setInterval(drawMatrix, 33); // 33ms (~30 FPS) aralıklarla çizimi güncelle
+
+        // Pencere boyutu değiştiğinde canvas'ı yeniden boyutlandır
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            // Kolonları yeniden hesapla (opsiyonel)
+            const newColumns = canvas.width / fontSize;
+            while(drops.length < newColumns) drops.push(0);
+            while(drops.length > newColumns) drops.pop();
+        });
+
+
         // Veri Modeli
         const platformData = {
             'youtube': [
