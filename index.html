@@ -3,22 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jarvis Heyrose - AI Sosyal Medya Asistanı</title>
+    <title>JARVIS HEYROSE - AI Content Assistant</title>
     <style>
+        :root {
+            --primary: #a855f7;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --accent: #3b82f6;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0f172a;
+            background-color: var(--dark);
             color: white;
+            line-height: 1.6;
             overflow-x: hidden;
         }
 
@@ -26,783 +31,215 @@
         .navbar {
             position: fixed;
             top: 0;
-            left: 0;
-            right: 0;
+            width: 100%;
             z-index: 1000;
             background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
         }
 
         .nav-container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 2rem;
         }
 
         .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
             font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-decoration: none;
-        }
-
-        .nav-logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            border-radius: 0.5rem;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 0.5rem;
         }
 
         .nav-menu {
             display: flex;
-            gap: 2rem;
             list-style: none;
+            gap: 2rem;
         }
 
         .nav-link {
-            color: #d1d5db;
+            color: #9ca3af;
             text-decoration: none;
+            transition: 0.3s;
             font-weight: 500;
-            transition: all 0.3s;
-            position: relative;
         }
 
-        .nav-link:hover {
+        .nav-link:hover, .nav-link.active {
             color: white;
-        }
-
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #a855f7, #ec4899);
-            border-radius: 2px;
         }
 
         .nav-cta {
-            background: linear-gradient(135deg, #a855f7, #ec4899);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
             color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 9999px;
             text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .nav-cta:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.5);
-        }
-
-        /* Sections */
-        section {
-            min-height: 100vh;
-            padding: 6rem 2rem;
-            position: relative;
-        }
-
-        .section-container {
-            max-width: 1400px;
-            margin: 0 auto;
+            font-weight: 600;
+            transition: 0.3s;
         }
 
         /* Hero Section */
         #home {
+            height: 100vh;
             display: flex;
             align-items: center;
-            background: linear-gradient(135deg, #1e293b 0%, #581c87 50%, #1e293b 100%);
             position: relative;
             overflow: hidden;
         }
 
-        .bg-effects {
+        .animated-bg {
             position: absolute;
             inset: 0;
-            overflow: hidden;
-            pointer-events: none;
+            z-index: -1;
         }
 
-        .blob {
+        .glow-orb {
             position: absolute;
-            width: 400px;
-            height: 400px;
             border-radius: 50%;
             filter: blur(80px);
-            opacity: 0.3;
-            animation: blob 10s infinite;
+            opacity: 0.4;
         }
 
-        .blob-1 {
-            top: -200px;
-            right: -200px;
-            background: #a855f7;
-        }
-
-        .blob-2 {
-            bottom: -200px;
-            left: -200px;
-            background: #3b82f6;
-            animation-delay: 3s;
-        }
-
-        .blob-3 {
-            top: 50%;
-            left: 50%;
-            background: #ec4899;
-            animation-delay: 6s;
-        }
-
-        @keyframes blob {
-            0%, 100% { transform: translate(0px, 0px) scale(1); }
-            33% { transform: translate(50px, -80px) scale(1.2); }
-            66% { transform: translate(-40px, 40px) scale(0.8); }
-        }
+        .orb-1 { width: 400px; height: 400px; background: var(--primary); top: -100px; right: -100px; }
+        .orb-2 { width: 300px; height: 300px; background: var(--secondary); bottom: -50px; left: -50px; }
 
         .hero-content {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            width: 100%;
+            max-width: 800px;
+            padding: 0 2rem;
         }
 
         .hero-title {
             font-size: 4rem;
-            font-weight: bold;
+            font-weight: 800;
+            line-height: 1.1;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #ffffff, #d8b4fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .hero-subtitle {
-            font-size: 1.5rem;
-            color: #d1d5db;
-            margin-bottom: 3rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
+            font-size: 1.25rem;
+            color: #9ca3af;
+            margin-bottom: 2.5rem;
         }
 
         .btn-hero-primary {
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
             padding: 1rem 2.5rem;
-            border-radius: 9999px;
+            border-radius: 12px;
+            color: white;
             text-decoration: none;
             font-weight: 600;
-            font-size: 1.125rem;
-            transition: all 0.3s;
+            margin-right: 1rem;
             display: inline-block;
-        }
-
-        .btn-hero-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.4);
-        }
-
-        .btn-hero-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 1rem 2.5rem;
-            border-radius: 9999px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.125rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s;
-            display: inline-block;
-        }
-
-        .btn-hero-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .hero-stats {
-            margin-top: 4rem;
-            display: flex;
-            justify-content: center;
-            gap: 4rem;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            color: #9ca3af;
-            margin-top: 0.5rem;
         }
 
         /* App Section */
-        #app {
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-title {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .section-subtitle {
-            font-size: 1.25rem;
-            color: #9ca3af;
-        }
+        section { padding: 100px 2rem; }
+        .section-container { max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-title { font-size: 2.5rem; margin-bottom: 1rem; }
 
         .app-grid {
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 280px 1fr;
             gap: 2rem;
+            background: rgba(255,255,255,0.03);
+            padding: 2rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .app-sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
+        .app-sidebar { display: flex; flex-direction: column; gap: 1rem; }
         .room-btn {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            color: #d1d5db;
-            padding: 1rem 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s;
             text-align: left;
-            font-size: 1rem;
-        }
-
-        .room-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(4px);
+            transition: 0.3s;
         }
 
         .room-btn.active {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(236, 72, 153, 0.3));
-            color: white;
-            border-color: rgba(168, 85, 247, 0.5);
-            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
+            transition: opacity 0.3s ease;
         }
 
         .feature-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1.5rem;
+            background: rgba(255,255,255,0.05);
             padding: 2rem;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(168, 85, 247, 0.5);
-            box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
-        }
-
-        .feature-card:hover::before {
-            opacity: 0.1;
-        }
-
-        .feature-card.purple::before {
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-        }
-
-        .feature-card.blue::before {
-            background: linear-gradient(135deg, #3b82f6, #06b6d4);
-        }
-
-        .feature-card.green::before {
-            background: linear-gradient(135deg, #22c55e, #10b981);
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-            position: relative;
-        }
-
-        .feature-desc {
-            color: #9ca3af;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .feature-badge {
-            background: rgba(34, 197, 94, 0.2);
-            color: #86efac;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            display: inline-block;
-            margin-bottom: 1rem;
-            border: 1px solid rgba(34, 197, 94, 0.3);
-        }
-
-        .feature-btn {
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.75rem;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            width: 100%;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .feature-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
-        }
-
-        /* AI Models Section */
-        #ai-models {
-            background: #0f172a;
-        }
-
-        .models-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .model-card {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(236, 72, 153, 0.1));
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(168, 85, 247, 0.2);
             border-radius: 1.5rem;
-            padding: 2rem;
-            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            transition: 0.3s;
         }
 
-        .model-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
-        }
+        .feature-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .feature-badge { position: absolute; top: 1rem; right: 1rem; font-size: 0.75rem; background: rgba(168, 85, 247, 0.2); color: var(--primary); padding: 4px 12px; border-radius: 20px; }
 
-        .model-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
+        /* Gallery */
+        .gallery-tabs { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; }
+        .gallery-tab { background: transparent; border: 1px solid var(--primary); color: white; padding: 0.5rem 1.5rem; border-radius: 50px; cursor: pointer; }
+        .gallery-tab.active { background: var(--primary); }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        .gallery-item { background: rgba(255,255,255,0.05); border-radius: 1rem; padding: 1rem; animation: fadeIn 0.5s ease; }
 
-        .model-logo {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            border-radius: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .model-info h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .model-status {
-            color: #86efac;
-            font-size: 0.875rem;
-        }
-
-        .model-features {
-            list-style: none;
-            margin-bottom: 1.5rem;
-        }
-
-        .model-features li {
-            padding: 0.5rem 0;
-            color: #d1d5db;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .model-features li::before {
-            content: '✓';
-            color: #22c55e;
-            font-weight: bold;
-        }
-
-        /* Gallery Section */
-        #gallery {
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-        }
-
-        .gallery-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 3rem;
-        }
-
-        .gallery-tab {
-            background: rgba(255, 255, 255, 0.05);
-            color: #d1d5db;
-            padding: 0.75rem 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 9999px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .gallery-tab.active {
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            color: white;
-            border: none;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .gallery-item {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-            overflow: hidden;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .gallery-item:hover {
-            transform: scale(1.05);
-            box-shadow: 0 20px 60px rgba(168, 85, 247, 0.3);
-        }
-
-        .gallery-thumb {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-        }
-
-        .gallery-info {
-            padding: 1.5rem;
-        }
-
-        .gallery-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .gallery-desc {
-            color: #9ca3af;
-            font-size: 0.875rem;
-        }
-
-        /* About Section */
-        #about {
-            background: #0f172a;
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-text h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .about-text p {
-            color: #d1d5db;
-            line-height: 1.8;
-            margin-bottom: 1rem;
-        }
-
-        .about-features {
-            list-style: none;
-            margin-top: 2rem;
-        }
-
-        .about-features li {
-            padding: 1rem;
-            background: rgba(168, 85, 247, 0.1);
-            border-left: 3px solid #a855f7;
-            margin-bottom: 1rem;
-            border-radius: 0.5rem;
-        }
-
-        .about-image {
-            width: 100%;
-            height: 500px;
+        /* About & Contact */
+        .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .about-image { 
+            width: 100%; height: 400px; 
             background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(236, 72, 153, 0.2));
-            border-radius: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 8rem;
+            border-radius: 2rem; display: flex; align-items: center; justify-content: center; font-size: 8rem;
             border: 1px solid rgba(168, 85, 247, 0.3);
         }
 
-        /* Contact Section */
-        #contact {
-            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; color: #9ca3af; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: white;
         }
 
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+        .btn-submit { 
+            width: 100%; padding: 1rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            border: none; border-radius: 10px; color: white; font-weight: 700; cursor: pointer;
         }
 
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
+        .footer { text-align: center; padding: 4rem; border-top: 1px solid rgba(255,255,255,0.1); }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .form-group label {
-            color: #d1d5db;
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 0.75rem;
-            padding: 1rem;
-            color: white;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #a855f7;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .form-group textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        .btn-submit {
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            color: white;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 0.75rem;
-            font-size: 1.125rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.4);
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .contact-item {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-            padding: 2rem;
-        }
-
-        .contact-item-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            border-radius: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            margin-bottom: 1rem;
-        }
-
-        .contact-item h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-item p {
-            color: #9ca3af;
-        }
-
-        /* Footer */
-        .footer {
-            background: #0f172a;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 3rem 2rem;
-            text-align: center;
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .footer-logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .footer-text {
-            color: #9ca3af;
-            margin-bottom: 2rem;
-        }
-
-        .footer-social {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .social-btn {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .social-btn:hover {
-            background: linear-gradient(135deg, #a855f7, #ec4899);
-            transform: translateY(-4px);
-        }
-
-        .footer-copy {
-            color: #6b7280;
-            font-size: 0.875rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
-
-            .hero-title {
-                font-size: 2.5rem;
-            }
-
-            .app-grid,
-            .about-content,
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .models-grid,
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 968px) {
+            .app-grid, .about-content, .contact-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2.5rem; }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
+
     <nav class="navbar">
         <div class="nav-container">
-            <a href="#home" class="nav-logo">
-                <div class="nav-logo-icon">✨</div>
-                JARVIS HEYROSE
-            </a>
+            <a href="#home" class="nav-logo">JARVIS HEYROSE</a>
             <ul class="nav-menu">
                 <li><a href="#home" class="nav-link active">Ana Sayfa</a></li>
                 <li><a href="#app" class="nav-link">Uygulama</a></li>
-                <li><a href="#ai-models" class="nav-link">AI Modelleri</a></li>
                 <li><a href="#gallery" class="nav-link">Galeri</a></li>
                 <li><a href="#about" class="nav-link">Hakkımızda</a></li>
                 <li><a href="#contact" class="nav-link">İletişim</a></li>
@@ -811,97 +248,173 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section id="home">
-        <div class="bg-effects">
-            <div class="blob blob-1"></div>
-            <div class="blob blob-2"></div>
-            <div class="blob blob-3"></div>
+        <div class="animated-bg">
+            <div class="glow-orb orb-1"></div>
+            <div class="glow-orb orb-2"></div>
         </div>
         <div class="section-container">
             <div class="hero-content">
-                <h1 class="hero-title">AI ile Sosyal Medyanı<br>Güçlendir</h1>
-                <p class="hero-subtitle">YouTube, Instagram ve TikTok için viral başlıklar, hashtag'ler ve açıklamalar oluşturun. Yapay zeka destekli araçlarımızla içerik üretiminizi hızlandırın.</p>
-                <div class="hero-buttons">
-                    <a href="#app" class="btn-hero-primary">Ücretsiz Dene</a>
-                    <a href="#about" class="btn-hero-secondary">Nasıl Çalışır?</a>
-                </div>
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">10K+</div>
-                        <div class="stat-label">Aktif Kullanıcı</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">1M+</div>
-                        <div class="stat-label">Üretilen İçerik</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">94%</div>
-                        <div class="stat-label">Memnuniyet</div>
-                    </div>
-                </div>
+                <h1 class="hero-title">AI ile Sosyal Medyanı Güçlendir</h1>
+                <p class="hero-subtitle">YouTube, Instagram ve TikTok için viral başlıklar ve stratejiler oluşturun. Yapay zeka asistanınız her an yanınızda.</p>
+                <a href="#app" class="btn-hero-primary">Hemen Dene</a>
             </div>
         </div>
     </section>
 
-    <!-- App Section -->
     <section id="app">
         <div class="section-container">
             <div class="section-header">
                 <h2 class="section-title">Sosyal Medya Araçları</h2>
-                <p class="section-subtitle">Her platform için özelleştirilmiş AI destekli içerik üretimi</p>
             </div>
             <div class="app-grid">
                 <div class="app-sidebar">
-                    <button class="room-btn active">📺 YouTube Odası</button>
-                    <button class="room-btn">📱 Instagram Reels</button>
-                    <button class="room-btn">🎵 TikTok Odası</button>
-                    <button class="room-btn">📊 Kanal Analiz</button>
+                    <button class="room-btn active" onclick="switchPlatform('youtube', this)">📺 YouTube Odası</button>
+                    <button class="room-btn" onclick="switchPlatform('instagram', this)">📱 Instagram Reels</button>
+                    <button class="room-btn" onclick="switchPlatform('tiktok', this)">🎵 TikTok Odası</button>
                 </div>
-                <div class="features-grid">
-                    <div class="feature-card purple">
-                        <div class="feature-icon">📝</div>
-                        <span class="feature-badge">3 Hak Kaldı</span>
-                        <h3 class="feature-title">Başlık Üretici</h3>
-                        <p class="feature-desc">SEO uyumlu, dikkat çekici başlıklar oluşturun. 100 karakter limiti ile optimize edilmiş içerik.</p>
-                        <button class="feature-btn">🎤 Üret</button>
+                <div class="features-grid" id="featuresGrid">
                     </div>
-                    <div class="feature-card blue">
-                        <div class="feature-icon">#️⃣</div>
-                        <span class="feature-badge">3 Hak Kaldı</span>
-                        <h3 class="feature-title">Hashtag Bulucu</h3>
-                        <p class="feature-desc">İçeriğinize özel 8-12 trend hashtag. Erişiminizi maksimize edin.</p>
-                        <button class="feature-btn">🎤 Üret</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Örnek Çalışmalar</h2>
+            </div>
+            <div class="gallery-tabs">
+                <button class="gallery-tab active" onclick="filterGallery('all', this)">Hepsi</button>
+                <button class="gallery-tab" onclick="filterGallery('video', this)">Videolar</button>
+                <button class="gallery-tab" onclick="filterGallery('image', this)">Görseller</button>
+            </div>
+            <div class="gallery-grid" id="galleryGrid">
+                <div class="gallery-item" data-type="video"><h3>🎬 YouTube SEO</h3><p>Viral Başlık Örneği</p></div>
+                <div class="gallery-item" data-type="image"><h3>📸 Instagram</h3><p>Estetik Feed Planı</p></div>
+                <div class="gallery-item" data-type="video"><h3>🎵 TikTok</h3><p>Hook Stratejisi</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="section-container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Biz Kimiz?</h2>
+                    <p>Jarvis Heyrose, yeni nesil içerik üreticileri için tasarlanmış hibrit bir yapay zeka asistanıdır. Google Gemini altyapısını kullanarak size en güncel trendleri sunar.</p>
+                </div>
+                <div class="about-image">🤖</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="section-container">
+            <div class="contact-grid">
+                <form onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label>Adınız</label>
+                        <input type="text" required>
                     </div>
-                    <div class="feature-card green">
-                        <div class="feature-icon">📄</div>
-                        <span class="feature-badge">2 Hak Kaldı</span>
-                        <h3 class="feature-title">Açıklama Yazıcı</h3>
-                        <p class="feature-desc">Kanal açıklamanız için profesyonel, kısa ve etkili metinler.</p>
-                        <button class="feature-btn">🎤 Üret</button>
+                    <div class="form-group">
+                        <label>E-posta</label>
+                        <input type="email" required>
                     </div>
+                    <div class="form-group">
+                        <label>Mesajınız</label>
+                        <textarea rows="5"></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Gönder</button>
+                </form>
+                <div class="about-text">
+                    <h2>İletişim</h2>
+                    <p>Sorularınız veya iş birliği için bize ulaşın.</p>
+                    <p>📧 info@jarvisheyrose.com</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- AI Models Section -->
-    <section id="ai-models">
-        <div class="section-container">
-            <div class="section-header">
-                <h2 class="section-title">Yapay Zeka Modelleri</h2>
-                <p class="section-subtitle">En gelişmiş AI teknolojileri ile destekleniyoruz</p>
-            </div>
-            <div class="models-grid">
-                <div class="model-card">
-                    <div class="model-header">
-                        <div class="model-logo">🤖</div>
-                        <div class="model-info">
-                            <h3>Google Gemini</h3>
-                            <p class="model-status">● Aktif Kullanımda</p>
-                        </div>
+    <footer class="footer">
+        <p>© 2026 JARVIS HEYROSE. Tüm hakları saklıdır.</p>
+    </footer>
+
+    <script>
+        // Veri Modeli
+        const platformData = {
+            'youtube': [
+                { title: 'Başlık Üretici', desc: 'Tıklanma oranı yüksek SEO başlıkları.', icon: '📝' },
+                { title: 'Etiket Bulucu', desc: 'Videonuz için trend anahtar kelimeler.', icon: '#️⃣' },
+                { title: 'Açıklama Botu', desc: 'Zaman damgalı profesyonel açıklamalar.', icon: '📄' }
+            ],
+            'instagram': [
+                { title: 'Reels Fikri', desc: 'Viral olabilecek özgün senaryolar.', icon: '🎬' },
+                { title: 'Hashtag Seti', desc: 'Keşfet etkili güncel hashtagler.', icon: '📱' },
+                { title: 'Biyo Yazıcı', desc: 'Profiliniz için etkileyici metinler.', icon: '✨' }
+            ],
+            'tiktok': [
+                { title: 'Hook Üretici', desc: 'İzleyiciyi videoda tutan girişler.', icon: '🎵' },
+                { title: 'Akım Analizi', desc: 'Haftalık popüler ses ve akımlar.', icon: '🚀' },
+                { title: 'Video Metni', desc: 'Kısa ve öz altyazı önerileri.', icon: '✍️' }
+            ]
+        };
+
+        // Platform Değiştirme Fonksiyonu
+        function switchPlatform(platform, btn) {
+            // Aktif buton yönetimi
+            document.querySelectorAll('.room-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const grid = document.getElementById('featuresGrid');
+            grid.style.opacity = '0';
+
+            setTimeout(() => {
+                grid.innerHTML = platformData[platform].map(item => `
+                    <div class="feature-card">
+                        <div class="feature-icon">${item.icon}</div>
+                        <span class="feature-badge">3 Hak</span>
+                        <h3>${item.title}</h3>
+                        <p>${item.desc}</p>
+                        <button class="btn-submit" style="margin-top:1rem; padding:0.5rem" onclick="alert('Üretiliyor...')">Üret</button>
                     </div>
-                    <ul class="model-features">
-                        <li>Çok dilli destek</li>
-                        <li>Hızlı yanıt süresi</li>
-                        <li>Yaratıcı içerik üretimi</li>
+                `).join('');
+                grid.style.opacity = '1';
+            }, 300);
+        }
+
+        // Galeri Filtreleme
+        function filterGallery(type, btn) {
+            document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                if(type === 'all' || item.dataset.type === type) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Form Gönderimi
+        function handleSubmit(e) {
+            e.preventDefault();
+            alert('Mesajınız başarıyla iletildi!');
+            e.target.reset();
+        }
+
+        // Başlangıç Kurulumu
+        window.onload = () => {
+            switchPlatform('youtube', document.querySelector('.room-btn'));
+        };
+
+        // Scroll Takibi
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.navbar');
+            if(window.scrollY > 50) nav.style.background = '#0f172a';
+            else nav.style.background = 'rgba(15, 23, 42, 0.8)';
+        });
+    </script>
+</body>
+</html>
