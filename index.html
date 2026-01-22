@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Global Title • Hashtag • Channel Analyzer</title>
+  <title>Jarvis Heyrose • Global Titles • Hashtags • Channel Insights</title>
 
-  <!-- Premium font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -46,8 +45,6 @@
                   linear-gradient(180deg, var(--bg0), var(--bg1));
       overflow-x:hidden;
     }
-
-    /* subtle noise */
     body:before{
       content:"";
       position:fixed; inset:0;
@@ -56,16 +53,11 @@
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
       mix-blend-mode: overlay;
     }
-
     a{ color:inherit; text-decoration:none; }
     button, input, textarea { font-family:inherit; }
 
-    .wrap{
-      width:min(1180px, calc(100% - 32px));
-      margin:0 auto;
-    }
+    .wrap{ width:min(1180px, calc(100% - 32px)); margin:0 auto; }
 
-    /* Topbar */
     .topbar{
       position:sticky; top:0; z-index:20;
       backdrop-filter: blur(14px);
@@ -76,10 +68,7 @@
       display:flex; align-items:center; justify-content:space-between;
       padding:14px 0;
     }
-    .brand{
-      display:flex; align-items:center; gap:10px;
-      font-weight:700; letter-spacing:.2px;
-    }
+    .brand{ display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px; }
     .logo{
       width:34px; height:34px; border-radius:12px;
       background: radial-gradient(14px 14px at 30% 30%, rgba(255,255,255,.35), transparent 55%),
@@ -87,24 +76,10 @@
       box-shadow: 0 10px 30px rgba(255,45,149,.12), 0 10px 30px rgba(138,92,255,.12);
       border:1px solid rgba(255,255,255,.15);
     }
-    .nav{
-      display:flex; align-items:center; gap:16px;
-      color: var(--muted);
-      font-size:14px;
-    }
-    .nav a{
-      padding:8px 10px;
-      border-radius:12px;
-      transition: .2s ease;
-    }
-    .nav a:hover{
-      background: rgba(255,255,255,.06);
-      color: var(--txt);
-    }
-
-    .actions{
-      display:flex; align-items:center; gap:10px;
-    }
+    .nav{ display:flex; align-items:center; gap:16px; color: var(--muted); font-size:14px; }
+    .nav a{ padding:8px 10px; border-radius:12px; transition: .2s ease; }
+    .nav a:hover{ background: rgba(255,255,255,.06); color: var(--txt); }
+    .actions{ display:flex; align-items:center; gap:10px; }
 
     .btn{
       border:1px solid rgba(255,255,255,.12);
@@ -124,10 +99,7 @@
       background: linear-gradient(135deg, rgba(255,45,149,.90), rgba(138,92,255,.90));
       box-shadow: 0 18px 50px rgba(255,45,149,.14), 0 18px 50px rgba(138,92,255,.14);
     }
-    .btn-primary:hover{
-      filter: brightness(1.03);
-      border-color: rgba(255,255,255,.22);
-    }
+    .btn-primary:hover{ filter: brightness(1.03); border-color: rgba(255,255,255,.22); }
 
     .pill{
       display:inline-flex; align-items:center; gap:8px;
@@ -144,7 +116,6 @@
       box-shadow: 0 0 18px rgba(45,226,255,.35);
     }
 
-    /* Landing */
     .landing{ padding:40px 0 36px; }
     .hero{
       display:grid;
@@ -153,6 +124,7 @@
       align-items:stretch;
       margin-top:18px;
     }
+
     .card{
       border:1px solid rgba(255,255,255,.10);
       background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
@@ -261,9 +233,7 @@
       background: rgba(255,255,255,.04);
     }
     .section h2{ margin:0 0 10px; font-size:18px; }
-    .platforms{
-      display:grid; grid-template-columns: repeat(4,1fr); gap:12px;
-    }
+    .platforms{ display:grid; grid-template-columns: repeat(4,1fr); gap:12px; }
     .plat{
       padding:14px;
       border-radius: 20px;
@@ -275,18 +245,14 @@
     .plat .pname{ font-weight:700; font-size:14px; margin-bottom:8px; }
     .plat .tags{ color: var(--muted2); font-size:12px; line-height:1.6; }
 
-    /* App / Dashboard */
-    .app{
-      display:none;
-      padding: 18px 0 28px;
-    }
+    /* APP */
+    .app{ display:none; padding: 18px 0 28px; }
     .app-grid{
       display:grid;
       grid-template-columns: 280px 1fr;
       gap: 14px;
       align-items: start;
     }
-
     .sidebar{
       position: sticky;
       top: 76px;
@@ -320,10 +286,7 @@
                   rgba(255,255,255,.05);
       box-shadow: 0 14px 40px rgba(255,45,149,.10);
     }
-    .room .left{
-      display:flex; flex-direction:column;
-      gap:4px;
-    }
+    .room .left{ display:flex; flex-direction:column; gap:4px; }
     .room .left b{ font-size:13px; }
     .room .left span{ font-size:12px; color: var(--muted2); }
 
@@ -360,24 +323,17 @@
       box-shadow: var(--shadow2);
       overflow:hidden;
     }
-
     .main-top{
       display:flex; align-items:center; justify-content:space-between;
       padding: 14px 16px;
       border-bottom:1px solid rgba(255,255,255,.08);
       background: rgba(255,255,255,.03);
     }
-    .main-top .title{
-      display:flex; align-items:flex-start; flex-direction:column; gap:4px;
-    }
+    .main-top .title{ display:flex; align-items:flex-start; flex-direction:column; gap:4px; }
     .main-top .title b{ font-size:14px; }
     .main-top .title span{ color: var(--muted2); font-size:12px; }
 
-    .profile{
-      display:flex; align-items:center; gap:10px;
-      color: var(--muted);
-      font-size:13px;
-    }
+    .profile{ display:flex; align-items:center; gap:10px; color: var(--muted); font-size:13px; }
     .avatar{
       width:34px; height:34px; border-radius: 14px;
       border:1px solid rgba(255,255,255,.14);
@@ -386,10 +342,7 @@
       color: var(--txt);
       font-weight:700;
     }
-
-    .main-body{
-      padding: 14px;
-    }
+    .main-body{ padding: 14px; }
     .cards{
       display:grid;
       grid-template-columns: repeat(3, 1fr);
@@ -403,7 +356,6 @@
       transition:.18s ease;
     }
     .gen:hover{ transform: translateY(-3px); border-color: rgba(255,255,255,.16); background: rgba(255,255,255,.06); }
-
     .gen .ghead{
       display:flex; align-items:center; justify-content:space-between;
       margin-bottom:10px;
@@ -418,13 +370,8 @@
       border-radius:999px;
     }
 
-    .field{
-      display:flex; flex-direction:column; gap:8px;
-      margin-bottom:10px;
-    }
-    .field label{
-      font-size:12px; color: var(--muted2);
-    }
+    .field{ display:flex; flex-direction:column; gap:8px; margin-bottom:10px; }
+    .field label{ font-size:12px; color: var(--muted2); }
     .in{
       width:100%;
       border-radius: 16px;
@@ -441,25 +388,9 @@
       box-shadow: 0 0 0 4px rgba(45,226,255,.08);
     }
     textarea.in{ resize: vertical; min-height: 90px; }
-    .meta{
-      display:flex; align-items:center; justify-content:space-between;
-      margin-top: 6px;
-      font-size:12px;
-      color: var(--muted2);
-    }
-    .count.bad{ color: var(--bad); font-weight:600; }
-    .count.warn{ color: var(--warn); font-weight:600; }
-    .count.good{ color: var(--good); font-weight:600; }
 
-    .btn-row{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin-top: 10px;
-    }
-    .btn-small{
-      padding:10px 12px;
-      border-radius: 14px;
-      font-size:13px;
-    }
+    .btn-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
+    .btn-small{ padding:10px 12px; border-radius: 14px; font-size:13px; }
     .btn-ghost{
       background: rgba(255,255,255,.05);
       border:1px solid rgba(255,255,255,.10);
@@ -477,7 +408,6 @@
       line-height:1.6;
     }
 
-    /* toast */
     .toast{
       position:fixed;
       right:16px; bottom:16px;
@@ -496,7 +426,6 @@
     }
     .toast.show{ opacity:1; transform: translateY(0); }
 
-    /* Responsive */
     @media (max-width: 980px){
       .hero{ grid-template-columns: 1fr; }
       .stats{ grid-template-columns: repeat(2,1fr); }
@@ -548,8 +477,8 @@
           <div class="kicker">Sosyal medya için tek panel</div>
           <h1>Global Başlık & Hashtag Üret. Kanalını büyüt.</h1>
           <p class="sub">
-            YouTube, Instagram, TikTok ve X için kısa, net ve limitlere uygun içerikler üret.
-            Dashboard tarzı premium görünüm, hızlı çıktı, kopyala & kullan.
+            YouTube, Instagram, TikTok ve X için kısa, global ve limitlere uygun içerikler üret.
+            Chat gibi değil: premium dashboard hissi.
           </p>
 
           <div class="hero-cta">
@@ -558,9 +487,9 @@
           </div>
 
           <div class="mini">
-            <span class="pill"><span class="dot"></span> 100 karakter uyumu</span>
+            <span class="pill"><span class="dot"></span> 3 varyasyon / hak</span>
             <span class="pill"><span class="dot"></span> Platform odaları</span>
-            <span class="pill"><span class="dot"></span> Limit kontrolü</span>
+            <span class="pill"><span class="dot"></span> Kopyala & kullan</span>
             <span class="pill"><span class="dot"></span> Gemini destekli</span>
           </div>
 
@@ -585,38 +514,38 @@
 
           <div class="grid3">
             <div class="feat">
-              <b>Başlık Üretimi</b>
-              <p>Kısa, global ve platform limitine uygun. Tek tıkla kopyala.</p>
+              <b>Başlık (3 varyasyon)</b>
+              <p>Beğenmedin mi? Değiştir. Her değiştir = 1 hak.</p>
             </div>
             <div class="feat">
-              <b>Hashtag Üretimi</b>
-              <p>Uzun olmayan, keşif odaklı ve temiz hashtag setleri.</p>
+              <b>Hashtag (3 varyasyon)</b>
+              <p>#live #trumpet #saxophone gibi kısa setler.</p>
             </div>
             <div class="feat">
-              <b>Kanal Analizi</b>
-              <p>Kanal tonu, hedef kitle, içerik önerisi ve iyileştirme notları.</p>
+              <b>Açıklama (2 varyasyon)</b>
+              <p>Kısa, global, temiz. Her değiştir = 1 hak.</p>
             </div>
           </div>
         </div>
 
         <div class="card hero-right" id="demoCard">
           <div class="demo-title">
-            <b>Canlı Çıktı Örneği</b>
+            <b>Canlı Örnek</b>
             <span>Platform: YouTube</span>
           </div>
 
           <div class="demo-box">
             <div class="demo-line">
               <div class="label">Başlık</div>
-              <div class="val" id="demoTitle">10 Minute Focus Music for Deep Work</div>
+              <div class="val" id="demoTitle">Eyes Closed, Heart Open: The Most Soulful Tararara Ever 🎷✨</div>
             </div>
             <div class="demo-line">
               <div class="label">Hashtag</div>
-              <div class="val" id="demoTags">#focus #study #productivity #music #deepwork</div>
+              <div class="val" id="demoTags">#live #trumpet #saxophone #music #shorts</div>
             </div>
             <div class="demo-line" style="margin-bottom:0;">
               <div class="label">Kanal Açıklaması</div>
-              <div class="val" id="demoDesc">Minimal, global ve düzenli paylaşımlar. Haftalık yeni içerik.</div>
+              <div class="val" id="demoDesc">Live performances + short clips. New uploads weekly.</div>
             </div>
           </div>
 
@@ -633,7 +562,7 @@
               </div>
               <div class="plat">
                 <div class="pname">Limit Sistemi</div>
-                <div class="tags">Free: 3/3/2 • Premium: daha fazla</div>
+                <div class="tags">Free: Başlık 3 • Hashtag 3 • Açıklama 2</div>
               </div>
               <div class="plat">
                 <div class="pname">Kopyala & Kullan</div>
@@ -647,8 +576,8 @@
       <div class="section" id="about">
         <h2>Hakkımızda</h2>
         <div style="color:var(--muted);font-size:13px;line-height:1.7;">
-          Bu panel, sosyal medya kanalların için global başlık, hashtag, kanal açıklaması ve kanal analizi üretmek üzere tasarlandı.
-          Chat görüntüsünden uzak, gerçek bir web app hissi verir.
+          Sosyal medya kanalların için global başlık, hashtag, kanal açıklaması ve (opsiyonel) analiz üretir.
+          Chat görünümünden uzak, gerçek bir SaaS web app hissi.
         </div>
       </div>
 
@@ -680,7 +609,7 @@
           </div>
           <div class="plat">
             <div class="pname">Not</div>
-            <div class="tags">Limit ve sayaçlar gerçek veriye bağlanabilir</div>
+            <div class="tags">Sayaçlar gerçek veriye bağlanabilir</div>
           </div>
         </div>
       </div>
@@ -707,11 +636,11 @@
             <span class="pill" style="font-size:11px;">YT</span>
           </div>
           <div class="room" data-room="instagram">
-            <div class="left"><b>Instagram Odası</b><span>Bio • Hashtag • Başlık</span></div>
+            <div class="left"><b>Instagram Odası</b><span>Başlık • Hashtag • Bio</span></div>
             <span class="pill" style="font-size:11px;">IG</span>
           </div>
           <div class="room" data-room="tiktok">
-            <div class="left"><b>TikTok Odası</b><span>Kısa • Viral • Global</span></div>
+            <div class="left"><b>TikTok Odası</b><span>Hook • Hashtag • Bio</span></div>
             <span class="pill" style="font-size:11px;">TT</span>
           </div>
           <div class="room" data-room="x">
@@ -732,7 +661,7 @@
           <div class="main-top">
             <div class="title">
               <b id="roomTitle">YouTube Odası</b>
-              <span>Global, kısa, limit uyumlu üretim • 100 karakter kontrol</span>
+              <span>Her üretim = 1 hak • Beğenmezsen değiştir</span>
             </div>
             <div class="profile">
               <div class="avatar" id="avatar">G</div>
@@ -749,59 +678,51 @@
               <!-- TITLE -->
               <div class="gen" data-kind="title">
                 <div class="ghead">
-                  <b>Başlık Üret</b>
+                  <b>Başlık Üret (Varyasyon)</b>
                   <span class="quota" id="qTitle">—</span>
                 </div>
 
                 <div class="field">
                   <label>Konu / içerik fikri</label>
-                  <input class="in" id="inTitle" placeholder="Örn: Lo-fi focus music for studying" maxlength="220" />
+                  <input class="in" id="inTitle" placeholder="Örn: Tararara sax live street performance" maxlength="220" />
                 </div>
 
                 <div class="field">
-                  <label>Çıktı (100 karakter)</label>
-                  <textarea class="in" id="outTitle" placeholder="Buraya başlık gelecek..." maxlength="100"></textarea>
-                  <div class="meta">
-                    <span class="count" id="cTitle">0/100</span>
-                    <span style="color:var(--muted2);">Otomatik kısaltma açık</span>
-                  </div>
+                  <label>Çıktı</label>
+                  <textarea class="in" id="outTitle" placeholder="Buraya başlık gelecek..."></textarea>
                 </div>
 
                 <div class="btn-row">
-                  <button class="btn btn-primary btn-small" id="genTitle">Başlık Üret</button>
+                  <button class="btn btn-primary btn-small" id="genTitle">Değiştir / Üret</button>
                   <button class="btn btn-ghost btn-small" id="copyTitle">Kopyala</button>
                 </div>
 
-                <div class="notice">Başlık uzun olursa otomatik kısaltılır. Limit biterse üretim kilitlenir.</div>
+                <div class="notice">Başlık için 3 hak var. Her “Değiştir / Üret” = 1 hak.</div>
               </div>
 
               <!-- HASHTAGS -->
               <div class="gen" data-kind="tags">
                 <div class="ghead">
-                  <b>Hashtag Üret</b>
+                  <b>Hashtag Üret (Set)</b>
                   <span class="quota" id="qTags">—</span>
                 </div>
 
                 <div class="field">
                   <label>Konu / niş</label>
-                  <input class="in" id="inTags" placeholder="Örn: saxophone live street performance" maxlength="220" />
+                  <input class="in" id="inTags" placeholder="Örn: trumpet sax street music" maxlength="220" />
                 </div>
 
                 <div class="field">
-                  <label>Çıktı (100 karakter)</label>
-                  <textarea class="in" id="outTags" placeholder="#..." maxlength="100"></textarea>
-                  <div class="meta">
-                    <span class="count" id="cTags">0/100</span>
-                    <span style="color:var(--muted2);">5–10 kısa hashtag</span>
-                  </div>
+                  <label>Çıktı (örnek: #live #trumpet #saxophone #music #shorts)</label>
+                  <textarea class="in" id="outTags" placeholder="#..." ></textarea>
                 </div>
 
                 <div class="btn-row">
-                  <button class="btn btn-primary btn-small" id="genTags">Hashtag Üret</button>
+                  <button class="btn btn-primary btn-small" id="genTags">Değiştir / Üret</button>
                   <button class="btn btn-ghost btn-small" id="copyTags">Kopyala</button>
                 </div>
 
-                <div class="notice">Uzun hashtag yazmayacak şekilde optimize edilir. 100 karakteri aşmaz.</div>
+                <div class="notice">Hashtag için 3 hak var. Her “Değiştir / Üret” = 1 hak.</div>
               </div>
 
               <!-- DESCRIPTION -->
@@ -813,31 +734,27 @@
 
                 <div class="field">
                   <label>Kanal konusu</label>
-                  <input class="in" id="inDesc" placeholder="Örn: daily productivity tips and focus music" maxlength="220" />
+                  <input class="in" id="inDesc" placeholder="Örn: live sax & trumpet shorts" maxlength="220" />
                 </div>
 
                 <div class="field">
-                  <label>Çıktı (100 karakter)</label>
-                  <textarea class="in" id="outDesc" placeholder="Kısa kanal açıklaması..." maxlength="100"></textarea>
-                  <div class="meta">
-                    <span class="count" id="cDesc">0/100</span>
-                    <span style="color:var(--muted2);">Kısa, global, net</span>
-                  </div>
+                  <label>Çıktı</label>
+                  <textarea class="in" id="outDesc" placeholder="Kısa kanal açıklaması..."></textarea>
                 </div>
 
                 <div class="btn-row">
-                  <button class="btn btn-primary btn-small" id="genDesc">Açıklama Üret</button>
+                  <button class="btn btn-primary btn-small" id="genDesc">Değiştir / Üret</button>
                   <button class="btn btn-ghost btn-small" id="copyDesc">Kopyala</button>
                 </div>
 
-                <div class="notice">Açıklama 100 karakter sınırına göre üretilir ve gerektiğinde kısaltılır.</div>
+                <div class="notice">Açıklama için 2 hak var. Her “Değiştir / Üret” = 1 hak.</div>
               </div>
             </div>
 
             <div class="section" style="margin-top:12px;">
               <h2>Kanal Analizi (Opsiyonel)</h2>
               <div style="color:var(--muted);font-size:13px;line-height:1.7;">
-                Buraya “kanal analizi” kartı ekleyebilirsin (ton, hedef kitle, içerik planı). İstersen 4. kart olarak ekleriz.
+                İstersen buraya 4. kart ekleriz: kanal tonu, hedef kitle, içerik planı, iyileştirme notları.
               </div>
             </div>
 
@@ -850,9 +767,11 @@
   <div class="toast" id="toast">Kopyalandı</div>
 
   <script>
-    // -----------------------------
-    // SIMPLE PREMIUM SPA TEMPLATE
-    // -----------------------------
+    /* ==========================================================
+       CONFIG
+       - GOOGLE_OAUTH_URL boşsa giriş ENGELLENİR (otomatik login yok)
+       ========================================================== */
+    const GOOGLE_OAUTH_URL = ""; // Örn: "https://YOUR_DOMAIN.com/oauth/google"  (BOŞ BIRAKMA)
 
     const $ = (id) => document.getElementById(id);
 
@@ -860,44 +779,15 @@
       authed: false,
       user: { name: "Guest", email: "—" },
       room: "youtube",
-      // per-user quotas; store in localStorage
       limits: { title: 3, tags: 3, desc: 2 },
       used:   { title: 0, tags: 0, desc: 0 },
-      // fake counters (landing)
-      counters: { total: 128450, online: 1240, likes: 54200, today: 3210 },
-      charMax: 100
+      counters: { total: 128450, online: 1240, likes: 54200, today: 3210 }
     };
 
-    const LS_KEY = "jh_quota_v1";
-    const LS_USER = "jh_user_v1";
-    const LS_AUTH = "jh_auth_v1";
-    const LS_COUNTERS = "jh_counters_v1";
-
-    function loadPersisted(){
-      try{
-        const q = JSON.parse(localStorage.getItem(LS_KEY) || "null");
-        if(q?.used) state.used = q.used;
-        const u = JSON.parse(localStorage.getItem(LS_USER) || "null");
-        if(u?.name) state.user = u;
-        const a = JSON.parse(localStorage.getItem(LS_AUTH) || "null");
-        if(typeof a?.authed === "boolean") state.authed = a.authed;
-        const c = JSON.parse(localStorage.getItem(LS_COUNTERS) || "null");
-        if(c?.total) state.counters = c;
-      }catch(e){}
-    }
-
-    function persistQuota(){
-      localStorage.setItem(LS_KEY, JSON.stringify({ used: state.used }));
-    }
-    function persistUser(){
-      localStorage.setItem(LS_USER, JSON.stringify(state.user));
-    }
-    function persistAuth(){
-      localStorage.setItem(LS_AUTH, JSON.stringify({ authed: state.authed }));
-    }
-    function persistCounters(){
-      localStorage.setItem(LS_COUNTERS, JSON.stringify(state.counters));
-    }
+    const LS_KEY = "jh_quota_v2";
+    const LS_AUTH = "jh_auth_v2";
+    const LS_USER = "jh_user_v2";
+    const LS_COUNTERS = "jh_counters_v2";
 
     function showToast(msg){
       const t = $("toast");
@@ -906,25 +796,25 @@
       setTimeout(()=>t.classList.remove("show"), 1300);
     }
 
-    function clamp100(text){
-      if(!text) return "";
-      text = text.replace(/\s+/g, " ").trim();
-      if(text.length <= state.charMax) return text;
-      // smart-ish cut
-      let cut = text.slice(0, state.charMax);
-      const lastSpace = cut.lastIndexOf(" ");
-      if(lastSpace > 55) cut = cut.slice(0, lastSpace);
-      return cut.trim();
-    }
+    function loadPersisted(){
+      try{
+        const q = JSON.parse(localStorage.getItem(LS_KEY) || "null");
+        if(q?.used) state.used = q.used;
 
-    function updateChar(el, counterEl){
-      const n = el.value.length;
-      counterEl.textContent = `${n}/${state.charMax}`;
-      counterEl.classList.remove("good","warn","bad");
-      if(n <= 80) counterEl.classList.add("good");
-      else if(n <= 100) counterEl.classList.add("warn");
-      else counterEl.classList.add("bad");
+        const a = JSON.parse(localStorage.getItem(LS_AUTH) || "null");
+        if(typeof a?.authed === "boolean") state.authed = a.authed;
+
+        const u = JSON.parse(localStorage.getItem(LS_USER) || "null");
+        if(u?.name) state.user = u;
+
+        const c = JSON.parse(localStorage.getItem(LS_COUNTERS) || "null");
+        if(c?.total) state.counters = c;
+      }catch(e){}
     }
+    function persistQuota(){ localStorage.setItem(LS_KEY, JSON.stringify({ used: state.used })); }
+    function persistAuth(){ localStorage.setItem(LS_AUTH, JSON.stringify({ authed: state.authed })); }
+    function persistUser(){ localStorage.setItem(LS_USER, JSON.stringify(state.user)); }
+    function persistCounters(){ localStorage.setItem(LS_COUNTERS, JSON.stringify(state.counters)); }
 
     function quotaRemaining(kind){
       return Math.max(0, state.limits[kind] - state.used[kind]);
@@ -940,19 +830,18 @@
       const remaining = totalAllowed - totalUsed;
 
       $("quotaSummary").textContent = `${remaining}/${totalAllowed}`;
-      const pct = Math.max(0, Math.min(1, remaining / totalAllowed));
+      const pct = totalAllowed ? Math.max(0, Math.min(1, remaining / totalAllowed)) : 0;
       $("quotaBar").style.width = (pct * 100).toFixed(0) + "%";
 
-      // Disable buttons if quota finished
+      // Disable if limit finished
       $("genTitle").disabled = quotaRemaining("title") <= 0;
       $("genTags").disabled  = quotaRemaining("tags") <= 0;
       $("genDesc").disabled  = quotaRemaining("desc") <= 0;
 
-      // small visual disable
       ["genTitle","genTags","genDesc"].forEach(id=>{
         const b = $(id);
         b.style.opacity = b.disabled ? .55 : 1;
-        b.style.cursor = b.disabled ? "not-allowed" : "pointer";
+        b.style.cursor  = b.disabled ? "not-allowed" : "pointer";
       });
     }
 
@@ -982,42 +871,31 @@
       });
     }
 
-    // -----------------------------
-    // AI GENERATION (placeholder)
-    // Here you connect Gemini API
-    // -----------------------------
-    async function generate(kind, room, topic){
-      // Replace with your real Gemini call and return string within 100 chars.
-      // This mock simulates "premium" output.
-      const presets = {
-        title: {
-          youtube: () => `Top ${topic} Tips You’ll Use Today`,
-          instagram: () => `Quick ${topic} Ideas (Save This)`,
-          tiktok: () => `${topic} in 15 Seconds: Try This`,
-          x: () => `${topic}: 3 quick points`
-        },
-        tags: {
-          youtube: () => `#${slug(topic)} #viral #shorts #growth #creator`,
-          instagram: () => `#${slug(topic)} #reels #content #instagrowth #tips`,
-          tiktok: () => `#${slug(topic)} #fyp #tiktoktips #creator #viral`,
-          x: () => `#${slug(topic)} #buildinpublic #growth #creator #tips`
-        },
-        desc: {
-          youtube: () => `Weekly ${topic} content. Short, global, and practical.`,
-          instagram: () => `Daily ${topic} posts. Clean ideas, quick wins.`,
-          tiktok: () => `Fast ${topic} tips. New clips every week.`,
-          x: () => `Short ${topic} insights. Follow for more.`
-        }
-      };
-
-      // small delay for UX
-      await new Promise(r=>setTimeout(r, 450));
-
-      let out = presets[kind][room]();
-      out = clamp100(out);
-
-      return out;
+    /* ==========================================================
+       GOOGLE LOGIN
+       - OAuth URL yoksa kesinlikle giriş yapmaz
+       ========================================================== */
+    async function googleLogin(){
+      if(!GOOGLE_OAUTH_URL || !GOOGLE_OAUTH_URL.startsWith("http")){
+        showToast("Google giriş ayarlı değil (OAuth URL yok)");
+        return;
+      }
+      window.location.href = GOOGLE_OAUTH_URL;
     }
+
+    function logout(){
+      state.authed = false;
+      persistAuth();
+      updateAuthUI();
+      showToast("Çıkış yapıldı");
+    }
+
+    /* ==========================================================
+       VARIATION GENERATION (mock)
+       - Hak = varyasyon
+       - Sonra burayı gerçek Gemini API ile değiştirirsin
+       ========================================================== */
+    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
     function slug(s){
       return (s || "topic")
@@ -1027,15 +905,70 @@
         .split(/\s+/).slice(0,2).join("");
     }
 
-    async function handleGenerate(kind){
-      const inputs = { title: $("inTitle"), tags: $("inTags"), desc: $("inDesc") };
-      const outputs = { title: $("outTitle"), tags: $("outTags"), desc: $("outDesc") };
-      const counters = { title: $("cTitle"), tags: $("cTags"), desc: $("cDesc") };
+    function clamp(text, max){
+      if(!text) return "";
+      text = text.replace(/\s+/g, " ").trim();
+      if(text.length <= max) return text;
+      let cut = text.slice(0, max);
+      const lastSpace = cut.lastIndexOf(" ");
+      if(lastSpace > Math.floor(max * 0.55)) cut = cut.slice(0, lastSpace);
+      return cut.trim();
+    }
 
+    function titleVariants(topic){
+      const t = topic.trim();
+      const a = [
+        `Eyes Closed, Heart Open: ${t} 🎷✨`,
+        `${t} — The Most Soulful Tararara Ever 🎷`,
+        `This ${t} Hit Different (Pure Vibes)`,
+        `${t}: A Smooth Night Performance 🎷`,
+        `${t} — You’ll Feel This One`
+      ];
+      // başlık uzunluğu serbest, ama çok taşmasın diye 120
+      return clamp(pick(a), 120);
+    }
+
+    function hashtagVariants(topic){
+      // format: "#live #trumpet #saxophone #music #shorts"
+      const base = ["#live","#trumpet","#saxophone","#music","#shorts","#streetmusic","#jazz","#vibes","#instrumental","#performance","#viral"];
+      const extra = slug(topic);
+      let tags = ["#live", "#music", "#shorts", "#saxophone"];
+      if(extra) tags.push(`#${extra}`);
+
+      const shuffled = base.sort(()=>Math.random()-0.5);
+      tags = Array.from(new Set([...tags, ...shuffled])).slice(0, 7);
+
+      // hashtag çok uzamasın: 110
+      return clamp(tags.join(" "), 110);
+    }
+
+    function descVariants(topic){
+      const t = topic.trim();
+      const a = [
+        `Live ${t} vibes. New shorts weekly. Follow for more.`,
+        `Smooth ${t} performances + global shorts. New uploads weekly.`,
+        `Daily ${t} moments. Short, clean, and global.`
+      ];
+      // açıklama: 140
+      return clamp(pick(a), 140);
+    }
+
+    async function generate(kind, room, topic){
+      await new Promise(r=>setTimeout(r, 320));
+      if(kind === "title") return titleVariants(topic);
+      if(kind === "tags")  return hashtagVariants(topic);
+      if(kind === "desc")  return descVariants(topic);
+      return clamp(topic, 140);
+    }
+
+    async function handleGenerate(kind){
       if(quotaRemaining(kind) <= 0){
         showToast("Limit bitti");
         return;
       }
+
+      const inputs = { title: $("inTitle"), tags: $("inTags"), desc: $("inDesc") };
+      const outputs = { title: $("outTitle"), tags: $("outTags"), desc: $("outDesc") };
 
       const topic = (inputs[kind].value || "").trim();
       if(!topic){
@@ -1044,23 +977,30 @@
         return;
       }
 
-      // optimistic UI lock
       const btnMap = { title: "genTitle", tags: "genTags", desc: "genDesc" };
       const btn = $(btnMap[kind]);
       const oldText = btn.textContent;
+
       btn.textContent = "Üretiliyor...";
       btn.disabled = true;
       btn.style.opacity = .65;
 
       try{
-        const out = await generate(kind, state.room, topic);
-        outputs[kind].value = out;
-        updateChar(outputs[kind], counters[kind]);
+        const out1 = await generate(kind, state.room, topic);
 
+        // aynı çıktı gelirse 1 kere daha dene
+        let finalOut = out1;
+        if((outputs[kind].value || "").trim() === out1.trim()){
+          finalOut = await generate(kind, state.room, topic);
+        }
+
+        outputs[kind].value = finalOut;
+
+        // hak düş
         state.used[kind] += 1;
         persistQuota();
 
-        // counters (landing stats style) update
+        // sayaç güncelle (demo)
         state.counters.total += 1;
         state.counters.today += 1;
         persistCounters();
@@ -1084,60 +1024,38 @@
         .catch(()=>showToast("Kopyalama engellendi"));
     }
 
-    // -----------------------------
-    // GOOGLE AUTH (placeholder)
-    // -----------------------------
-    async function googleLogin(){
-      // Buraya kendi Google OAuth akışını koy.
-      // Şimdilik demo: kullanıcıyı login yapıyoruz.
-      state.authed = true;
-      state.user = { name: "Kemal", email: "kemal@example.com" };
-      persistUser();
-      persistAuth();
-      updateAuthUI();
-      updateQuotaUI();
-      showToast("Giriş yapıldı");
-    }
-
-    function logout(){
-      state.authed = false;
-      persistAuth();
-      updateAuthUI();
-      showToast("Çıkış yapıldı");
-    }
-
-    // -----------------------------
-    // Demo animation
-    // -----------------------------
+    /* ==========================================================
+       Demo rotator
+       ========================================================== */
     const demoSamples = [
       {
-        t:"10 Minute Focus Music for Deep Work",
-        h:"#focus #study #productivity #music #deepwork",
-        d:"Minimal, global ve düzenli paylaşımlar. Haftalık yeni içerik."
+        t:"Eyes Closed, Heart Open: The Most Soulful Tararara Ever 🎷✨",
+        h:"#live #trumpet #saxophone #music #shorts",
+        d:"Live performances + short clips. New uploads weekly."
       },
       {
-        t:"Street Sax Live: Smooth Night Vibes",
-        h:"#sax #livemusic #streetperformance #vibes #city",
-        d:"Live performanslar ve kısa klipler. Her hafta yeni video."
+        t:"Street Sax Live: Smooth Night Vibes 🎷",
+        h:"#live #saxophone #streetmusic #vibes #shorts",
+        d:"Smooth live moments. Global shorts. Follow for more."
       },
       {
-        t:"Grow Faster: 5 Content Ideas That Work",
-        h:"#creator #content #growth #strategy #socialmedia",
-        d:"Global içerik fikirleri ve pratik ipuçları. Takipte kal."
+        t:"This Tararara Hit Different (Pure Vibes)",
+        h:"#live #music #performance #viral #shorts",
+        d:"Short, clean, global vibes. Weekly uploads."
       }
     ];
     let demoIdx = 0;
     function rotateDemo(){
       const s = demoSamples[demoIdx % demoSamples.length];
       $("demoTitle").textContent = s.t;
-      $("demoTags").textContent = clamp100(s.h);
-      $("demoDesc").textContent = clamp100(s.d);
+      $("demoTags").textContent = s.h;
+      $("demoDesc").textContent = s.d;
       demoIdx++;
     }
 
-    // -----------------------------
-    // Init
-    // -----------------------------
+    /* ==========================================================
+       INIT
+       ========================================================== */
     function init(){
       $("year").textContent = new Date().getFullYear();
 
@@ -1146,22 +1064,25 @@
       updateQuotaUI();
       setRoom(state.room);
 
-      // landing stats from persisted counters
+      // landing stats
       $("sTotal").textContent = state.counters.total.toLocaleString("en-US") + "+";
       $("sOnline").textContent = state.counters.online.toLocaleString("en-US");
       $("sLikes").textContent = state.counters.likes.toLocaleString("en-US");
       $("sToday").textContent = state.counters.today.toLocaleString("en-US");
 
-      // listeners
+      // auth buttons
       $("btnGoogle").addEventListener("click", googleLogin);
       $("btnStart").addEventListener("click", googleLogin);
       $("btnLogout").addEventListener("click", logout);
 
+      // demo
       $("btnDemo").addEventListener("click", ()=>{
         rotateDemo();
         showToast("Demo güncellendi");
       });
+      setInterval(rotateDemo, 4500);
 
+      // rooms
       document.querySelectorAll(".room").forEach(r=>{
         r.addEventListener("click", ()=>{
           setRoom(r.getAttribute("data-room"));
@@ -1178,33 +1099,6 @@
       $("copyTitle").addEventListener("click", ()=>copyFrom($("outTitle")));
       $("copyTags").addEventListener("click", ()=>copyFrom($("outTags")));
       $("copyDesc").addEventListener("click", ()=>copyFrom($("outDesc")));
-
-      // enforce 100 char & counters
-      [
-        ["outTitle","cTitle"],
-        ["outTags","cTags"],
-        ["outDesc","cDesc"]
-      ].forEach(([outId, cId])=>{
-        const out = $(outId);
-        const c = $(cId);
-        out.addEventListener("input", ()=>{
-          if(out.value.length > state.charMax){
-            out.value = out.value.slice(0, state.charMax);
-          }
-          updateChar(out, c);
-        });
-        updateChar(out, c);
-      });
-
-      // auto clamp on blur
-      ["outTitle","outTags","outDesc"].forEach(id=>{
-        $(id).addEventListener("blur", ()=>{
-          $(id).value = clamp100($(id).value);
-        });
-      });
-
-      // rotate demo periodically
-      setInterval(rotateDemo, 4500);
     }
 
     init();
