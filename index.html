@@ -3,183 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Viral Generator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Linearity Style Viral Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a0a;
-            --card-bg: #161616;
-            --accent: #6e57ff;
-            --text: #ffffff;
-            --text-dim: #a1a1a1;
-            --border: #262626;
+            --bg: #000000;
+            --accent: #6136fb;
+            --card-glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 20px;
+            color: #fff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Arka Plan Hareketli Işıklar */
+        .glow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, #1a1040 0%, transparent 50%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        nav {
+            padding: 30px 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .hero {
+            height: 100vh;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
-        }
-
-        .container {
-            max-width: 1200px;
-            width: 100%;
-        }
-
-        header {
             text-align: center;
-            padding: 60px 0;
-            animation: fadeIn 1s ease-out;
+            padding: 0 10%;
         }
 
-        h1 {
-            font-size: 3.5rem;
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 800;
-            margin-bottom: 10px;
-            background: linear-gradient(to bottom, #fff, #666);
+            letter-spacing: -2px;
+            line-height: 1;
+            background: linear-gradient(180deg, #fff 0%, #666 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .bento-grid {
+        /* Ana Bento Grid - Linearity Tarzı */
+        .bento-section {
+            padding: 100px 10%;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: auto auto;
-            gap: 20px;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
         }
 
-        .card {
-            background: var(--card-bg);
+        .bento-card {
+            background: var(--card-glass);
             border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 30px;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 40px;
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .card:hover {
+        .bento-card:hover {
             border-color: var(--accent);
-            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.06);
+            transform: scale(1.02);
         }
 
-        /* Hero Input Card */
-        .card-input {
-            grid-column: span 3;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+        /* Input Alanı - Büyük Kart */
+        .input-card { grid-column: span 8; height: 500px; }
+        
+        /* Platform Listesi - Yan Kart */
+        .platform-card { grid-column: span 4; height: 500px; }
 
-        input[type="text"] {
+        /* Analiz Sonuç - Alt Büyük Kart */
+        .output-card { grid-column: span 12; min-height: 400px; }
+
+        input {
+            width: 100%;
             background: transparent;
             border: none;
             border-bottom: 2px solid var(--border);
-            color: white;
-            font-size: 1.5rem;
-            padding: 10px 0;
+            color: #fff;
+            font-size: 2rem;
+            padding: 20px 0;
+            margin-top: 40px;
             outline: none;
-            width: 100%;
-            margin-bottom: 20px;
         }
 
-        .platform-chips {
-            display: flex;
-            gap: 10px;
+        .btn-generate {
+            background: #fff;
+            color: #000;
+            padding: 20px 40px;
+            border-radius: 100px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 40px;
+            transition: 0.3s;
         }
 
-        .chip {
+        .btn-generate:hover {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 30px var(--accent);
+        }
+
+        .badge {
+            background: rgba(97, 54, 251, 0.2);
+            color: #a389ff;
             padding: 8px 16px;
             border-radius: 100px;
-            background: var(--border);
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
-        .chip.active { background: var(--accent); }
-
-        /* Small Cards */
-        .card-sm { grid-column: span 1; }
-
-        /* Output Card */
-        .card-output {
-            grid-column: span 4;
-            min-height: 200px;
-            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
-        }
-
-        button {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 20px;
-            align-self: flex-start;
-        }
-
-        .policy-tag {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 6px;
             font-size: 0.8rem;
-            background: #1e3a1e;
-            color: #4ade80;
-            margin-top: 10px;
+            border: 1px solid var(--accent);
+            margin-bottom: 20px;
+            display: inline-block;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Linearity kaydırma efekti simülasyonu */
+        .sticky-content {
+            position: sticky;
+            top: 150px;
         }
 
-        @media (max-width: 900px) {
-            .bento-grid { grid-template-columns: 1fr; }
-            .card-input, .card-output { grid-column: span 1; }
-            h1 { font-size: 2.5rem; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>AI Global Viral Lab</h1>
-            <p style="color: var(--text-dim)">Viral başlıklar, hashtagler ve politika analizi.</p>
-        </header>
+    <div class="glow"></div>
 
-        <main class="bento-grid">
-            <section class="card card-input">
-                <input type="text" placeholder="Video konunu buraya yaz...">
-                <div class="platform-chips">
-                    <div class="chip active">YouTube</div>
-                    <div class="chip">Instagram</div>
-                    <div class="chip">TikTok</div>
-                    <div class="chip">X (Twitter)</div>
+    <nav>
+        <div style="font-weight: 800; font-size: 1.5rem;">V-LAB.</div>
+        <div class="btn-generate" style="padding: 10px 25px; margin: 0; font-size: 0.9rem;">Hemen Başla</div>
+    </nav>
+
+    <section class="hero">
+        <span class="badge">Next-Gen Content AI</span>
+        <h1>Viral İçeriğin <br> Yeni Formu.</h1>
+        <p style="color: #888; margin-top: 20px; font-size: 1.2rem; max-width: 600px;">
+            YouTube, Instagram ve TikTok için politika uyumlu, yüksek etkileşimli başlıkları saniyeler içinde tasarlayın.
+        </p>
+    </section>
+
+    <section class="bento-section">
+        
+        <div class="bento-card input-card">
+            <span class="badge">01. Konsept Belirle</span>
+            <h2>Videonun konusunu dünyaya anlat.</h2>
+            <input type="text" placeholder="Buraya yazmaya başla...">
+            <a href="#" class="btn-generate">Analizi Başlat</a>
+        </div>
+
+        <div class="bento-card platform-card">
+            <span class="badge">02. Platform Seç</span>
+            <ul style="list-style: none; margin-top: 30px;">
+                <li style="padding: 15px 0; border-bottom: 1px solid var(--border); opacity: 1;">YouTube Shorts</li>
+                <li style="padding: 15px 0; border-bottom: 1px solid var(--border); opacity: 0.5;">Instagram Reels</li>
+                <li style="padding: 15px 0; border-bottom: 1px solid var(--border); opacity: 0.5;">TikTok Global</li>
+                <li style="padding: 15px 0; opacity: 0.5;">X Viral</li>
+            </ul>
+        </div>
+
+        <div class="bento-card output-card">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <span class="badge">03. Akıllı Sonuç</span>
+                    <h3 style="font-size: 2.5rem;">Hazırlanan Viral Paket</h3>
+                    <p style="color: #888; margin-top: 20px;">Analiz tamamlandığında burada görünecek...</p>
                 </div>
-                <button>Analiz Et ve Üret</button>
-            </section>
-
-            <section class="card card-sm">
-                <h3 style="margin-top:0">Viral Skor</h3>
-                <p style="font-size: 2rem; font-weight: 800; color: var(--accent)">89/100</p>
-                <p style="font-size: 0.8rem; color: var(--text-dim)">Yüksek etkileşim potansiyeli.</p>
-            </section>
-
-            <section class="card card-output">
-                <h3>Üretilen İçerik</h3>
-                <div id="result">
-                    <p style="color: var(--text-dim)">Henüz bir veri girişi yapılmadı.</p>
+                <div style="text-align: right;">
+                    <div style="color: #4ade80; font-size: 0.9rem; margin-bottom: 10px;">● Policy Check Passed</div>
+                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px;">
+                        <small style="color: #888;">AdSense Uyumluluk</small>
+                        <div style="font-size: 1.5rem; font-weight: 800;">100%</div>
+                    </div>
                 </div>
-                <div class="policy-tag">✓ YouTube Reklam ve İhtar Politikalarına Uygun</div>
-            </section>
-        </main>
-    </div>
+            </div>
+        </div>
+
+    </section>
 
 </body>
 </html>
