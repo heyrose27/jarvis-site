@@ -3,203 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linearity Style Viral Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&display=swap" rel="stylesheet">
+    <title>Global Viral Studio - Linearity Style</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #000000;
-            --accent: #6136fb;
-            --card-glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.1);
+            --bg: #ffffff;
+            --yt-orange: #ff6b35;
+            --fb-green: #2ecc71;
+            --ig-purple: #a855f7;
+            --tk-blue: #3498db;
+            --text: #1a1a1a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); padding: 50px 5%; }
 
-        body {
-            background-color: var(--bg);
-            color: #fff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
+        .header-text { text-align: center; margin-bottom: 60px; }
+        .header-text h1 { font-size: 3rem; font-weight: 800; letter-spacing: -1px; }
+
+        /* Ana Izgara (Grid) Yapısı */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        /* Arka Plan Hareketli Işıklar */
-        .glow {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #1a1040 0%, transparent 50%);
-            z-index: -1;
-            opacity: 0.5;
-        }
-
-        nav {
-            padding: 30px 10%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(20px);
-        }
-
-        .hero {
-            height: 100vh;
+        /* Kart Tasarımı */
+        .v-card {
+            background: #fff;
+            border-radius: 24px;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+        }
+
+        .v-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-color: var(--text);
+        }
+
+        /* Görsel Alanı (Üst Kısım) */
+        .v-visual {
+            height: 200px;
+            display: flex;
             align-items: center;
-            text-align: center;
-            padding: 0 10%;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 800;
-            letter-spacing: -2px;
-            line-height: 1;
-            background: linear-gradient(180deg, #fff 0%, #666 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Ana Bento Grid - Linearity Tarzı */
-        .bento-section {
-            padding: 100px 10%;
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 24px;
-        }
-
-        .bento-card {
-            background: var(--card-glass);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-            border-radius: 40px;
-            padding: 40px;
-            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            justify-content: center;
             position: relative;
-            overflow: hidden;
+            color: white;
+            font-weight: 800;
+            font-size: 1.5rem;
+            text-transform: uppercase;
         }
 
-        .bento-card:hover {
-            border-color: var(--accent);
-            background: rgba(255, 255, 255, 0.06);
-            transform: scale(1.02);
-        }
-
-        /* Input Alanı - Büyük Kart */
-        .input-card { grid-column: span 8; height: 500px; }
-        
-        /* Platform Listesi - Yan Kart */
-        .platform-card { grid-column: span 4; height: 500px; }
-
-        /* Analiz Sonuç - Alt Büyük Kart */
-        .output-card { grid-column: span 12; min-height: 400px; }
-
-        input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 2px solid var(--border);
-            color: #fff;
-            font-size: 2rem;
-            padding: 20px 0;
-            margin-top: 40px;
-            outline: none;
-        }
-
-        .btn-generate {
+        /* Alt Yazı Alanı */
+        .v-info {
+            padding: 20px;
             background: #fff;
-            color: #000;
-            padding: 20px 40px;
-            border-radius: 100px;
             font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 40px;
-            transition: 0.3s;
+            font-size: 1rem;
+            border-top: 1px solid #f0f0f0;
         }
 
-        .btn-generate:hover {
-            background: var(--accent);
-            color: #fff;
-            box-shadow: 0 0 30px var(--accent);
-        }
+        /* Renk Varyasyonları (Görseldeki gibi) */
+        .bg-orange { background-color: #ff8c42; }
+        .bg-green  { background-color: #4cd137; }
+        .bg-purple { background-color: #9c88ff; }
+        .bg-blue   { background-color: #00a8ff; }
+        .bg-pink   { background-color: #ef5777; }
+        .bg-teal   { background-color: #0fbcf9; }
 
-        .badge {
-            background: rgba(97, 54, 251, 0.2);
-            color: #a389ff;
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 0.8rem;
-            border: 1px solid var(--accent);
-            margin-bottom: 20px;
-            display: inline-block;
-        }
-
-        /* Linearity kaydırma efekti simülasyonu */
-        .sticky-content {
-            position: sticky;
-            top: 150px;
+        /* Küçük İçerik Kutusu (Resim yerine temsil) */
+        .mock-content {
+            width: 70%;
+            height: 60%;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255,255,255,0.4);
+            backdrop-filter: blur(5px);
         }
 
     </style>
 </head>
 <body>
 
-    <div class="glow"></div>
+    <div class="header-text">
+        <h1>Global Kanal İçerik Merkezi</h1>
+        <p>Hangi platform için viral içerik oluşturmak istersiniz?</p>
+    </div>
 
-    <nav>
-        <div style="font-weight: 800; font-size: 1.5rem;">V-LAB.</div>
-        <div class="btn-generate" style="padding: 10px 25px; margin: 0; font-size: 0.9rem;">Hemen Başla</div>
-    </nav>
-
-    <section class="hero">
-        <span class="badge">Next-Gen Content AI</span>
-        <h1>Viral İçeriğin <br> Yeni Formu.</h1>
-        <p style="color: #888; margin-top: 20px; font-size: 1.2rem; max-width: 600px;">
-            YouTube, Instagram ve TikTok için politika uyumlu, yüksek etkileşimli başlıkları saniyeler içinde tasarlayın.
-        </p>
-    </section>
-
-    <section class="bento-section">
+    <div class="card-grid">
         
-        <div class="bento-card input-card">
-            <span class="badge">01. Konsept Belirle</span>
-            <h2>Videonun konusunu dünyaya anlat.</h2>
-            <input type="text" placeholder="Buraya yazmaya başla...">
-            <a href="#" class="btn-generate">Analizi Başlat</a>
-        </div>
-
-        <div class="bento-card platform-card">
-            <span class="badge">02. Platform Seç</span>
-            <ul style="list-style: none; margin-top: 30px;">
-                <li style="padding: 15px 0; border-bottom: 1px solid var(--border); opacity: 1;">YouTube Shorts</li>
-                <li style="padding: 15px 0; border-bottom: 1px solid var(--border); opacity: 0.5;">Instagram Reels</li>
-                <li style="padding: 15px 0; border-bottom: 1px solid var(--border); opacity: 0.5;">TikTok Global</li>
-                <li style="padding: 15px 0; opacity: 0.5;">X Viral</li>
-            </ul>
-        </div>
-
-        <div class="bento-card output-card">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                <div>
-                    <span class="badge">03. Akıllı Sonuç</span>
-                    <h3 style="font-size: 2.5rem;">Hazırlanan Viral Paket</h3>
-                    <p style="color: #888; margin-top: 20px;">Analiz tamamlandığında burada görünecek...</p>
-                </div>
-                <div style="text-align: right;">
-                    <div style="color: #4ade80; font-size: 0.9rem; margin-bottom: 10px;">● Policy Check Passed</div>
-                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 20px;">
-                        <small style="color: #888;">AdSense Uyumluluk</small>
-                        <div style="font-size: 1.5rem; font-weight: 800;">100%</div>
-                    </div>
-                </div>
+        <div class="v-card">
+            <div class="v-visual bg-orange">
+                <div class="mock-content">REELS</div>
             </div>
+            <div class="v-info">Instagram Reels</div>
         </div>
 
-    </section>
+        <div class="v-card">
+            <div class="v-visual bg-green">
+                <div class="mock-content">FB VIDEO</div>
+            </div>
+            <div class="v-info">Facebook Videoları</div>
+        </div>
+
+        <div class="v-card">
+            <div class="v-visual bg-purple">
+                <div class="mock-content">STORY</div>
+            </div>
+            <div class="v-info">Instagram Hikayeleri</div>
+        </div>
+
+        <div class="v-card">
+            <div class="v-visual bg-blue">
+                <div class="mock-content">TIKTOK</div>
+            </div>
+            <div class="v-info">TikTok Videoları</div>
+        </div>
+
+        <div class="v-card">
+            <div class="v-visual bg-pink">
+                <div class="mock-content">SHORTS</div>
+            </div>
+            <div class="v-info">YouTube Videoları</div>
+        </div>
+
+        <div class="v-card">
+            <div class="v-visual bg-teal">
+                <div class="mock-content">ADS</div>
+            </div>
+            <div class="v-info">Meta Reklamlar</div>
+        </div>
+
+    </div>
 
 </body>
 </html>
