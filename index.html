@@ -1,1107 +1,185 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jarvis Heyrose • Global Titles • Hashtags • Channel Insights</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --bg0:#07070c;
-      --bg1:#0a0a14;
-      --glass: rgba(255,255,255,.06);
-      --glass2: rgba(255,255,255,.09);
-      --border: rgba(255,255,255,.10);
-      --border2: rgba(255,255,255,.16);
-      --txt:#e9e9ff;
-      --muted:#b6b6d2;
-      --muted2:#8f8fb0;
-      --pink:#ff2d95;
-      --violet:#8a5cff;
-      --cyan:#2de2ff;
-      --good:#46f7a3;
-      --warn:#ffcc66;
-      --bad:#ff5f6d;
-      --shadow: 0 24px 60px rgba(0,0,0,.55);
-      --shadow2: 0 10px 30px rgba(0,0,0,.35);
-      --r16: 16px;
-      --r20: 20px;
-      --r24: 24px;
-    }
-
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--txt);
-      background: radial-gradient(1200px 600px at 20% 10%, rgba(138,92,255,.20), transparent 60%),
-                  radial-gradient(900px 500px at 85% 15%, rgba(255,45,149,.18), transparent 55%),
-                  radial-gradient(1000px 600px at 55% 90%, rgba(45,226,255,.10), transparent 60%),
-                  linear-gradient(180deg, var(--bg0), var(--bg1));
-      overflow-x:hidden;
-    }
-    body:before{
-      content:"";
-      position:fixed; inset:0;
-      pointer-events:none;
-      opacity:.08;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
-      mix-blend-mode: overlay;
-    }
-    a{ color:inherit; text-decoration:none; }
-    button, input, textarea { font-family:inherit; }
-
-    .wrap{ width:min(1180px, calc(100% - 32px)); margin:0 auto; }
-
-    .topbar{
-      position:sticky; top:0; z-index:20;
-      backdrop-filter: blur(14px);
-      background: linear-gradient(180deg, rgba(7,7,12,.78), rgba(7,7,12,.35));
-      border-bottom:1px solid rgba(255,255,255,.06);
-    }
-    .topbar .row{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:14px 0;
-    }
-    .brand{ display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px; }
-    .logo{
-      width:34px; height:34px; border-radius:12px;
-      background: radial-gradient(14px 14px at 30% 30%, rgba(255,255,255,.35), transparent 55%),
-                  linear-gradient(135deg, rgba(255,45,149,.85), rgba(138,92,255,.85));
-      box-shadow: 0 10px 30px rgba(255,45,149,.12), 0 10px 30px rgba(138,92,255,.12);
-      border:1px solid rgba(255,255,255,.15);
-    }
-    .nav{ display:flex; align-items:center; gap:16px; color: var(--muted); font-size:14px; }
-    .nav a{ padding:8px 10px; border-radius:12px; transition: .2s ease; }
-    .nav a:hover{ background: rgba(255,255,255,.06); color: var(--txt); }
-    .actions{ display:flex; align-items:center; gap:10px; }
-
-    .btn{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: var(--txt);
-      padding:10px 14px;
-      border-radius: 14px;
-      cursor:pointer;
-      transition:.18s ease;
-      box-shadow: var(--shadow2);
-    }
-    .btn:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.09); }
-    .btn:active{ transform: translateY(0px); }
-
-    .btn-primary{
-      border-color: rgba(255,45,149,.35);
-      background: linear-gradient(135deg, rgba(255,45,149,.90), rgba(138,92,255,.90));
-      box-shadow: 0 18px 50px rgba(255,45,149,.14), 0 18px 50px rgba(138,92,255,.14);
-    }
-    .btn-primary:hover{ filter: brightness(1.03); border-color: rgba(255,255,255,.22); }
-
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:7px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: var(--muted);
-      font-size:12px;
-    }
-    .dot{
-      width:8px; height:8px; border-radius:999px;
-      background: linear-gradient(135deg, var(--cyan), var(--violet));
-      box-shadow: 0 0 18px rgba(45,226,255,.35);
-    }
-
-    .landing{ padding:40px 0 36px; }
-    .hero{
-      display:grid;
-      grid-template-columns: 1.12fr .88fr;
-      gap: 22px;
-      align-items:stretch;
-      margin-top:18px;
-    }
-
-    .card{
-      border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
-      border-radius: var(--r24);
-      box-shadow: var(--shadow);
-      position:relative;
-      overflow:hidden;
-    }
-    .card:before{
-      content:"";
-      position:absolute; inset:-1px;
-      background: radial-gradient(500px 200px at 20% 10%, rgba(138,92,255,.18), transparent 60%),
-                  radial-gradient(500px 200px at 90% 30%, rgba(255,45,149,.14), transparent 60%);
-      pointer-events:none;
-    }
-    .card > *{ position:relative; }
-
-    .hero-left{ padding:26px; }
-    .kicker{ color: var(--muted); font-size:13px; letter-spacing:.4px; text-transform:uppercase; }
-    h1{
-      margin:10px 0 10px;
-      font-size: 44px;
-      line-height:1.08;
-      letter-spacing:-.8px;
-    }
-    .sub{
-      margin:0 0 18px;
-      color: var(--muted);
-      font-size: 15px;
-      line-height:1.6;
-      max-width: 52ch;
-    }
-    .hero-cta{ display:flex; gap:10px; flex-wrap:wrap; }
-
-    .mini{
-      margin-top:18px;
-      display:flex; gap:10px; flex-wrap:wrap;
-    }
-    .mini .pill{ background: rgba(255,255,255,.05); }
-
-    .hero-right{ padding:18px; display:flex; flex-direction:column; gap:12px; }
-    .demo-title{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:12px 14px;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-    }
-    .demo-title b{ font-size:14px; }
-    .demo-title span{ color: var(--muted2); font-size:12px; }
-
-    .demo-box{
-      padding:14px;
-      border-radius: 20px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(10,10,20,.35);
-      min-height: 210px;
-    }
-    .demo-line{
-      padding:10px 12px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.05);
-      border-radius: 16px;
-      margin-bottom:10px;
-    }
-    .demo-line .label{ color: var(--muted2); font-size:12px; margin-bottom:6px; }
-    .demo-line .val{ font-size:14px; color: var(--txt); }
-
-    .stats{
-      margin-top:18px;
-      display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:12px;
-    }
-    .stat{
-      padding:14px;
-      border-radius: 20px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-    }
-    .stat .n{ font-size:20px; font-weight:700; letter-spacing:-.4px; }
-    .stat .t{ color: var(--muted2); font-size:12px; margin-top:4px; }
-
-    .grid3{
-      margin-top:18px;
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-    .feat{
-      padding:16px;
-      border-radius: 22px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      transition:.18s ease;
-    }
-    .feat:hover{ transform: translateY(-3px); border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.07); }
-    .feat b{ display:block; font-size:14px; margin-bottom:6px; }
-    .feat p{ margin:0; color:var(--muted); font-size:13px; line-height:1.6; }
-
-    .section{
-      margin-top: 18px;
-      padding: 18px;
-      border-radius: var(--r24);
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-    }
-    .section h2{ margin:0 0 10px; font-size:18px; }
-    .platforms{ display:grid; grid-template-columns: repeat(4,1fr); gap:12px; }
-    .plat{
-      padding:14px;
-      border-radius: 20px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      transition:.18s ease;
-    }
-    .plat:hover{ transform: translateY(-3px); border-color: rgba(255,255,255,.18); }
-    .plat .pname{ font-weight:700; font-size:14px; margin-bottom:8px; }
-    .plat .tags{ color: var(--muted2); font-size:12px; line-height:1.6; }
-
-    /* APP */
-    .app{ display:none; padding: 18px 0 28px; }
-    .app-grid{
-      display:grid;
-      grid-template-columns: 280px 1fr;
-      gap: 14px;
-      align-items: start;
-    }
-    .sidebar{
-      position: sticky;
-      top: 76px;
-      padding: 14px;
-      border-radius: var(--r24);
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      box-shadow: var(--shadow2);
-    }
-    .side-title{
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:10px;
-    }
-    .side-title b{ font-size:14px; }
-    .side-title small{ color: var(--muted2); font-size:12px; }
-
-    .room{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:12px 12px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.04);
-      cursor:pointer;
-      transition:.16s ease;
-      margin-bottom:10px;
-    }
-    .room:hover{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.14); transform: translateY(-1px); }
-    .room.active{
-      border-color: rgba(255,45,149,.40);
-      background: radial-gradient(400px 120px at 20% 30%, rgba(255,45,149,.14), transparent 60%),
-                  rgba(255,255,255,.05);
-      box-shadow: 0 14px 40px rgba(255,45,149,.10);
-    }
-    .room .left{ display:flex; flex-direction:column; gap:4px; }
-    .room .left b{ font-size:13px; }
-    .room .left span{ font-size:12px; color: var(--muted2); }
-
-    .side-widget{
-      margin-top: 10px;
-      padding: 12px;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(10,10,20,.35);
-    }
-    .side-widget .wrow{
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:8px;
-      color: var(--muted);
-      font-size:12px;
-    }
-    .bar{
-      height:10px; border-radius:999px;
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      overflow:hidden;
-    }
-    .bar > i{
-      display:block; height:100%;
-      width: 60%;
-      background: linear-gradient(90deg, rgba(45,226,255,.85), rgba(138,92,255,.85), rgba(255,45,149,.85));
-      box-shadow: 0 0 22px rgba(138,92,255,.28);
-    }
-
-    .main{
-      border-radius: var(--r24);
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-    }
-    .main-top{
-      display:flex; align-items:center; justify-content:space-between;
-      padding: 14px 16px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.03);
-    }
-    .main-top .title{ display:flex; align-items:flex-start; flex-direction:column; gap:4px; }
-    .main-top .title b{ font-size:14px; }
-    .main-top .title span{ color: var(--muted2); font-size:12px; }
-
-    .profile{ display:flex; align-items:center; gap:10px; color: var(--muted); font-size:13px; }
-    .avatar{
-      width:34px; height:34px; border-radius: 14px;
-      border:1px solid rgba(255,255,255,.14);
-      background: linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.04));
-      display:grid; place-items:center;
-      color: var(--txt);
-      font-weight:700;
-    }
-    .main-body{ padding: 14px; }
-    .cards{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-    .gen{
-      padding: 14px;
-      border-radius: var(--r24);
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      transition:.18s ease;
-    }
-    .gen:hover{ transform: translateY(-3px); border-color: rgba(255,255,255,.16); background: rgba(255,255,255,.06); }
-    .gen .ghead{
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom:10px;
-    }
-    .gen .ghead b{ font-size:14px; }
-    .quota{
-      font-size:12px;
-      color: var(--muted2);
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      padding:6px 10px;
-      border-radius:999px;
-    }
-
-    .field{ display:flex; flex-direction:column; gap:8px; margin-bottom:10px; }
-    .field label{ font-size:12px; color: var(--muted2); }
-    .in{
-      width:100%;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(10,10,20,.35);
-      color: var(--txt);
-      padding:12px 12px;
-      outline:none;
-      transition:.16s ease;
-      font-size:13px;
-    }
-    .in:focus{
-      border-color: rgba(45,226,255,.30);
-      box-shadow: 0 0 0 4px rgba(45,226,255,.08);
-    }
-    textarea.in{ resize: vertical; min-height: 90px; }
-
-    .btn-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
-    .btn-small{ padding:10px 12px; border-radius: 14px; font-size:13px; }
-    .btn-ghost{
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      color: var(--txt);
-    }
-
-    .notice{
-      margin-top: 10px;
-      padding: 10px 12px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(10,10,20,.25);
-      color: var(--muted);
-      font-size:12px;
-      line-height:1.6;
-    }
-
-    .toast{
-      position:fixed;
-      right:16px; bottom:16px;
-      padding:12px 14px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(10,10,20,.70);
-      backdrop-filter: blur(14px);
-      color: var(--txt);
-      box-shadow: var(--shadow2);
-      opacity:0;
-      transform: translateY(8px);
-      transition:.2s ease;
-      z-index:50;
-      font-size:13px;
-    }
-    .toast.show{ opacity:1; transform: translateY(0); }
-
-    @media (max-width: 980px){
-      .hero{ grid-template-columns: 1fr; }
-      .stats{ grid-template-columns: repeat(2,1fr); }
-      .platforms{ grid-template-columns: repeat(2,1fr); }
-      .grid3{ grid-template-columns: 1fr; }
-      .app-grid{ grid-template-columns: 1fr; }
-      .sidebar{ position:relative; top:auto; }
-      .cards{ grid-template-columns: 1fr; }
-      h1{ font-size: 36px; }
-    }
-  </style>
-</head>
-
-<body>
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="wrap">
-      <div class="row">
-        <div class="brand">
-          <div class="logo"></div>
-          <div>
-            <div style="font-size:14px;">Jarvis Heyrose</div>
-            <div style="font-size:12px;color:var(--muted2);margin-top:2px;">Global Titles • Hashtags • Channel Insights</div>
-          </div>
-        </div>
-
-        <div class="nav" id="navLinks">
-          <a href="#home">Ana Sayfa</a>
-          <a href="#about">Hakkımızda</a>
-          <a href="#gallery">Fotoğraflar</a>
-          <a href="#models">Yapay Zeka Modelleri</a>
-          <a href="#pricing">Fiyatlandırma</a>
-        </div>
-
-        <div class="actions">
-          <span class="pill" id="modelBadge"><span class="dot"></span> Gemini aktif</span>
-          <button class="btn btn-primary" id="btnGoogle">Google ile Giriş</button>
-          <button class="btn btn-ghost" id="btnLogout" style="display:none;">Çıkış</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- LANDING -->
-  <main class="landing" id="landing">
-    <div class="wrap" id="home">
-      <div class="hero">
-        <div class="card hero-left">
-          <div class="kicker">Sosyal medya için tek panel</div>
-          <h1>Global Başlık & Hashtag Üret. Kanalını büyüt.</h1>
-          <p class="sub">
-            YouTube, Instagram, TikTok ve X için kısa, global ve limitlere uygun içerikler üret.
-            Chat gibi değil: premium dashboard hissi.
-          </p>
-
-          <div class="hero-cta">
-            <button class="btn btn-primary" id="btnStart">Ücretsiz Başla</button>
-            <button class="btn" id="btnDemo">Demo Göster</button>
-          </div>
-
-          <div class="mini">
-            <span class="pill"><span class="dot"></span> 3 varyasyon / hak</span>
-            <span class="pill"><span class="dot"></span> Platform odaları</span>
-            <span class="pill"><span class="dot"></span> Kopyala & kullan</span>
-            <span class="pill"><span class="dot"></span> Gemini destekli</span>
-          </div>
-
-          <div class="stats" style="margin-top:18px;">
-            <div class="stat">
-              <div class="n" id="sTotal">128,450+</div>
-              <div class="t">Toplam Üretim</div>
-            </div>
-            <div class="stat">
-              <div class="n" id="sOnline">1,240</div>
-              <div class="t">Online Kullanıcı</div>
-            </div>
-            <div class="stat">
-              <div class="n" id="sLikes">54,200</div>
-              <div class="t">Beğeni</div>
-            </div>
-            <div class="stat">
-              <div class="n" id="sToday">3,210</div>
-              <div class="t">Bugün Üretilen</div>
-            </div>
-          </div>
-
-          <div class="grid3">
-            <div class="feat">
-              <b>Başlık (3 varyasyon)</b>
-              <p>Beğenmedin mi? Değiştir. Her değiştir = 1 hak.</p>
-            </div>
-            <div class="feat">
-              <b>Hashtag (3 varyasyon)</b>
-              <p>#live #trumpet #saxophone gibi kısa setler.</p>
-            </div>
-            <div class="feat">
-              <b>Açıklama (2 varyasyon)</b>
-              <p>Kısa, global, temiz. Her değiştir = 1 hak.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card hero-right" id="demoCard">
-          <div class="demo-title">
-            <b>Canlı Örnek</b>
-            <span>Platform: YouTube</span>
-          </div>
-
-          <div class="demo-box">
-            <div class="demo-line">
-              <div class="label">Başlık</div>
-              <div class="val" id="demoTitle">Eyes Closed, Heart Open: The Most Soulful Tararara Ever 🎷✨</div>
-            </div>
-            <div class="demo-line">
-              <div class="label">Hashtag</div>
-              <div class="val" id="demoTags">#live #trumpet #saxophone #music #shorts</div>
-            </div>
-            <div class="demo-line" style="margin-bottom:0;">
-              <div class="label">Kanal Açıklaması</div>
-              <div class="val" id="demoDesc">Live performances + short clips. New uploads weekly.</div>
-            </div>
-          </div>
-
-          <div class="section" id="models">
-            <h2>Yapay Zeka Modelleri</h2>
-            <div class="platforms">
-              <div class="plat">
-                <div class="pname">Gemini</div>
-                <div class="tags">Aktif • Hızlı üretim • Stabil çıktı</div>
-              </div>
-              <div class="plat">
-                <div class="pname">Yeni Modeller</div>
-                <div class="tags">Yakında eklenecek</div>
-              </div>
-              <div class="plat">
-                <div class="pname">Limit Sistemi</div>
-                <div class="tags">Free: Başlık 3 • Hashtag 3 • Açıklama 2</div>
-              </div>
-              <div class="plat">
-                <div class="pname">Kopyala & Kullan</div>
-                <div class="tags">Tek tıkla kopyalama + toast</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section" id="about">
-        <h2>Hakkımızda</h2>
-        <div style="color:var(--muted);font-size:13px;line-height:1.7;">
-          Sosyal medya kanalların için global başlık, hashtag, kanal açıklaması ve (opsiyonel) analiz üretir.
-          Chat görünümünden uzak, gerçek bir SaaS web app hissi.
-        </div>
-      </div>
-
-      <div class="section" id="gallery">
-        <h2>Fotoğraflar</h2>
-        <div style="color:var(--muted2);font-size:12px;margin-bottom:10px;">(Buraya galeri grid koyabilirsin)</div>
-        <div class="platforms">
-          <div class="plat"><div class="pname">Görsel 1</div><div class="tags">Placeholder</div></div>
-          <div class="plat"><div class="pname">Görsel 2</div><div class="tags">Placeholder</div></div>
-          <div class="plat"><div class="pname">Görsel 3</div><div class="tags">Placeholder</div></div>
-          <div class="plat"><div class="pname">Görsel 4</div><div class="tags">Placeholder</div></div>
-        </div>
-      </div>
-
-      <div class="section" id="pricing">
-        <h2>Fiyatlandırma</h2>
-        <div class="platforms">
-          <div class="plat">
-            <div class="pname">Ücretsiz</div>
-            <div class="tags">Başlık: 3 • Hashtag: 3 • Açıklama: 2</div>
-          </div>
-          <div class="plat">
-            <div class="pname">Premium</div>
-            <div class="tags">Daha yüksek limit • Öncelikli hız • Ek özellikler</div>
-          </div>
-          <div class="plat">
-            <div class="pname">Kurumsal</div>
-            <div class="tags">Takım hesapları • Raporlama • API</div>
-          </div>
-          <div class="plat">
-            <div class="pname">Not</div>
-            <div class="tags">Sayaçlar gerçek veriye bağlanabilir</div>
-          </div>
-        </div>
-      </div>
-
-      <div style="height:22px;"></div>
-      <div style="color:var(--muted2);font-size:12px;padding:10px 0 18px;">
-        © <span id="year"></span> Jarvis Heyrose • Premium SaaS Template
-      </div>
-    </div>
-  </main>
-
-  <!-- APP -->
-  <section class="app" id="app">
-    <div class="wrap">
-      <div class="app-grid">
-        <aside class="sidebar">
-          <div class="side-title">
-            <b>Platform Odaları</b>
-            <small id="userTier">Free</small>
-          </div>
-
-          <div class="room active" data-room="youtube">
-            <div class="left"><b>YouTube Odası</b><span>Başlık • Hashtag • Açıklama</span></div>
-            <span class="pill" style="font-size:11px;">YT</span>
-          </div>
-          <div class="room" data-room="instagram">
-            <div class="left"><b>Instagram Odası</b><span>Başlık • Hashtag • Bio</span></div>
-            <span class="pill" style="font-size:11px;">IG</span>
-          </div>
-          <div class="room" data-room="tiktok">
-            <div class="left"><b>TikTok Odası</b><span>Hook • Hashtag • Bio</span></div>
-            <span class="pill" style="font-size:11px;">TT</span>
-          </div>
-          <div class="room" data-room="x">
-            <div class="left"><b>X Odası</b><span>Short text • Tags</span></div>
-            <span class="pill" style="font-size:11px;">X</span>
-          </div>
-
-          <div class="side-widget">
-            <div class="wrow"><span>Kalan haklar</span><span id="quotaSummary">—</span></div>
-            <div class="bar"><i id="quotaBar"></i></div>
-            <div style="margin-top:10px;color:var(--muted2);font-size:12px;line-height:1.6;">
-              Free limit: Başlık 3 • Hashtag 3 • Açıklama 2
-            </div>
-          </div>
-        </aside>
-
-        <div class="main">
-          <div class="main-top">
-            <div class="title">
-              <b id="roomTitle">YouTube Odası</b>
-              <span>Her üretim = 1 hak • Beğenmezsen değiştir</span>
-            </div>
-            <div class="profile">
-              <div class="avatar" id="avatar">G</div>
-              <div>
-                <div id="userName" style="color:var(--txt);font-weight:600;">Guest</div>
-                <div style="color:var(--muted2);font-size:12px;" id="userEmail">—</div>
-              </div>
-              <button class="btn btn-primary btn-small" id="btnUpgrade">Upgrade</button>
-            </div>
-          </div>
-
-          <div class="main-body">
-            <div class="cards">
-              <!-- TITLE -->
-              <div class="gen" data-kind="title">
-                <div class="ghead">
-                  <b>Başlık Üret (Varyasyon)</b>
-                  <span class="quota" id="qTitle">—</span>
-                </div>
-
-                <div class="field">
-                  <label>Konu / içerik fikri</label>
-                  <input class="in" id="inTitle" placeholder="Örn: Tararara sax live street performance" maxlength="220" />
-                </div>
-
-                <div class="field">
-                  <label>Çıktı</label>
-                  <textarea class="in" id="outTitle" placeholder="Buraya başlık gelecek..."></textarea>
-                </div>
-
-                <div class="btn-row">
-                  <button class="btn btn-primary btn-small" id="genTitle">Değiştir / Üret</button>
-                  <button class="btn btn-ghost btn-small" id="copyTitle">Kopyala</button>
-                </div>
-
-                <div class="notice">Başlık için 3 hak var. Her “Değiştir / Üret” = 1 hak.</div>
-              </div>
-
-              <!-- HASHTAGS -->
-              <div class="gen" data-kind="tags">
-                <div class="ghead">
-                  <b>Hashtag Üret (Set)</b>
-                  <span class="quota" id="qTags">—</span>
-                </div>
-
-                <div class="field">
-                  <label>Konu / niş</label>
-                  <input class="in" id="inTags" placeholder="Örn: trumpet sax street music" maxlength="220" />
-                </div>
-
-                <div class="field">
-                  <label>Çıktı (örnek: #live #trumpet #saxophone #music #shorts)</label>
-                  <textarea class="in" id="outTags" placeholder="#..." ></textarea>
-                </div>
-
-                <div class="btn-row">
-                  <button class="btn btn-primary btn-small" id="genTags">Değiştir / Üret</button>
-                  <button class="btn btn-ghost btn-small" id="copyTags">Kopyala</button>
-                </div>
-
-                <div class="notice">Hashtag için 3 hak var. Her “Değiştir / Üret” = 1 hak.</div>
-              </div>
-
-              <!-- DESCRIPTION -->
-              <div class="gen" data-kind="desc">
-                <div class="ghead">
-                  <b>Kanal Açıklaması</b>
-                  <span class="quota" id="qDesc">—</span>
-                </div>
-
-                <div class="field">
-                  <label>Kanal konusu</label>
-                  <input class="in" id="inDesc" placeholder="Örn: live sax & trumpet shorts" maxlength="220" />
-                </div>
-
-                <div class="field">
-                  <label>Çıktı</label>
-                  <textarea class="in" id="outDesc" placeholder="Kısa kanal açıklaması..."></textarea>
-                </div>
-
-                <div class="btn-row">
-                  <button class="btn btn-primary btn-small" id="genDesc">Değiştir / Üret</button>
-                  <button class="btn btn-ghost btn-small" id="copyDesc">Kopyala</button>
-                </div>
-
-                <div class="notice">Açıklama için 2 hak var. Her “Değiştir / Üret” = 1 hak.</div>
-              </div>
-            </div>
-
-            <div class="section" style="margin-top:12px;">
-              <h2>Kanal Analizi (Opsiyonel)</h2>
-              <div style="color:var(--muted);font-size:13px;line-height:1.7;">
-                İstersen buraya 4. kart ekleriz: kanal tonu, hedef kitle, içerik planı, iyileştirme notları.
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="toast" id="toast">Kopyalandı</div>
-
-  <script>
-    /* ==========================================================
-       CONFIG
-       - GOOGLE_OAUTH_URL boşsa giriş ENGELLENİR (otomatik login yok)
-       ========================================================== */
-    const GOOGLE_OAUTH_URL = ""; // Örn: "https://YOUR_DOMAIN.com/oauth/google"  (BOŞ BIRAKMA)
-
-    const $ = (id) => document.getElementById(id);
-
-    const state = {
-      authed: false,
-      user: { name: "Guest", email: "—" },
-      room: "youtube",
-      limits: { title: 3, tags: 3, desc: 2 },
-      used:   { title: 0, tags: 0, desc: 0 },
-      counters: { total: 128450, online: 1240, likes: 54200, today: 3210 }
-    };
-
-    const LS_KEY = "jh_quota_v2";
-    const LS_AUTH = "jh_auth_v2";
-    const LS_USER = "jh_user_v2";
-    const LS_COUNTERS = "jh_counters_v2";
-
-    function showToast(msg){
-      const t = $("toast");
-      t.textContent = msg;
-      t.classList.add("show");
-      setTimeout(()=>t.classList.remove("show"), 1300);
-    }
-
-    function loadPersisted(){
-      try{
-        const q = JSON.parse(localStorage.getItem(LS_KEY) || "null");
-        if(q?.used) state.used = q.used;
-
-        const a = JSON.parse(localStorage.getItem(LS_AUTH) || "null");
-        if(typeof a?.authed === "boolean") state.authed = a.authed;
-
-        const u = JSON.parse(localStorage.getItem(LS_USER) || "null");
-        if(u?.name) state.user = u;
-
-        const c = JSON.parse(localStorage.getItem(LS_COUNTERS) || "null");
-        if(c?.total) state.counters = c;
-      }catch(e){}
-    }
-    function persistQuota(){ localStorage.setItem(LS_KEY, JSON.stringify({ used: state.used })); }
-    function persistAuth(){ localStorage.setItem(LS_AUTH, JSON.stringify({ authed: state.authed })); }
-    function persistUser(){ localStorage.setItem(LS_USER, JSON.stringify(state.user)); }
-    function persistCounters(){ localStorage.setItem(LS_COUNTERS, JSON.stringify(state.counters)); }
-
-    function quotaRemaining(kind){
-      return Math.max(0, state.limits[kind] - state.used[kind]);
-    }
-
-    function updateQuotaUI(){
-      $("qTitle").textContent = `${quotaRemaining("title")}/${state.limits.title}`;
-      $("qTags").textContent  = `${quotaRemaining("tags")}/${state.limits.tags}`;
-      $("qDesc").textContent  = `${quotaRemaining("desc")}/${state.limits.desc}`;
-
-      const totalAllowed = state.limits.title + state.limits.tags + state.limits.desc;
-      const totalUsed = state.used.title + state.used.tags + state.used.desc;
-      const remaining = totalAllowed - totalUsed;
-
-      $("quotaSummary").textContent = `${remaining}/${totalAllowed}`;
-      const pct = totalAllowed ? Math.max(0, Math.min(1, remaining / totalAllowed)) : 0;
-      $("quotaBar").style.width = (pct * 100).toFixed(0) + "%";
-
-      // Disable if limit finished
-      $("genTitle").disabled = quotaRemaining("title") <= 0;
-      $("genTags").disabled  = quotaRemaining("tags") <= 0;
-      $("genDesc").disabled  = quotaRemaining("desc") <= 0;
-
-      ["genTitle","genTags","genDesc"].forEach(id=>{
-        const b = $(id);
-        b.style.opacity = b.disabled ? .55 : 1;
-        b.style.cursor  = b.disabled ? "not-allowed" : "pointer";
-      });
-    }
-
-    function updateAuthUI(){
-      $("landing").style.display = state.authed ? "none" : "block";
-      $("app").style.display     = state.authed ? "block" : "none";
-      $("btnGoogle").style.display = state.authed ? "none" : "inline-flex";
-      $("btnLogout").style.display = state.authed ? "inline-flex" : "none";
-
-      $("userName").textContent = state.user.name || "User";
-      $("userEmail").textContent = state.user.email || "—";
-      $("avatar").textContent = (state.user.name || "U").trim().slice(0,1).toUpperCase();
-    }
-
-    function setRoom(room){
-      state.room = room;
-      const map = {
-        youtube: "YouTube Odası",
-        instagram: "Instagram Odası",
-        tiktok: "TikTok Odası",
-        x: "X Odası"
-      };
-      $("roomTitle").textContent = map[room] || "Platform Odası";
-
-      document.querySelectorAll(".room").forEach(r=>{
-        r.classList.toggle("active", r.getAttribute("data-room") === room);
-      });
-    }
-
-    /* ==========================================================
-       GOOGLE LOGIN
-       - OAuth URL yoksa kesinlikle giriş yapmaz
-       ========================================================== */
-    async function googleLogin(){
-      if(!GOOGLE_OAUTH_URL || !GOOGLE_OAUTH_URL.startsWith("http")){
-        showToast("Google giriş ayarlı değil (OAuth URL yok)");
-        return;
-      }
-      window.location.href = GOOGLE_OAUTH_URL;
-    }
-
-    function logout(){
-      state.authed = false;
-      persistAuth();
-      updateAuthUI();
-      showToast("Çıkış yapıldı");
-    }
-
-    /* ==========================================================
-       VARIATION GENERATION (mock)
-       - Hak = varyasyon
-       - Sonra burayı gerçek Gemini API ile değiştirirsin
-       ========================================================== */
-    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-    function slug(s){
-      return (s || "topic")
-        .toLowerCase()
-        .replace(/[^a-z0-9\s]/g,"")
-        .trim()
-        .split(/\s+/).slice(0,2).join("");
-    }
-
-    function clamp(text, max){
-      if(!text) return "";
-      text = text.replace(/\s+/g, " ").trim();
-      if(text.length <= max) return text;
-      let cut = text.slice(0, max);
-      const lastSpace = cut.lastIndexOf(" ");
-      if(lastSpace > Math.floor(max * 0.55)) cut = cut.slice(0, lastSpace);
-      return cut.trim();
-    }
-
-    function titleVariants(topic){
-      const t = topic.trim();
-      const a = [
-        `Eyes Closed, Heart Open: ${t} 🎷✨`,
-        `${t} — The Most Soulful Tararara Ever 🎷`,
-        `This ${t} Hit Different (Pure Vibes)`,
-        `${t}: A Smooth Night Performance 🎷`,
-        `${t} — You’ll Feel This One`
-      ];
-      // başlık uzunluğu serbest, ama çok taşmasın diye 120
-      return clamp(pick(a), 120);
-    }
-
-    function hashtagVariants(topic){
-      // format: "#live #trumpet #saxophone #music #shorts"
-      const base = ["#live","#trumpet","#saxophone","#music","#shorts","#streetmusic","#jazz","#vibes","#instrumental","#performance","#viral"];
-      const extra = slug(topic);
-      let tags = ["#live", "#music", "#shorts", "#saxophone"];
-      if(extra) tags.push(`#${extra}`);
-
-      const shuffled = base.sort(()=>Math.random()-0.5);
-      tags = Array.from(new Set([...tags, ...shuffled])).slice(0, 7);
-
-      // hashtag çok uzamasın: 110
-      return clamp(tags.join(" "), 110);
-    }
-
-    function descVariants(topic){
-      const t = topic.trim();
-      const a = [
-        `Live ${t} vibes. New shorts weekly. Follow for more.`,
-        `Smooth ${t} performances + global shorts. New uploads weekly.`,
-        `Daily ${t} moments. Short, clean, and global.`
-      ];
-      // açıklama: 140
-      return clamp(pick(a), 140);
-    }
-
-    async function generate(kind, room, topic){
-      await new Promise(r=>setTimeout(r, 320));
-      if(kind === "title") return titleVariants(topic);
-      if(kind === "tags")  return hashtagVariants(topic);
-      if(kind === "desc")  return descVariants(topic);
-      return clamp(topic, 140);
-    }
-
-    async function handleGenerate(kind){
-      if(quotaRemaining(kind) <= 0){
-        showToast("Limit bitti");
-        return;
-      }
-
-      const inputs = { title: $("inTitle"), tags: $("inTags"), desc: $("inDesc") };
-      const outputs = { title: $("outTitle"), tags: $("outTags"), desc: $("outDesc") };
-
-      const topic = (inputs[kind].value || "").trim();
-      if(!topic){
-        showToast("Konu yaz");
-        inputs[kind].focus();
-        return;
-      }
-
-      const btnMap = { title: "genTitle", tags: "genTags", desc: "genDesc" };
-      const btn = $(btnMap[kind]);
-      const oldText = btn.textContent;
-
-      btn.textContent = "Üretiliyor...";
-      btn.disabled = true;
-      btn.style.opacity = .65;
-
-      try{
-        const out1 = await generate(kind, state.room, topic);
-
-        // aynı çıktı gelirse 1 kere daha dene
-        let finalOut = out1;
-        if((outputs[kind].value || "").trim() === out1.trim()){
-          finalOut = await generate(kind, state.room, topic);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Viral Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --card-bg: #161616;
+            --accent: #6e57ff;
+            --text: #ffffff;
+            --text-dim: #a1a1a1;
+            --border: #262626;
         }
 
-        outputs[kind].value = finalOut;
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-        // hak düş
-        state.used[kind] += 1;
-        persistQuota();
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
 
-        // sayaç güncelle (demo)
-        state.counters.total += 1;
-        state.counters.today += 1;
-        persistCounters();
+        header {
+            text-align: center;
+            padding: 60px 0;
+            animation: fadeIn 1s ease-out;
+        }
 
-        updateQuotaUI();
-        showToast("Üretildi");
-      }catch(e){
-        showToast("Hata oluştu");
-      }finally{
-        btn.textContent = oldText;
-        btn.disabled = quotaRemaining(kind) <= 0;
-        btn.style.opacity = btn.disabled ? .55 : 1;
-      }
-    }
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(to bottom, #fff, #666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    function copyFrom(el){
-      const v = (el.value || "").trim();
-      if(!v){ showToast("Kopyalanacak içerik yok"); return; }
-      navigator.clipboard.writeText(v)
-        .then(()=>showToast("Kopyalandı"))
-        .catch(()=>showToast("Kopyalama engellendi"));
-    }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto auto;
+            gap: 20px;
+        }
 
-    /* ==========================================================
-       Demo rotator
-       ========================================================== */
-    const demoSamples = [
-      {
-        t:"Eyes Closed, Heart Open: The Most Soulful Tararara Ever 🎷✨",
-        h:"#live #trumpet #saxophone #music #shorts",
-        d:"Live performances + short clips. New uploads weekly."
-      },
-      {
-        t:"Street Sax Live: Smooth Night Vibes 🎷",
-        h:"#live #saxophone #streetmusic #vibes #shorts",
-        d:"Smooth live moments. Global shorts. Follow for more."
-      },
-      {
-        t:"This Tararara Hit Different (Pure Vibes)",
-        h:"#live #music #performance #viral #shorts",
-        d:"Short, clean, global vibes. Weekly uploads."
-      }
-    ];
-    let demoIdx = 0;
-    function rotateDemo(){
-      const s = demoSamples[demoIdx % demoSamples.length];
-      $("demoTitle").textContent = s.t;
-      $("demoTags").textContent = s.h;
-      $("demoDesc").textContent = s.d;
-      demoIdx++;
-    }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
 
-    /* ==========================================================
-       INIT
-       ========================================================== */
-    function init(){
-      $("year").textContent = new Date().getFullYear();
+        .card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
 
-      loadPersisted();
-      updateAuthUI();
-      updateQuotaUI();
-      setRoom(state.room);
+        /* Hero Input Card */
+        .card-input {
+            grid-column: span 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
 
-      // landing stats
-      $("sTotal").textContent = state.counters.total.toLocaleString("en-US") + "+";
-      $("sOnline").textContent = state.counters.online.toLocaleString("en-US");
-      $("sLikes").textContent = state.counters.likes.toLocaleString("en-US");
-      $("sToday").textContent = state.counters.today.toLocaleString("en-US");
+        input[type="text"] {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--border);
+            color: white;
+            font-size: 1.5rem;
+            padding: 10px 0;
+            outline: none;
+            width: 100%;
+            margin-bottom: 20px;
+        }
 
-      // auth buttons
-      $("btnGoogle").addEventListener("click", googleLogin);
-      $("btnStart").addEventListener("click", googleLogin);
-      $("btnLogout").addEventListener("click", logout);
+        .platform-chips {
+            display: flex;
+            gap: 10px;
+        }
 
-      // demo
-      $("btnDemo").addEventListener("click", ()=>{
-        rotateDemo();
-        showToast("Demo güncellendi");
-      });
-      setInterval(rotateDemo, 4500);
+        .chip {
+            padding: 8px 16px;
+            border-radius: 100px;
+            background: var(--border);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
 
-      // rooms
-      document.querySelectorAll(".room").forEach(r=>{
-        r.addEventListener("click", ()=>{
-          setRoom(r.getAttribute("data-room"));
-          showToast("Oda değişti");
-        });
-      });
+        .chip.active { background: var(--accent); }
 
-      // generate buttons
-      $("genTitle").addEventListener("click", ()=>handleGenerate("title"));
-      $("genTags").addEventListener("click", ()=>handleGenerate("tags"));
-      $("genDesc").addEventListener("click", ()=>handleGenerate("desc"));
+        /* Small Cards */
+        .card-sm { grid-column: span 1; }
 
-      // copy buttons
-      $("copyTitle").addEventListener("click", ()=>copyFrom($("outTitle")));
-      $("copyTags").addEventListener("click", ()=>copyFrom($("outTags")));
-      $("copyDesc").addEventListener("click", ()=>copyFrom($("outDesc")));
-    }
+        /* Output Card */
+        .card-output {
+            grid-column: span 4;
+            min-height: 200px;
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+        }
 
-    init();
-  </script>
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            align-self: flex-start;
+        }
+
+        .policy-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            background: #1e3a1e;
+            color: #4ade80;
+            margin-top: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 900px) {
+            .bento-grid { grid-template-columns: 1fr; }
+            .card-input, .card-output { grid-column: span 1; }
+            h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>AI Global Viral Lab</h1>
+            <p style="color: var(--text-dim)">Viral başlıklar, hashtagler ve politika analizi.</p>
+        </header>
+
+        <main class="bento-grid">
+            <section class="card card-input">
+                <input type="text" placeholder="Video konunu buraya yaz...">
+                <div class="platform-chips">
+                    <div class="chip active">YouTube</div>
+                    <div class="chip">Instagram</div>
+                    <div class="chip">TikTok</div>
+                    <div class="chip">X (Twitter)</div>
+                </div>
+                <button>Analiz Et ve Üret</button>
+            </section>
+
+            <section class="card card-sm">
+                <h3 style="margin-top:0">Viral Skor</h3>
+                <p style="font-size: 2rem; font-weight: 800; color: var(--accent)">89/100</p>
+                <p style="font-size: 0.8rem; color: var(--text-dim)">Yüksek etkileşim potansiyeli.</p>
+            </section>
+
+            <section class="card card-output">
+                <h3>Üretilen İçerik</h3>
+                <div id="result">
+                    <p style="color: var(--text-dim)">Henüz bir veri girişi yapılmadı.</p>
+                </div>
+                <div class="policy-tag">✓ YouTube Reklam ve İhtar Politikalarına Uygun</div>
+            </section>
+        </main>
+    </div>
+
 </body>
 </html>
