@@ -1,585 +1,658 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jarvis Heyrose - AI Viral İçerik Asistanı</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jarvis Heyrose - Trend Başlık • Hashtag • Kanal Açıklaması</title>
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #0a0a0a 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            color: white;
-            overflow-x: hidden;
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 50%, #0a0a0a 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      color: white;
+      overflow-x: hidden;
+    }
 
-        /* Header */
-        header {
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            background: linear-gradient(90deg, #e91e63, #9c27b0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
+    /* Header */
+    header {
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-        nav {
-            display: flex;
-            gap: 30px;
-            align-items: center;
-        }
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      background: linear-gradient(90deg, #e91e63, #9c27b0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            transition: all 0.3s;
-            position: relative;
-        }
+    nav {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
 
-        nav a:hover {
-            color: #e91e63;
-            transform: translateY(-2px);
-        }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      transition: all 0.3s;
+      position: relative;
+    }
 
-        .login-btn {
-            background: linear-gradient(90deg, #e91e63, #9c27b0);
-            padding: 10px 25px;
-            border-radius: 25px;
-            font-weight: bold;
-            box-shadow: 0 0 20px rgba(233, 30, 99, 0.5);
-            transition: all 0.3s;
-        }
+    nav a:hover {
+      color: #e91e63;
+      transform: translateY(-2px);
+    }
 
-        .login-btn:hover {
-            box-shadow: 0 0 30px rgba(233, 30, 99, 0.8);
-            transform: scale(1.05);
-        }
+    .login-btn {
+      background: linear-gradient(90deg, #e91e63, #9c27b0);
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-weight: bold;
+      box-shadow: 0 0 20px rgba(233, 30, 99, 0.5);
+      transition: all 0.3s;
+    }
 
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 100px 20px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+    .login-btn:hover {
+      box-shadow: 0 0 30px rgba(233, 30, 99, 0.8);
+      transform: scale(1.05);
+    }
 
-        .hero h1 {
-            font-size: 60px;
-            font-weight: 900;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, #ff6b6b, #e91e63, #9c27b0, #673ab7);
-            background-size: 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 3s infinite;
-        }
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 100px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
 
-        @keyframes shimmer {
-            0% { background-position: 0%; }
-            100% { background-position: 200%; }
-        }
+    .hero h1 {
+      font-size: 60px;
+      font-weight: 900;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #ff6b6b, #e91e63, #9c27b0, #673ab7);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s infinite;
+    }
 
-        .hero p {
-            font-size: 20px;
-            color: #aaa;
-            margin-bottom: 40px;
-        }
+    @keyframes shimmer {
+      0% { background-position: 0%; }
+      100% { background-position: 200%; }
+    }
 
-        .input-container {
-            position: relative;
-            max-width: 600px;
-            margin: 0 auto 30px;
-        }
+    .hero p {
+      font-size: 20px;
+      color: #aaa;
+      margin-bottom: 18px;
+    }
 
-        .main-input {
-            width: 100%;
-            padding: 20px 30px;
-            font-size: 18px;
-            border: 2px solid #e91e63;
-            border-radius: 50px;
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            outline: none;
-            transition: all 0.3s;
-            box-shadow: 0 0 30px rgba(233, 30, 99, 0.3);
-        }
+    /* Net amaç bandı */
+    .purpose-badge{
+      margin: 0 auto 35px;
+      max-width: 760px;
+      padding: 14px 18px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(233, 30, 99, 0.35);
+      color: #ddd;
+      font-size: 15px;
+      line-height: 1.4;
+      box-shadow: 0 0 30px rgba(233, 30, 99, 0.18);
+    }
+    .purpose-badge span{
+      color:#aaa;
+      display:block;
+      margin-top:6px;
+    }
 
-        .main-input:focus {
-            box-shadow: 0 0 50px rgba(233, 30, 99, 0.6);
-            transform: scale(1.02);
-        }
+    .input-container {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
 
-        .main-input::placeholder {
-            color: #666;
-        }
+    .main-input {
+      width: 100%;
+      padding: 20px 30px;
+      font-size: 18px;
+      border: 2px solid #e91e63;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+      outline: none;
+      transition: all 0.3s;
+      box-shadow: 0 0 30px rgba(233, 30, 99, 0.3);
+    }
 
-        .start-btn {
-            background: linear-gradient(90deg, #e91e63, #9c27b0);
-            color: white;
-            border: none;
-            padding: 18px 60px;
-            font-size: 20px;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            margin: 20px 0;
-            box-shadow: 0 0 40px rgba(233, 30, 99, 0.5);
-            transition: all 0.3s;
-        }
+    .main-input:focus {
+      box-shadow: 0 0 50px rgba(233, 30, 99, 0.6);
+      transform: scale(1.02);
+    }
 
-        .start-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 60px rgba(233, 30, 99, 0.8);
-        }
+    .main-input::placeholder {
+      color: #666;
+    }
 
-        /* Stats */
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 50px;
-            margin: 40px 0;
-            flex-wrap: wrap;
-        }
+    .start-btn {
+      background: linear-gradient(90deg, #e91e63, #9c27b0);
+      color: white;
+      border: none;
+      padding: 18px 60px;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 50px;
+      cursor: pointer;
+      margin: 20px 0;
+      box-shadow: 0 0 40px rgba(233, 30, 99, 0.5);
+      transition: all 0.3s;
+    }
 
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 18px;
-            color: #ccc;
-        }
+    .start-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 60px rgba(233, 30, 99, 0.8);
+    }
 
-        .stat-item span {
-            font-size: 24px;
-        }
+    /* Stats */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      margin: 40px 0;
+      flex-wrap: wrap;
+    }
 
-        /* Platform Cards */
-        .platforms {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 80px auto;
-            padding: 0 20px;
-        }
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      color: #ccc;
+    }
 
-        .platform-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(233, 30, 99, 0.3);
-            border-radius: 20px;
-            padding: 40px 30px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
+    .stat-item span {
+      font-size: 24px;
+    }
 
-        .platform-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(233, 30, 99, 0.2), transparent);
-            transform: rotate(45deg);
-            transition: all 0.6s;
-        }
+    /* Platform Cards */
+    .platforms {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 20px;
+    }
 
-        .platform-card:hover::before {
-            top: -100%;
-            left: -100%;
-        }
+    /* Mini özellik kartları */
+    .mini-features{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap:16px;
+      width:100%;
+      margin: 0 auto 22px;
+    }
+    .mini-card{
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(233, 30, 99, 0.25);
+      border-radius: 18px;
+      padding: 18px 16px;
+      text-align:center;
+    }
+    .mini-ico{
+      font-size: 28px;
+      margin-bottom: 6px;
+      color:#e91e63;
+    }
+    .mini-card h4{
+      font-size: 16px;
+      margin: 6px 0;
+    }
+    .mini-card p{
+      font-size: 13px;
+      color:#aaa;
+    }
 
-        .platform-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            border-color: #e91e63;
-            box-shadow: 0 10px 50px rgba(233, 30, 99, 0.5);
-        }
+    .platform-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(233, 30, 99, 0.3);
+      border-radius: 20px;
+      padding: 40px 30px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .platform-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-        }
+    .platform-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(233, 30, 99, 0.2), transparent);
+      transform: rotate(45deg);
+      transition: all 0.6s;
+    }
 
-        .platform-card h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #e91e63;
-        }
+    .platform-card:hover::before {
+      top: -100%;
+      left: -100%;
+    }
 
-        .platform-card p {
-            color: #aaa;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
+    .platform-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      border-color: #e91e63;
+      box-shadow: 0 10px 50px rgba(233, 30, 99, 0.5);
+    }
 
-        .hak-display {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            margin-top: 15px;
-        }
+    .platform-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+    }
 
-        .hak-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: linear-gradient(90deg, #e91e63, #9c27b0);
-            box-shadow: 0 0 10px rgba(233, 30, 99, 0.5);
-        }
+    .platform-card h3 {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: #e91e63;
+    }
 
-        /* Kanal Analiz */
-        .kanal-analiz {
-            max-width: 1200px;
-            margin: 80px auto;
-            padding: 60px 40px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(233, 30, 99, 0.3);
-            border-radius: 30px;
-            text-align: center;
-        }
+    .platform-card p {
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
 
-        .kanal-analiz h2 {
-            font-size: 42px;
-            margin-bottom: 20px;
-            background: linear-gradient(90deg, #e91e63, #9c27b0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    .hak-display {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 15px;
+    }
 
-        .kanal-analiz p {
-            color: #aaa;
-            font-size: 18px;
-            margin-bottom: 30px;
-        }
+    .hak-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: linear-gradient(90deg, #e91e63, #9c27b0);
+      box-shadow: 0 0 10px rgba(233, 30, 99, 0.5);
+    }
 
-        .analiz-btn {
-            background: linear-gradient(90deg, #9c27b0, #673ab7);
-            color: white;
-            border: none;
-            padding: 15px 50px;
-            font-size: 18px;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 0 30px rgba(156, 39, 176, 0.5);
-            transition: all 0.3s;
-        }
+    /* Kanal Analiz */
+    .kanal-analiz {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 60px 40px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(233, 30, 99, 0.3);
+      border-radius: 30px;
+      text-align: center;
+    }
 
-        .analiz-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 50px rgba(156, 39, 176, 0.8);
-        }
+    .kanal-analiz h2 {
+      font-size: 42px;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, #e91e63, #9c27b0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-        /* Footer */
-        footer {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 40px 20px;
-            text-align: center;
-            margin-top: 100px;
-        }
+    .kanal-analiz p {
+      color: #aaa;
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
 
-        .logout-btn {
-            background: linear-gradient(90deg, #ff6b6b, #e91e63);
-            color: white;
-            border: none;
-            padding: 12px 40px;
-            font-size: 16px;
-            border-radius: 25px;
-            cursor: pointer;
-            margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
-            transition: all 0.3s;
-        }
+    .analiz-btn {
+      background: linear-gradient(90deg, #9c27b0, #673ab7);
+      color: white;
+      border: none;
+      padding: 15px 50px;
+      font-size: 18px;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 30px rgba(156, 39, 176, 0.5);
+      transition: all 0.3s;
+    }
 
-        .logout-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 107, 107, 0.8);
-        }
+    .analiz-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 50px rgba(156, 39, 176, 0.8);
+    }
 
-        footer p {
-            color: #666;
-            margin-top: 20px;
-        }
+    /* Footer */
+    footer {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 40px 20px;
+      text-align: center;
+      margin-top: 100px;
+    }
 
-        /* Login Popup */
-        .popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
+    .logout-btn {
+      background: linear-gradient(90deg, #ff6b6b, #e91e63);
+      color: white;
+      border: none;
+      padding: 12px 40px;
+      font-size: 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+      transition: all 0.3s;
+    }
 
-        .popup.active {
-            display: flex;
-        }
+    .logout-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(255, 107, 107, 0.8);
+    }
 
-        .popup-content {
-            background: linear-gradient(135deg, #1a0a2e 0%, #0a0a0a 100%);
-            padding: 50px;
-            border-radius: 30px;
-            border: 2px solid #e91e63;
-            text-align: center;
-            max-width: 400px;
-            box-shadow: 0 0 60px rgba(233, 30, 99, 0.5);
-        }
+    footer p {
+      color: #666;
+      margin-top: 20px;
+    }
 
-        .popup-content h3 {
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: #e91e63;
-        }
+    /* Login Popup */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
 
-        .popup-content p {
-            color: #aaa;
-            margin-bottom: 30px;
-        }
+    .popup.active {
+      display: flex;
+    }
 
-        .google-btn {
-            background: white;
-            color: #333;
-            border: none;
-            padding: 15px 40px;
-            font-size: 16px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
-            transition: all 0.3s;
-        }
+    .popup-content {
+      background: linear-gradient(135deg, #1a0a2e 0%, #0a0a0a 100%);
+      padding: 50px;
+      border-radius: 30px;
+      border: 2px solid #e91e63;
+      text-align: center;
+      max-width: 400px;
+      box-shadow: 0 0 60px rgba(233, 30, 99, 0.5);
+    }
 
-        .google-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 30px rgba(255, 255, 255, 0.5);
-        }
+    .popup-content h3 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #e91e63;
+    }
 
-        .close-popup {
-            margin-top: 20px;
-            background: none;
-            border: none;
-            color: #666;
-            cursor: pointer;
-            text-decoration: underline;
-        }
+    .popup-content p {
+      color: #aaa;
+      margin-bottom: 30px;
+    }
 
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 36px;
-            }
-            
-            header {
-                padding: 20px;
-                flex-direction: column;
-                gap: 20px;
-            }
+    .google-btn {
+      background: white;
+      color: #333;
+      border: none;
+      padding: 15px 40px;
+      font-size: 16px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+      transition: all 0.3s;
+    }
 
-            nav {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-        }
-    </style>
+    .google-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 30px rgba(255, 255, 255, 0.5);
+    }
+
+    .close-popup {
+      margin-top: 20px;
+      background: none;
+      border: none;
+      color: #666;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 36px;
+      }
+
+      header {
+        padding: 20px;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <!-- Header -->
-    <header>
-        <div class="logo">JARVIS HEYROSE</div>
-        <nav>
-            <a href="#ana">Ana Sayfa</a>
-            <a href="#uygulama">Uygulama</a>
-            <a href="#galeri">Galeri</a>
-            <a href="#hakkimizda">Hakkımızda</a>
-            <a href="#iletisim">İletişim</a>
-            <a href="#" class="login-btn" onclick="showLogin()">Giriş Yap</a>
-        </nav>
-    </header>
+  <!-- Header -->
+  <header>
+    <div class="logo">JARVIS HEYROSE</div>
+    <nav>
+      <a href="#ana">Ana Sayfa</a>
+      <a href="#uygulama">Uygulama</a>
+      <a href="#galeri">Galeri</a>
+      <a href="#hakkimizda">Hakkımızda</a>
+      <a href="#iletisim">İletişim</a>
+      <a href="#" class="login-btn" onclick="showLogin()">Giriş Yap</a>
+    </nav>
+  </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="ana">
-        <h1>⚡ AI ile Viral Başlık Oluştur</h1>
-        <p>YouTube, Instagram, TikTok ve X için viral başlıklar ve hashtag'ler. 3 saniyede hazır!</p>
-        
-        <div class="input-container">
-            <input type="text" class="main-input" placeholder="Video konunuz: gaming shorts viral" onclick="showLogin()">
-        </div>
-        
-        <button class="start-btn" onclick="showLogin()">Başla →</button>
+  <!-- Hero Section -->
+  <section class="hero" id="ana">
+    <h1>⚡ Trend Başlık Oluştur</h1>
+    <p>YouTube için trend başlık, hashtag ve kanal açıklaması. 3 saniyede hazır!</p>
 
-        <div class="stats">
-            <div class="stat-item">
-                <span>🔥</span>
-                <div>
-                    <strong id="viralCount">12,453</strong> içerik bugün viral oldu
-                </div>
-            </div>
-            <div class="stat-item">
-                <span>👥</span>
-                <div>
-                    <strong id="activeUsers">847</strong> kullanıcı aktif
-                </div>
-            </div>
-            <div class="stat-item">
-                <span>⚡</span>
-                <div>
-                    <strong>3 saniyede</strong> başlık
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Platform Cards -->
-    <section class="platforms" id="uygulama">
-        <div class="platform-card" onclick="showLogin()">
-            <div class="platform-icon">📺</div>
-            <h3>YouTube Odası</h3>
-            <p>Viral başlık ve SEO optimizasyonu</p>
-            <div class="hak-display">
-                <div class="hak-dot"></div>
-                <div class="hak-dot"></div>
-                <div class="hak-dot"></div>
-            </div>
-            <small style="color: #666;">3 deneme hakkı</small>
-        </div>
-
-        <div class="platform-card" onclick="showLogin()">
-            <div class="platform-icon">📸</div>
-            <h3>Instagram Odası</h3>
-            <p>Estetik feed planı ve hashtag'ler</p>
-            <div class="hak-display">
-                <div class="hak-dot"></div>
-                <div class="hak-dot"></div>
-                <div class="hak-dot"></div>
-            </div>
-            <small style="color: #666;">3 deneme hakkı</small>
-        </div>
-
-        <div class="platform-card" onclick="showLogin()">
-            <div class="platform-icon">🎵</div>
-            <h3>TikTok Odası</h3>
-            <p>Hook stratejisi ve trend analizi</p>
-            <div class="hak-display">
-                <div class="hak-dot"></div>
-                <div class="hak-dot"></div>
-                <div class="hak-dot"></div>
-            </div>
-            <small style="color: #666;">3 deneme hakkı</small>
-        </div>
-
-        <div class="platform-card" onclick="showLogin()">
-            <div class="platform-icon">✖️</div>
-            <h3>X Odası</h3>
-            <p>Viral tweet ve engagement taktikleri</p>
-            <div class="hak-display">
-                <div class="hak-dot"></div>
-                <div class="hak-dot"></div>
-                <div class="hak-dot"></div>
-            </div>
-            <small style="color: #666;">3 deneme hakkı</small>
-        </div>
-    </section>
-
-    <!-- Kanal Analiz -->
-    <section class="kanal-analiz">
-        <h2>📊 Kanal Analiz Odası</h2>
-        <p>Kanalınızın performansını analiz edin, rakiplerinizle karşılaştırın</p>
-        <button class="analiz-btn" onclick="showLogin()">Kanalımı Analiz Et</button>
-    </section>
-
-    <!-- Footer -->
-    <footer id="iletisim">
-        <button class="logout-btn" onclick="alert('Çıkış yapıldı!')">Çıkış Yap</button>
-        <p>İletişim: info@jarvisheyrose.com</p>
-        <p style="margin-top: 30px; color: #444;">© 2026 Jarvis Heyrose. Tüm hakları saklıdır.</p>
-    </footer>
-
-    <!-- Login Popup -->
-    <div class="popup" id="loginPopup">
-        <div class="popup-content">
-            <h3>🔐 Giriş Yapın</h3>
-            <p>AI asistanını kullanmak için Google hesabınızla giriş yapın</p>
-            <button class="google-btn" onclick="googleLogin()">
-                <span style="font-size: 20px;">🔵</span> Google ile Giriş Yap
-            </button>
-            <button class="close-popup" onclick="closeLogin()">Kapat</button>
-        </div>
+    <div class="purpose-badge">
+      Bu site <strong>sadece</strong> trend <strong>başlık</strong>, <strong>hashtag</strong> ve <strong>kanal açıklaması</strong> üretir.
+      <span>Chat bot / sohbet asistanı değildir.</span>
     </div>
 
-    <script>
-        // Animasyonlu sayılar
-        function animateNumber(id, target) {
-            let current = 0;
-            const increment = target / 100;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                }
-                document.getElementById(id).textContent = Math.floor(current).toLocaleString();
-            }, 20);
+    <div class="input-container">
+      <input type="text" class="main-input" placeholder="Video konunuz: tarara saxophone worship" onclick="showLogin()" />
+    </div>
+
+    <button class="start-btn" onclick="showLogin()">Başla →</button>
+
+    <div class="stats">
+      <div class="stat-item">
+        <span>🔥</span>
+        <div>
+          <strong id="viralCount">12,453</strong> içerik bugün viral oldu
+        </div>
+      </div>
+      <div class="stat-item">
+        <span>👥</span>
+        <div>
+          <strong id="activeUsers">847</strong> kullanıcı aktif
+        </div>
+      </div>
+      <div class="stat-item">
+        <span>⚡</span>
+        <div>
+          <strong>3 saniyede</strong> çıktı
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Platform Cards -->
+  <section class="platforms" id="uygulama">
+    <div class="mini-features">
+      <div class="mini-card">
+        <div class="mini-ico">🏷️</div>
+        <h4>Trend Başlık</h4>
+        <p>SEO güçlü, tıklama odaklı başlık üretir.</p>
+      </div>
+      <div class="mini-card">
+        <div class="mini-ico">#</div>
+        <h4>Hashtag Seti</h4>
+        <p>İçeriğe uygun, keşfet odaklı etiketler.</p>
+      </div>
+      <div class="mini-card">
+        <div class="mini-ico">📝</div>
+        <h4>Kanal Açıklaması</h4>
+        <p>Kısa, net ve arama dostu açıklama metni.</p>
+      </div>
+    </div>
+
+    <div class="platform-card" onclick="showLogin()">
+      <div class="platform-icon">📺</div>
+      <h3>YouTube Odası</h3>
+      <p>Trend başlık, hashtag ve açıklama üretimi</p>
+      <div class="hak-display">
+        <div class="hak-dot"></div>
+        <div class="hak-dot"></div>
+        <div class="hak-dot"></div>
+      </div>
+      <small style="color: #666;">3 deneme hakkı</small>
+    </div>
+
+    <div class="platform-card" onclick="showLogin()">
+      <div class="platform-icon">📸</div>
+      <h3>Instagram Odası</h3>
+      <p>Estetik feed planı ve hashtag'ler</p>
+      <div class="hak-display">
+        <div class="hak-dot"></div>
+        <div class="hak-dot"></div>
+        <div class="hak-dot"></div>
+      </div>
+      <small style="color: #666;">3 deneme hakkı</small>
+    </div>
+
+    <div class="platform-card" onclick="showLogin()">
+      <div class="platform-icon">🎵</div>
+      <h3>TikTok Odası</h3>
+      <p>Hook stratejisi ve trend analizi</p>
+      <div class="hak-display">
+        <div class="hak-dot"></div>
+        <div class="hak-dot"></div>
+        <div class="hak-dot"></div>
+      </div>
+      <small style="color: #666;">3 deneme hakkı</small>
+    </div>
+
+    <div class="platform-card" onclick="showLogin()">
+      <div class="platform-icon">✖️</div>
+      <h3>X Odası</h3>
+      <p>Viral tweet ve engagement taktikleri</p>
+      <div class="hak-display">
+        <div class="hak-dot"></div>
+        <div class="hak-dot"></div>
+        <div class="hak-dot"></div>
+      </div>
+      <small style="color: #666;">3 deneme hakkı</small>
+    </div>
+  </section>
+
+  <!-- Kanal Analiz -->
+  <section class="kanal-analiz">
+    <h2>📊 Kanal Analiz Odası</h2>
+    <p>Kanalınızın performansını analiz edin, rakiplerinizle karşılaştırın</p>
+    <button class="analiz-btn" onclick="showLogin()">Kanalımı Analiz Et</button>
+  </section>
+
+  <!-- Footer -->
+  <footer id="iletisim">
+    <button class="logout-btn" onclick="alert('Çıkış yapıldı!')">Çıkış Yap</button>
+    <p>İletişim: info@jarvisheyrose.com</p>
+    <p style="margin-top: 30px; color: #444;">© 2026 Jarvis Heyrose. Tüm hakları saklıdır.</p>
+  </footer>
+
+  <!-- Login Popup -->
+  <div class="popup" id="loginPopup">
+    <div class="popup-content">
+      <h3>🔐 Giriş Yapın</h3>
+      <p>Trend başlık, hashtag ve kanal açıklaması aracına erişmek için Google ile giriş yapın.</p>
+      <button class="google-btn" onclick="googleLogin()">
+        <span style="font-size: 20px;">🔵</span> Google ile Giriş Yap
+      </button>
+      <button class="close-popup" onclick="closeLogin()">Kapat</button>
+    </div>
+  </div>
+
+  <script>
+    // Animasyonlu sayılar
+    function animateNumber(id, target) {
+      let current = 0;
+      const increment = target / 100;
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
         }
+        document.getElementById(id).textContent = Math.floor(current).toLocaleString();
+      }, 20);
+    }
 
-        animateNumber('viralCount', 12453);
-        animateNumber('activeUsers', 847);
+    animateNumber('viralCount', 12453);
+    animateNumber('activeUsers', 847);
 
-        // Login popup
-        function showLogin() {
-            document.getElementById('loginPopup').classList.add('active');
-        }
+    // Login popup
+    function showLogin() {
+      document.getElementById('loginPopup').classList.add('active');
+    }
 
-        function closeLogin() {
-            document.getElementById('loginPopup').classList.remove('active');
-        }
+    function closeLogin() {
+      document.getElementById('loginPopup').classList.remove('active');
+    }
 
-        function googleLogin() {
-            alert('Google OAuth entegrasyonu yapılacak!');
-            // Buraya Google OAuth kodu gelecek
-            closeLogin();
-        }
+    function googleLogin() {
+      alert('Google OAuth entegrasyonu yapılacak!');
+      // Buraya Google OAuth kodu gelecek
+      closeLogin();
+    }
 
-        // Tıklama dışı kapatma
-        document.getElementById('loginPopup').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeLogin();
-            }
-        });
-    </script>
+    // Tıklama dışı kapatma
+    document.getElementById('loginPopup').addEventListener('click', function (e) {
+      if (e.target === this) {
+        closeLogin();
+      }
+    });
+  </script>
 </body>
 </html>
