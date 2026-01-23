@@ -17,7 +17,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
 
-        /* NAVBAR */
         nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 8%; background: rgba(255,255,255,0.9);
@@ -27,22 +26,18 @@
         .logo { font-size: 1.6rem; font-weight: 800; letter-spacing: -1.5px; color: var(--accent); }
         .nav-links a { text-decoration: none; color: var(--text); margin-left: 30px; font-weight: 600; font-size: 0.95rem; }
 
-        /* HERO - İKİLİ STRATEJİ YAPISI */
         .hero {
             padding: 150px 8% 100px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            gap: 60px;
             background: linear-gradient(180deg, #f3f0ff 0%, #ffffff 100%);
         }
         .hero-col { display: flex; flex-direction: column; justify-content: center; }
-        .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; letter-spacing: -2px; line-height: 1.1; margin-bottom: 25px; }
-        .hero p { font-size: 1.1rem; color: #555; margin-bottom: 30px; }
-        
+        .hero h1 { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; letter-spacing: -2px; line-height: 1.1; margin-bottom: 25px; }
         .left-hero { text-align: left; }
-        .right-hero { text-align: right; }
+        .right-hero { text-align: right; align-items: flex-end; }
 
-        /* HAKKIMIZDA & KANALIN AMACI */
         .mission-section {
             padding: 120px 8%; background: var(--bg);
             display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
@@ -51,7 +46,6 @@
         .mission-text h2 { font-size: 3rem; font-weight: 800; margin: 20px 0; letter-spacing: -1px; }
         .mission-text p { font-size: 1.15rem; color: #666; margin-bottom: 20px; line-height: 1.7; }
 
-        /* PLATFORM SEÇİMİ (UYGULAMALAR BÖLÜMÜ) */
         .platform-section { padding: 100px 8%; background: var(--gray-light); }
         .section-header { text-align: center; margin-bottom: 60px; }
         .section-header h2 { font-size: 2.5rem; font-weight: 800; }
@@ -61,25 +55,19 @@
         }
         .card {
             background: #fff; border-radius: 30px; border: 1px solid var(--border);
-            padding: 10px; transition: 0.4s cubic-bezier(0.2, 1, 0.3, 1); cursor: pointer;
+            padding: 10px; transition: 0.4s; cursor: pointer;
         }
         .card:hover { transform: translateY(-15px); box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
         .card-img { height: 250px; border-radius: 24px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; }
         .card-info { padding: 15px; }
 
-        /* FOOTER */
-        footer { padding: 100px 8%; background: #050505; color: #fff; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; }
+        footer { padding: 80px 8%; background: #050505; color: #fff; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; }
         .footer-logo { font-size: 1.8rem; font-weight: 800; color: var(--accent); margin-bottom: 20px; }
-        footer h4 { margin-bottom: 25px; font-size: 1.2rem; }
-        footer ul { list-style: none; }
-        footer ul li { margin-bottom: 12px; color: #aaa; transition: 0.3s; cursor: pointer; }
-        footer ul li:hover { color: #fff; }
 
         @media (max-width: 1024px) {
-            .hero { grid-template-columns: 1fr; text-align: center; }
-            .left-hero, .right-hero { text-align: center; }
-            .mission-section { grid-template-columns: 1fr; text-align: center; }
-            .bento-grid { grid-template-columns: 1fr 1fr; }
+            .hero { grid-template-columns: 1fr; }
+            .right-hero { text-align: left; align-items: flex-start; }
+            .mission-section { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -92,20 +80,15 @@
             <a href="#uygulamalar">Uygulamalar</a>
             <a href="#hakkimizda">Hakkımızda</a>
             <a href="#platformlar">Platformlar</a>
-            <a href="#amacimiz">Amacımız</a>
         </div>
     </nav>
 
     <header class="hero" id="anasayfa">
         <div class="hero-col left-hero">
             <h1>TÜRK KANALLARINIZ İÇİN <br> Akıllı Strateji Merkezi.</h1>
-            <p>Yerel içeriklerinizi optimize edin, hedef kitlenize doğrudan ulaşın.</p>
-            <a href="#uygulamalar" style="background:var(--accent); color:white; padding:15px 35px; border-radius:100px; text-decoration:none; font-weight:700; width: fit-content;">Hemen Başla</a>
         </div>
         <div class="hero-col right-hero">
             <h1>GLOBAL KANALINIZ İÇİN <br> Akıllı Strateji Merkezi.</h1>
-            <p>Dünya standartlarında algoritma desteği ile sınırları aşın.</p>
-            <a href="#uygulamalar" style="background:var(--accent); color:white; padding:15px 35px; border-radius:100px; text-decoration:none; font-weight:700; width: fit-content; align-self: flex-end;">Hemen Başla</a>
         </div>
     </header>
 
@@ -117,7 +100,7 @@
             <span>YOUTUBE</span>
             <h2>İçerik Üreticileri İçin <br> Güvenli Liman.</h2>
             <p>V-LAB.AI, YouTube topluluk kurallarını ve reklam politikalarını merkeze alarak içerik üreticilerinin "ihtar" riskini sıfıra indirmek için kuruldu.</p>
-            <p>Biz sadece bir araç değiliz; <strong>uretılen butun ıcerıklerınızı</strong> dünyaya duyururken telif ve politika engellerine takılmamanız için çalışan bir dijital asistandız.</p>
+            <p>Biz sadece bir araç değiliz; <strong>üretilen bütün içeriklerinizi</strong> dünyaya duyururken telif ve politika engellerine takılmamanız için çalışan bir dijital asistandız.</p>
         </div>
     </section>
 
@@ -145,38 +128,10 @@
         </div>
     </section>
 
-    <section class="mission-section" id="amacimiz" style="background: #fafafa;">
-        <div class="mission-text">
-            <span>Amacımız</span>
-            <h2>Globalde 1 Numara Olmak.</h2>
-            <p>Amacımız, yerel yeteneklerin global pazarda "İngilizce, İspanyolca ve Portekizce" gibi dillerde doğru anahtar kelimelerle öne çıkmasını sağlamaktır.</p>
-            <p>Özellikle saksofon ve trompet gibi evrensel dilleri konuşan sanatçıların, teknik detaylarda boğulmadan sadece sanatlarına odaklanmasına yardımcı oluyoruz.</p>
-        </div>
-        <div class="mission-image">
-            <div style="width: 100%; height: 450px; background: #fff; border: 1px solid var(--border); border-radius: 40px; display: flex; align-items: center; justify-content: center; font-size: 5rem;">🌍</div>
-        </div>
-    </section>
-
     <footer>
         <div>
             <div class="footer-logo">V-LAB.AI</div>
             <p>Global İçerik Üretimi ve Politika Analiz Platformu.</p>
-        </div>
-        <div>
-            <h4>Hızlı Erişim</h4>
-            <ul>
-                <li>Anasayfa</li>
-                <li>Nasıl Çalışır?</li>
-                <li>Başarı Hikayeleri</li>
-            </ul>
-        </div>
-        <div>
-            <h4>Yasal</h4>
-            <ul>
-                <li>Gizlilik Politikası</li>
-                <li>YouTube Kuralları</li>
-                <li>İletişim</li>
-            </ul>
         </div>
     </footer>
 
