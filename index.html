@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V-LAB.AI | Global İçerik Mimarı</title>
+    <title>V-LAB.AI | Premium İçerik Yönetimi</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -15,59 +15,63 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); scroll-behavior: smooth; overflow-x: hidden; }
 
+        /* NAVBAR - PREMIUM DÜZEN */
         nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 8%; background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000;
+            backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 1000;
             border-bottom: 1px solid var(--border);
         }
         .logo { font-size: 1.6rem; font-weight: 800; letter-spacing: -1.5px; color: var(--accent); }
-        .nav-links a { text-decoration: none; color: var(--text); margin-left: 30px; font-weight: 600; font-size: 0.95rem; }
+        .nav-links a { text-decoration: none; color: var(--text); margin-left: 35px; font-weight: 600; font-size: 0.95rem; transition: 0.3s; }
+        .nav-links a:hover { color: var(--accent); }
 
+        /* HERO - İKİLİ STRATEJİ (GÖRSEL 4 TEMELLİ) */
         .hero {
-            padding: 150px 8% 100px;
+            padding: 180px 8% 120px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            background: linear-gradient(180deg, #f3f0ff 0%, #ffffff 100%);
+            gap: 100px;
+            background: radial-gradient(circle at top right, #f3f0ff, #ffffff);
+            align-items: center;
         }
-        .hero-col { display: flex; flex-direction: column; justify-content: center; }
-        .hero h1 { font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; letter-spacing: -2px; line-height: 1.1; margin-bottom: 25px; }
-        .left-hero { text-align: left; }
-        .right-hero { text-align: right; align-items: flex-end; }
+        .hero-col h1 { font-size: clamp(2.5rem, 5vw, 4.2rem); font-weight: 800; letter-spacing: -3px; line-height: 1; margin-bottom: 20px; }
+        .left-hero { text-align: left; border-right: 1px solid var(--border); padding-right: 40px; }
+        .right-hero { text-align: right; padding-left: 40px; }
 
-        .mission-section {
-            padding: 120px 8%; background: var(--bg);
-            display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+        /* PLATFORM DETAYLARI - SERİ YAPI (GÖRSEL 5'İN DEVAMI) */
+        .platform-section {
+            padding: 100px 8%;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 80px;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
         }
-        .mission-text span { color: var(--accent); font-weight: 700; text-transform: uppercase; font-size: 0.9rem; }
-        .mission-text h2 { font-size: 3rem; font-weight: 800; margin: 20px 0; letter-spacing: -1px; }
-        .mission-text p { font-size: 1.15rem; color: #666; margin-bottom: 20px; line-height: 1.7; }
-
-        .platform-section { padding: 100px 8%; background: var(--gray-light); }
-        .section-header { text-align: center; margin-bottom: 60px; }
-        .section-header h2 { font-size: 2.5rem; font-weight: 800; }
-
-        .bento-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px;
+        .platform-section.reverse { grid-template-columns: 1fr 1.2fr; }
+        
+        .mockup-container {
+            width: 100%; height: 500px; background: var(--gray-light);
+            border-radius: 40px; display: flex; align-items: center; justify-content: center;
+            font-size: 6rem; box-shadow: inset 0 0 50px rgba(0,0,0,0.02);
         }
-        .card {
-            background: #fff; border-radius: 30px; border: 1px solid var(--border);
-            padding: 10px; transition: 0.4s; cursor: pointer;
-        }
-        .card:hover { transform: translateY(-15px); box-shadow: 0 40px 80px rgba(0,0,0,0.1); }
-        .card-img { height: 250px; border-radius: 24px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; }
-        .card-info { padding: 15px; }
+        
+        .content-box span { color: var(--accent); font-weight: 800; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px; }
+        .content-box h2 { font-size: 3.5rem; font-weight: 800; margin: 15px 0 25px; letter-spacing: -2px; line-height: 1.1; }
+        .content-box p { font-size: 1.2rem; color: #555; line-height: 1.8; margin-bottom: 20px; }
+        .content-box strong { color: var(--text); }
 
-        footer { padding: 80px 8%; background: #050505; color: #fff; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; }
-        .footer-logo { font-size: 1.8rem; font-weight: 800; color: var(--accent); margin-bottom: 20px; }
+        footer { padding: 100px 8% 40px; background: #050505; color: #fff; text-align: center; }
+        .footer-logo { font-size: 2rem; font-weight: 800; color: var(--accent); margin-bottom: 20px; }
 
-        @media (max-width: 1024px) {
-            .hero { grid-template-columns: 1fr; }
-            .right-hero { text-align: left; align-items: flex-start; }
-            .mission-section { grid-template-columns: 1fr; }
+        @media (max-width: 1100px) {
+            .hero, .platform-section { grid-template-columns: 1fr !important; text-align: center !important; }
+            .right-hero { padding-left: 0; }
+            .left-hero { border-right: none; padding-right: 0; margin-bottom: 50px; }
+            .mockup-container { order: 2; }
+            .content-box { order: 1; }
         }
     </style>
 </head>
@@ -92,11 +96,9 @@
         </div>
     </header>
 
-    <section class="mission-section" id="hakkimizda">
-        <div class="mission-image">
-            <div style="width: 100%; height: 450px; background: #eef0f2; border-radius: 40px; display: flex; align-items: center; justify-content: center; font-size: 5rem;">🎷</div>
-        </div>
-        <div class="mission-text">
+    <section class="platform-section">
+        <div class="mockup-container">🎷</div>
+        <div class="content-box">
             <span>YOUTUBE</span>
             <h2>İçerik Üreticileri İçin <br> Güvenli Liman.</h2>
             <p>V-LAB.AI, YouTube topluluk kurallarını ve reklam politikalarını merkeze alarak içerik üreticilerinin "ihtar" riskini sıfıra indirmek için kuruldu.</p>
@@ -104,35 +106,29 @@
         </div>
     </section>
 
-    <section class="platform-section" id="uygulamalar">
-        <div class="section-header">
-            <h2>Hangi Platformu Büyütmek İstersiniz?</h2>
+    <section class="platform-section reverse" style="background: #fafafa;">
+        <div class="content-box">
+            <span>REELS & TIKTOK</span>
+            <h2>Global Viralite, <br> Sıfır Risk.</h2>
+            <p>Instagram ve TikTok algoritmalarının en güncel telif ve politika verilerini saniyeler içinde analiz ediyoruz.</p>
+            <p>Müzikal ve görsel projelerinizde, **üretilen bütün içeriklerinizi** global trendlerin zirvesine taşırken hesabınızı güvence altına alan bir dijital asistandız.</p>
         </div>
-        <div class="bento-grid">
-            <div class="card">
-                <div class="card-img" style="background: #FF0000;">YOUTUBE</div>
-                <div class="card-info"><h3>YouTube Shorts</h3><p>İhtar analizli başlıklar</p></div>
-            </div>
-            <div class="card">
-                <div class="card-img" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);">REELS</div>
-                <div class="card-info"><h3>Instagram Reels</h3><p>Estetik ve viral odaklı</p></div>
-            </div>
-            <div class="card">
-                <div class="card-img" style="background: #000;">TIKTOK</div>
-                <div class="card-info"><h3>TikTok Global</h3><p>Trend takip algoritmaları</p></div>
-            </div>
-            <div class="card">
-                <div class="card-img" style="background: #1DA1F2;">X VIRAL</div>
-                <div class="card-info"><h3>X Threads</h3><p>Müzisyen etkileşim stratejisi</p></div>
-            </div>
+        <div class="mockup-container">📱</div>
+    </section>
+
+    <section class="platform-section">
+        <div class="mockup-container">🌐</div>
+        <div class="content-box">
+            <span>X (TWITTER) VIRAL</span>
+            <h2>Düşünceleriniz <br> Sınır Tanımasın.</h2>
+            <p>Metin ve video içeriklerinizin X platformundaki etkileşim kurallarını ihlal etmeden en geniş kitleye ulaşmasını sağlıyoruz.</p>
+            <p>Biz sadece bir araç değiliz; **üretilen bütün içeriklerinizi** güvenle paylaşmanız için çalışan bir dijital asistandız.</p>
         </div>
     </section>
 
     <footer>
-        <div>
-            <div class="footer-logo">V-LAB.AI</div>
-            <p>Global İçerik Üretimi ve Politika Analiz Platformu.</p>
-        </div>
+        <div class="footer-logo">V-LAB.AI</div>
+        <p>&copy; 2026 Premium Content Strategy Center</p>
     </footer>
 
 </body>
