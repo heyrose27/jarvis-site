@@ -75,7 +75,7 @@
 
     .sb-brand{
       display:flex; align-items:center; gap:10px;
-      margin-bottom: 10px;
+      margin-bottom: 0;
     }
     .sb-mark{
       width:36px; height:36px; border-radius:12px;
@@ -90,52 +90,13 @@
     .sb-title b{display:block; font-size:.95rem; letter-spacing:-.4px}
     .sb-title span{display:block; color:rgba(255,255,255,.62); font-weight:800; font-size:.82rem}
 
-    .sb-channel{
-      margin-top: 10px;
-      border-top: 1px solid rgba(255,255,255,.10);
-      padding-top: 10px;
-    }
-    .sb-channel small{
-      display:block;
-      color: rgba(255,255,255,.62);
-      font-weight: 900;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:.72rem;
-      margin-bottom: 6px;
-    }
-    .sb-channel b{
-      display:block;
-      font-size: 1.05rem;
-      letter-spacing:-.6px;
-      font-weight: 900;
-      margin-bottom: 8px;
+    .sb-sep{
+      height: 1px;
+      background: rgba(255,255,255,.08);
+      margin: 12px 0;
     }
 
-    .sb-chips{display:flex; gap:8px; flex-wrap:wrap;}
-    .chip{
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.74);
-      font-weight: 900;
-      font-size: .72rem;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      cursor:pointer;
-      transition:.22s;
-      user-select:none;
-    }
-    .chip:hover{transform: translateY(-2px); color:#fff;}
-    .chip.active{
-      background: linear-gradient(135deg, rgba(124,92,255,1), rgba(233,30,99,.75));
-      border: 0;
-      color:#fff;
-      box-shadow: 0 14px 50px rgba(124,92,255,.22);
-    }
-
-    .sb-list{margin-top: 12px;}
+    .sb-list{margin-top: 0;}
     .sb-item{
       display:flex; align-items:center; justify-content:space-between;
       padding: 10px 12px;
@@ -145,33 +106,21 @@
       font-size: .92rem;
       cursor:pointer;
       transition:.2s;
+      border: 1px solid transparent;
     }
     .sb-item:hover{
       background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.08);
+    }
+    .sb-item.active{
+      background: linear-gradient(135deg, rgba(124,92,255,.35), rgba(233,30,99,.18));
+      border-color: rgba(255,255,255,.12);
+      color:#fff;
     }
     .sb-item .left{display:flex; align-items:center; gap:10px;}
     .sb-dot{
       width:8px; height:8px; border-radius:99px;
       background: rgba(255,255,255,.28);
-    }
-    .badge{
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      font-weight: 900;
-      font-size: .72rem;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      color: rgba(255,255,255,.74);
-    }
-    .badge.v{color:#fff; background: rgba(124,92,255,.18); border-color: rgba(124,92,255,.30);}
-
-    .sb-sep{
-      height: 1px;
-      background: rgba(255,255,255,.08);
-      margin: 12px 8px;
     }
 
     /* MAIN */
@@ -211,11 +160,11 @@
 
     .content{padding: 26px 26px 80px;}
 
-    /* SECTIONS (only one visible) */
+    /* SECTIONS */
     .section{display:none;}
     .section.active{display:block;}
 
-    /* Cards / Panels */
+    /* Panels */
     .panel{
       border-radius: var(--radius2);
       background: rgba(255,255,255,.04);
@@ -293,11 +242,7 @@
     }
     .lang-box p{color: rgba(255,255,255,.60); font-size:.96rem; line-height:1.65;}
 
-    .globeCard{
-      min-height: 320px;
-      position:relative;
-      overflow:hidden;
-    }
+    .globeCard{min-height: 320px; position:relative; overflow:hidden;}
     .globe{
       position:absolute;
       inset: -70px -90px auto auto;
@@ -380,7 +325,7 @@
     .span-8{grid-column: span 8;}
     .span-12{grid-column: span 12;}
 
-    /* MODAL (Apps details) */
+    /* MODAL */
     .modalBack{
       position:fixed; inset:0; z-index:2000;
       background: rgba(0,0,0,.55);
@@ -448,7 +393,7 @@
 <body>
   <div class="app">
 
-    <!-- SIDEBAR -->
+    <!-- SIDEBAR (ONLY: ytb / insta / tiktok / x / kanal analiz) -->
     <aside class="sidebar" id="sidebar">
       <div class="sb-top">
         <div class="sb-brand">
@@ -459,42 +404,29 @@
           </div>
         </div>
 
-        <div class="sb-channel">
-          <small>Kanalınız</small>
-          <b>heyrose27</b>
+        <div class="sb-sep"></div>
 
-          <div class="sb-chips">
-            <div class="chip active" data-chip="ytb">ytb</div>
-            <div class="chip" data-chip="insta">insta</div>
-            <div class="chip" data-chip="tiktok">tiktok</div>
-            <div class="chip" data-chip="x">x</div>
-            <div class="chip" data-chip="kanal-analiz">kanal analiz</div>
+        <div class="sb-list">
+          <div class="sb-item sb-sideLink active" data-open="platforms" data-chip="ytb">
+            <div class="left"><span class="sb-dot"></span>ytb</div>
+          </div>
+
+          <div class="sb-item sb-sideLink" data-open="platforms" data-chip="insta">
+            <div class="left"><span class="sb-dot"></span>insta</div>
+          </div>
+
+          <div class="sb-item sb-sideLink" data-open="platforms" data-chip="tiktok">
+            <div class="left"><span class="sb-dot"></span>tiktok</div>
+          </div>
+
+          <div class="sb-item sb-sideLink" data-open="platforms" data-chip="x">
+            <div class="left"><span class="sb-dot"></span>x</div>
+          </div>
+
+          <div class="sb-item sb-sideLink" data-open="platforms" data-chip="kanal-analiz">
+            <div class="left"><span class="sb-dot"></span>kanal analiz</div>
           </div>
         </div>
-      </div>
-
-      <div class="sb-list">
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Kontrol paneli</div></div>
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>İçerik</div></div>
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Analytics</div></div>
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Topluluk</div></div>
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Diller</div></div>
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>İçerik tespiti</div></div>
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Para kazanma</div></div>
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Özelleştirme</div></div>
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Ses kitaplığı</div></div>
-
-        <div class="sb-sep"></div>
-
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>vidIQ badge</div><span class="badge v">vidIQ</span></div>
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Günlük Fikirler</div><span class="badge v">vidIQ</span></div>
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Thumbnail Preview</div><span class="badge v">vidIQ</span></div>
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>More Tools</div><span class="badge">Pro</span></div>
-
-        <div class="sb-sep"></div>
-
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Ayarlar</div></div>
-        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Geri bildirim gönder</div></div>
       </div>
     </aside>
 
@@ -522,7 +454,7 @@
 
       <div class="content">
 
-        <!-- HOME (ONLY homepage content) -->
+        <!-- HOME -->
         <section class="section active" id="sec-home">
           <div class="hero-grid">
             <div class="panel">
@@ -748,16 +680,16 @@
       menuBtn.addEventListener("click", () => sidebar.classList.toggle("open"));
     }
 
-    // Chips active state (ytb/insta/tiktok/x/kanal analiz)
-    const chips = Array.from(document.querySelectorAll(".chip"));
-    chips.forEach(ch => {
-      ch.addEventListener("click", () => {
-        chips.forEach(c => c.classList.remove("active"));
-        ch.classList.add("active");
+    // Left sidebar quick links -> open platforms + active state
+    const sideLinks = Array.from(document.querySelectorAll(".sb-sideLink"));
+    sideLinks.forEach(item => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
 
-        // İstersen chip'e göre otomatik bölüm açtırabiliriz:
-        // kanal analiz tıklandığında platform sayfasına açıp aşağı kaydırmak gibi.
-        // Şimdilik sadece görsel aktiflik.
+        sideLinks.forEach(x => x.classList.remove("active"));
+        item.classList.add("active");
+
+        showSection(item.dataset.open || "platforms");
       });
     });
 
