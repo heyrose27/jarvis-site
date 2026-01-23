@@ -3,63 +3,537 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V-LAB.AI | Global İçerik Mimarı</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>V-LAB.AI | Global İçerik Strateji Platformu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #ffffff;
             --text: #050505;
             --accent: #6136fb;
-            --gray-light: #f8f8f9;
-            --border: #eef0f2;
+            --accent-light: #7c5dfa;
+            --gray-light: #f8f9fa;
+            --gray-medium: #e9ecef;
+            --border: #dee2e6;
+            --text-light: #6c757d;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); scroll-behavior: smooth; }
-
-        /* NAVBAR - Uygulamalar eklendi */
-        nav {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 8%; background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 1000;
-            border-bottom: 1px solid var(--border);
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg); 
+            color: var(--text); 
+            line-height: 1.6;
+            overflow-x: hidden;
         }
-        .logo { font-size: 1.6rem; font-weight: 800; letter-spacing: -1.5px; color: var(--accent); }
-        .nav-links a { text-decoration: none; color: var(--text); margin-left: 30px; font-weight: 600; font-size: 0.95rem; }
 
-        /* HERO - Görsel 4'teki ikili yapı */
+        /* NAVBAR */
+        nav {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 24px 8%; 
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.03);
+        }
+        .logo { 
+            font-size: 1.8rem; 
+            font-weight: 800; 
+            letter-spacing: -1.5px; 
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo::before {
+            content: "⚡";
+            font-size: 1.5rem;
+        }
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+        .nav-links a { 
+            text-decoration: none; 
+            color: var(--text); 
+            font-weight: 600; 
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        .nav-links a.active::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        /* SECTIONS */
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* HERO SECTION */
         .hero {
-            padding: 150px 8% 100px;
+            padding: 120px 8% 80px;
+            background: linear-gradient(135deg, #f3f0ff 0%, #fef8f8 50%, #f0f9ff 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(97,54,251,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(97,54,251,0.1);
+            color: var(--accent);
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+        .hero h1 { 
+            font-size: clamp(2.8rem, 6vw, 4.5rem); 
+            font-weight: 800; 
+            letter-spacing: -2px; 
+            line-height: 1.1; 
+            margin-bottom: 28px;
+            background: linear-gradient(135deg, #050505 0%, #6136fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p { 
+            font-size: 1.3rem; 
+            color: var(--text-light); 
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(97,54,251,0.3);
+        }
+        .btn-primary:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(97,54,251,0.4);
+        }
+        .btn-secondary {
+            color: var(--text);
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            border: 2px solid var(--border);
+            transition: all 0.3s;
+        }
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* FEATURES SECTION */
+        .features {
+            padding: 100px 8%;
+            background: white;
+        }
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 70px;
+        }
+        .section-header h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1.5px;
+        }
+        .section-header p {
+            font-size: 1.15rem;
+            color: var(--text-light);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .feature-card {
+            background: var(--gray-light);
+            padding: 40px 30px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            transition: all 0.4s;
+            text-align: center;
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+            border-color: var(--accent);
+        }
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: 24px;
+            display: block;
+        }
+        .feature-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* PLATFORMS SECTION */
+        .platforms-section {
+            padding: 100px 8%;
+            background: var(--gray-light);
+        }
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .platform-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.4s;
+            cursor: pointer;
+        }
+        .platform-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+        }
+        .platform-card-img {
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 2rem;
+            color: white;
+            letter-spacing: 2px;
+        }
+        .platform-card-content {
+            padding: 30px;
+        }
+        .platform-card-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        .platform-card-content p {
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .platform-tag {
+            display: inline-block;
+            background: var(--gray-light);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        /* HOW IT WORKS */
+        .how-it-works {
+            padding: 100px 8%;
+            background: white;
+        }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .step-card {
+            text-align: center;
+            position: relative;
+        }
+        .step-number {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0 auto 24px;
+            box-shadow: 0 8px 20px rgba(97,54,251,0.3);
+        }
+        .step-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .step-card p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* CTA SECTION */
+        .cta-section {
+            padding: 100px 8%;
+            background: linear-gradient(135deg, #6136fb 0%, #8b5cf6 100%);
+            text-align: center;
+            color: white;
+        }
+        .cta-section h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 24px;
+            letter-spacing: -1.5px;
+        }
+        .cta-section p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        .btn-white {
+            background: white;
+            color: var(--accent);
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            display: inline-block;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .btn-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+        }
+
+        /* ABOUT SECTION */
+        .about-section {
+            padding: 120px 8% 80px;
+        }
+        .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            background: linear-gradient(180deg, #f3f0ff 0%, #ffffff 100%);
+            gap: 80px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto 80px;
         }
-        .hero-col { display: flex; flex-direction: column; justify-content: center; }
-        .hero h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -2px; line-height: 1.1; }
-        .left-hero { text-align: left; }
-        .right-hero { text-align: right; }
+        .about-image {
+            width: 100%;
+            height: 450px;
+            background: var(--gray-light);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            border: 1px solid var(--border);
+        }
+        .about-content span {
+            color: var(--accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+        .about-content h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin: 20px 0;
+            letter-spacing: -1.5px;
+            line-height: 1.2;
+        }
+        .about-content p {
+            font-size: 1.15rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
 
-        /* MİSYON - Görsel 5'teki güncel metinler */
-        .mission-section {
-            padding: 120px 8%; background: var(--bg);
-            display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+        /* APPS SECTION */
+        .apps-section {
+            padding: 120px 8% 80px;
+            background: var(--gray-light);
         }
-        .mission-text span { color: var(--accent); font-weight: 700; text-transform: uppercase; font-size: 0.9rem; }
-        .mission-text h2 { font-size: 3rem; font-weight: 800; margin: 20px 0; letter-spacing: -1px; }
-        .mission-text p { font-size: 1.15rem; color: #666; margin-bottom: 20px; line-height: 1.7; }
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .app-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.4s;
+        }
+        .app-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+        }
+        .app-card-header {
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 2.2rem;
+            color: white;
+            letter-spacing: 2px;
+        }
+        .app-card-body {
+            padding: 35px;
+        }
+        .app-card-body h3 {
+            font-size: 1.7rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .app-card-body p {
+            color: var(--text-light);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        .app-features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .app-feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+        .app-feature-item::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
 
         /* FOOTER */
-        footer { padding: 100px 8%; background: #050505; color: #fff; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; }
-        .footer-logo { font-size: 1.8rem; font-weight: 800; color: var(--accent); margin-bottom: 20px; }
-        footer h4 { margin-bottom: 25px; font-size: 1.2rem; }
-        footer ul { list-style: none; }
-        footer ul li { margin-bottom: 12px; color: #aaa; transition: 0.3s; cursor: pointer; }
+        footer {
+            padding: 80px 8% 40px;
+            background: #050505;
+            color: white;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto 50px;
+        }
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .footer-logo::before {
+            content: "⚡";
+            font-size: 1.6rem;
+        }
+        .footer-desc {
+            color: #adb5bd;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        .footer-section h4 {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        .footer-section ul {
+            list-style: none;
+        }
+        .footer-section ul li {
+            margin-bottom: 14px;
+            color: #adb5bd;
+            transition: 0.3s;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .footer-section ul li:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid #333;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
 
         @media (max-width: 900px) {
-            .hero { grid-template-columns: 1fr; text-align: center; }
-            .right-hero { text-align: center; }
-            .mission-section { grid-template-columns: 1fr; text-align: center; }
+            .about-grid { grid-template-columns: 1fr; text-align: center; }
+            .footer-content { grid-template-columns: 1fr; }
+            .apps-grid { grid-template-columns: 1fr; }
+            .platforms-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -68,40 +542,203 @@
     <nav>
         <div class="logo">V-LAB.AI</div>
         <div class="nav-links">
-            <a href="#anasayfa">Anasayfa</a>
-            <a href="#uygulamalar">Uygulamalar</a>
-            <a href="#hakkimizda">Hakkımızda</a>
-            <a href="#platformlar">Platformlar</a>
+            <a href="#" class="active" onclick="showSection('anasayfa'); return false;">Ana Sayfa</a>
+            <a href="#" onclick="showSection('uygulamalar'); return false;">Uygulamalar</a>
+            <a href="#" onclick="showSection('hakkimizda'); return false;">Hakkımızda</a>
+            <a href="#" onclick="showSection('iletisim'); return false;">İletişim</a>
         </div>
     </nav>
 
-    <header class="hero" id="anasayfa">
-        <div class="hero-col left-hero">
-            <h1>TÜRK KANALLARINIZ İÇİN <br> Akıllı Strateji Merkezi.</h1>
-        </div>
-        <div class="hero-col right-hero">
-            <h1>GLOBAL KANALINIZ İÇİN <br> Akıllı Strateji Merkezi.</h1>
-        </div>
-    </header>
+    <!-- ANA SAYFA -->
+    <div id="anasayfa-section" class="section active">
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-badge">🚀 Global İçerik Strateji Platformu</div>
+                <h1>Kanalınız İçin Akıllı Global Strateji Merkezi</h1>
+                <p>YouTube, Instagram, TikTok ve X'te viral olmak için yapay zeka destekli strateji araçları. Telif riski olmadan, global algoritmalara uygun içerikler üretin.</p>
+                <div class="hero-cta">
+                    <a href="#" onclick="showSection('uygulamalar'); return false;" class="btn-primary">Araçları Keşfet</a>
+                    <a href="#" onclick="showSection('hakkimizda'); return false;" class="btn-secondary">Nasıl Çalışır?</a>
+                </div>
+            </div>
+        </section>
 
-    <section class="mission-section" id="hakkimizda">
-        <div class="mission-image">
-            <div style="width: 100%; height: 450px; background: #eef0f2; border-radius: 40px; display: flex; align-items: center; justify-content: center; font-size: 5rem;">🎷</div>
-        </div>
-        <div class="mission-text">
-            <span>YOUTUBE</span>
-            <h2>İçerik Üreticileri İçin <br> Güvenli Liman.</h2>
-            <p>V-LAB.AI, YouTube topluluk kurallarını ve reklam politikalarını merkeze alarak içerik üreticilerinin "ihtar" riskini sıfıra indirmek için kuruldu.</p>
-            <p>Biz sadece bir araç değiliz; <strong>üretilen bütün içeriklerinizi</strong> dünyaya duyururken telif ve politika engellerine takılmamanız için çalışan bir dijital asistandız.</p>
-        </div>
-    </section>
+        <!-- FEATURES -->
+        <section class="features">
+            <div class="section-header">
+                <h2>Neden V-LAB.AI?</h2>
+                <p>İçerik üreticileri için özel olarak tasarlanmış, güçlü ve kullanımı kolay araçlar</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🛡️</span>
+                    <h3>Telif Güvenliği</h3>
+                    <p>YouTube topluluk kurallarına uygun, ihtar riski olmayan içerik önerileri</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🌍</span>
+                    <h3>Global Optimizasyon</h3>
+                    <p>İngilizce, İspanyolca ve Portekizce dillerinde SEO dostu başlıklar</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <h3>Trend Analizi</h3>
+                    <p>Gerçek zamanlı trend takibi ile viral içerik stratejileri</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <h3>Hızlı Sonuç</h3>
+                    <p>Dakikalar içinde platform özelinde optimize edilmiş içerik</p>
+                </div>
+            </div>
+        </section>
 
-    <footer>
-        <div>
-            <div class="footer-logo">V-LAB.AI</div>
-            <p>Global İçerik Üretimi ve Politika Analiz Platformu.</p>
-        </div>
-    </footer>
+        <!-- PLATFORMS -->
+        <section class="platforms-section">
+            <div class="section-header">
+                <h2>Desteklenen Platformlar</h2>
+                <p>Her platform için özel stratejiler ve araçlar</p>
+            </div>
+            <div class="platforms-grid">
+                <div class="platform-card">
+                    <div class="platform-card-img" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);">INSTAGRAM</div>
+                    <div class="platform-card-content">
+                        <h3>Instagram Reels</h3>
+                        <p>Estetik ve viral odaklı içerik stratejileri ile keşfet sayfasında öne çıkın</p>
+                        <span class="platform-tag">Reels Optimizasyonu</span>
+                    </div>
+                </div>
+                <div class="platform-card">
+                    <div class="platform-card-img" style="background: #000;">TIKTOK</div>
+                    <div class="platform-card-content">
+                        <h3>TikTok Global</h3>
+                        <p>Trend takip algoritmaları ile FYP (For You Page) garantisi</p>
+                        <span class="platform-tag">Trend Analizi</span>
+                    </div>
+                </div>
+                <div class="platform-card">
+                    <div class="platform-card-img" style="background: #1DA1F2;">X</div>
+                    <div class="platform-card-content">
+                        <h3>X (Twitter)</h3>
+                        <p>Müzisyen ve sanatçılar için etkileşim odaklı strateji</p>
+                        <span class="platform-tag">Engagement Booster</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-</body>
-</html>
+        <!-- HOW IT WORKS -->
+        <section class="how-it-works">
+            <div class="section-header">
+                <h2>Nasıl Çalışır?</h2>
+                <p>3 adımda profesyonel içerik stratejisi</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Platform Seçin</h3>
+                    <p>YouTube, Instagram, TikTok veya X'ten hedef platformunuzu seçin</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>İçeriğinizi Tanımlayın</h3>
+                    <p>Müzik türünüz, hedef kitleniz ve içerik tipinizi belirleyin</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Strateji Alın</h3>
+                    <p>Yapay zeka destekli, telif güvenli başlık ve açıklama önerilerinizi alın</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <h2>Hemen Başlamaya Hazır Mısınız?</h2>
+            <p>Binlerce içerik üreticisi V-LAB.AI ile kanallarını büyütüyor</p>
+            <a href="#" onclick="showSection('uygulamalar'); return false;" class="btn-white">Ücretsiz Deneyin</a>
+        </section>
+    </div>
+
+    <!-- UYGULAMALAR -->
+    <div id="uygulamalar-section" class="section">
+        <section class="apps-section">
+            <div class="section-header">
+                <h2>Hangi Platformu Büyütmek İstersiniz?</h2>
+                <p>Her platform için özel geliştirilmiş araçlarımız</p>
+            </div>
+            <div class="apps-grid">
+                <div class="app-card">
+                    <div class="app-card-header" style="background: #FF0000;">YOUTUBE</div>
+                    <div class="app-card-body">
+                        <h3>YouTube Shorts</h3>
+                        <p>YouTube topluluk kurallarına uygun, viral potansiyeli yüksek başlık ve açıklama üretimi</p>
+                        <div class="app-features">
+                            <div class="app-feature-item">İhtar analizi ile güvenli içerik</div>
+                            <div class="app-feature-item">SEO optimizasyonu</div>
+                            <div class="app-feature-item">Hashtag önerileri</div>
+                            <div class="app-feature-item">Thumbnail ipuçları</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <div class="app-card-header" style="background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);">REELS</div>
+                    <div class="app-card-body">
+                        <h3>Instagram Reels</h3>
+                        <p>Estetik ve viral odaklı içerik stratejisi ile keşfet sayfasını hedefleyin</p>
+                        <div class="app-features">
+                            <div class="app-feature-item">Viral trend analizi</div>
+                            <div class="app-feature-item">Müzik önerileri</div>
+                            <div class="app-feature-item">Optimal paylaşım saati</div>
+                            <div class="app-feature-item">Hashtag stratejisi</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <div class="app-card-header" style="background: #000;">TIKTOK</div>
+                    <div class="app-card-body">
+                        <h3>TikTok Global</h3>
+                        <p>FYP (For You Page) algoritmasına uygun trend takip ve içerik optimizasyonu</p>
+                        <div class="app-features">
+                            <div class="app-feature-item">Gerçek zamanlı trend takibi</div>
+                            <div class="app-feature-item">Ses efekti önerileri</div>
+                            <div class="app-feature-item">Caption oluşturma</div>
+                            <div class="app-feature-item">Duet/Stitch stratejileri</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-card">
+                    <div class="app-card-header" style="background: #1DA1F2;">X VIRAL</div>
+                    <div class="app-card-body">
+                        <h3>X Threads</h3>
+                        <p>Müzisyen ve sanatçılar için etkileşim odaklı thread ve tweet stratejisi</p>
+                        <div class="app-features">
+                            <div class="app-feature-item">Thread oluşturma</div>
+                            <div class="app-feature-item">Viral tweet formülleri</div>
+                            <div class="app-feature-item">Engagement optimizasyonu</div>
+                            <div class="app-feature-item">Timing stratejisi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- HAKKIMIZDA -->
+    <div id="hakkimizda-section" class="section">
+        <section class="about-section">
+            <div class="about-grid">
+                <div class="about-image">🎷</div>
+                <div class="about-content">
+                    <span>Biz Kimiz?</span>
+                    <h2>İçerik Üreticileri İçin Güvenli Liman</h2>
+                    <p>V-LAB.AI, YouTube topluluk kurallarını ve reklam politikalarını merkeze alarak içerik üreticilerinin "ihtar" riskini sıfıra indirmek için kuruldu.</p>
+                    <p>Biz sadece bir araç değiliz; ürettiğiniz içerikleri dünyaya duyururken telif ve politika engellerine takılmamanız için çalışan bir dijital asistandız.</p>
+                </div>
+            </div>
+
+            <div class="about-grid" style="background: var(--gray-light); padding: 60px; border-radius: 30px;">
+                <div class="about-content">
+                    <span>Amacımız</span>
+                    <h2>Globalde 1 Numara Olmak</h2>
