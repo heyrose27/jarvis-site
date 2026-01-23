@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>V-LAB.AI | Global İçerik Mimarı</title>
+  <title>V-LAB.AI | Kontrol Paneli</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root{
@@ -26,6 +26,8 @@
 
       --radius: 28px;
       --radius2: 34px;
+
+      --sidebarW: 290px;
     }
 
     *{margin:0;padding:0;box-sizing:border-box}
@@ -39,7 +41,6 @@
       overflow-x:hidden;
     }
 
-    /* subtle noise */
     body::before{
       content:"";
       position:fixed; inset:0;
@@ -51,100 +52,180 @@
     }
 
     a{color:inherit;text-decoration:none}
+    .app{position:relative; z-index:1; display:grid; grid-template-columns: var(--sidebarW) 1fr; min-height:100vh;}
 
-    .wrap{position:relative; z-index:1;}
+    /* SIDEBAR */
+    .sidebar{
+      position:sticky; top:0; height:100vh;
+      padding:16px 14px;
+      background: rgba(10,10,18,.55);
+      backdrop-filter: blur(16px);
+      border-right: 1px solid rgba(255,255,255,.08);
+      overflow:auto;
+    }
 
-    /* NAVBAR */
-    nav{
+    .sb-top{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      border-radius: 22px;
+      padding: 14px 14px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.25);
+      margin-bottom: 14px;
+    }
+
+    .sb-brand{
+      display:flex; align-items:center; gap:10px;
+      margin-bottom: 10px;
+    }
+    .sb-mark{
+      width:36px; height:36px; border-radius:12px;
+      display:grid; place-items:center;
+      font-weight:900;
+      background: linear-gradient(135deg, rgba(124,92,255,1), rgba(233,30,99,.85));
+      box-shadow: 0 16px 45px rgba(124,92,255,.22);
+    }
+    .sb-title{
+      line-height:1.1;
+    }
+    .sb-title b{display:block; font-size:.95rem; letter-spacing:-.4px}
+    .sb-title span{display:block; color:rgba(255,255,255,.62); font-weight:800; font-size:.82rem}
+
+    .sb-channel{
+      margin-top: 10px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 10px;
+    }
+    .sb-channel small{
+      display:block;
+      color: rgba(255,255,255,.62);
+      font-weight: 900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:.72rem;
+      margin-bottom: 6px;
+    }
+    .sb-channel b{
+      display:block;
+      font-size: 1.05rem;
+      letter-spacing:-.6px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .sb-chips{display:flex; gap:8px; flex-wrap:wrap;}
+    .chip{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.74);
+      font-weight: 900;
+      font-size: .72rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:.22s;
+      user-select:none;
+    }
+    .chip:hover{transform: translateY(-2px); color:#fff;}
+    .chip.active{
+      background: linear-gradient(135deg, rgba(124,92,255,1), rgba(233,30,99,.75));
+      border: 0;
+      color:#fff;
+      box-shadow: 0 14px 50px rgba(124,92,255,.22);
+    }
+
+    .sb-list{margin-top: 12px;}
+    .sb-item{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 10px 12px;
+      border-radius: 14px;
+      color: rgba(255,255,255,.80);
+      font-weight: 800;
+      font-size: .92rem;
+      cursor:pointer;
+      transition:.2s;
+    }
+    .sb-item:hover{
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .sb-item .left{display:flex; align-items:center; gap:10px;}
+    .sb-dot{
+      width:8px; height:8px; border-radius:99px;
+      background: rgba(255,255,255,.28);
+    }
+    .badge{
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      font-weight: 900;
+      font-size: .72rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.74);
+    }
+    .badge.v{color:#fff; background: rgba(124,92,255,.18); border-color: rgba(124,92,255,.30);}
+
+    .sb-sep{
+      height: 1px;
+      background: rgba(255,255,255,.08);
+      margin: 12px 8px;
+    }
+
+    /* MAIN */
+    .main{min-width:0;}
+    .topbar{
       position:sticky; top:0; z-index:1000;
       display:flex; align-items:center; justify-content:space-between;
-      padding:18px 7%;
+      padding: 18px 26px;
       background: rgba(10,10,18,.55);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid rgba(255,255,255,.08);
     }
-
-    .brand{
-      display:flex; align-items:center; gap:10px;
-      font-weight:800; letter-spacing:-1px;
-    }
-    .brand-badge{
-      width:34px; height:34px; border-radius:12px;
-      background: linear-gradient(135deg, rgba(124,92,255,1), rgba(233,30,99,.9));
-      box-shadow: 0 14px 40px rgba(124,92,255,.25);
-      display:grid; place-items:center;
-      font-weight:900;
-    }
-    .brand span{font-size:1.05rem}
-    .brand small{
-      display:block;
-      color:rgba(255,255,255,.55);
-      font-weight:700;
-      letter-spacing:.2px;
-      margin-top:-2px;
-      font-size:.8rem;
-    }
-
-    .nav-links{
-      display:flex; gap:26px; align-items:center;
-      font-weight:700; font-size:.95rem;
-      color:rgba(255,255,255,.78);
-    }
-    .nav-links a{transition:.25s}
-    .nav-links a:hover{color:#fff}
-
-    .nav-cta{
-      display:flex; align-items:center; gap:12px;
+    .nav-links{display:flex; gap:18px; align-items:center; font-weight:900; color:rgba(255,255,255,.78);}
+    .nav-links a{padding:10px 12px; border-radius:999px; transition:.22s;}
+    .nav-links a:hover{background: rgba(255,255,255,.05); color:#fff;}
+    .nav-links a.active{
+      background: linear-gradient(135deg, rgba(124,92,255,1), rgba(233,30,99,.75));
+      color:#fff;
     }
 
     .btn{
       display:inline-flex; align-items:center; justify-content:center;
-      padding:12px 18px;
+      padding:12px 16px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.06);
       color:#fff;
-      font-weight:800;
-      transition:.28s cubic-bezier(.2,1,.2,1);
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      font-weight:900;
+      transition:.25s;
     }
     .btn:hover{transform: translateY(-2px); border-color: rgba(255,255,255,.22)}
     .btn-primary{
-      background: linear-gradient(135deg, rgba(124,92,255,1), rgba(233,30,99,.85));
       border:0;
-      box-shadow: 0 18px 50px rgba(124,92,255,.28);
+      background: linear-gradient(135deg, rgba(124,92,255,1), rgba(233,30,99,.85));
+      box-shadow: 0 18px 50px rgba(124,92,255,.24);
     }
 
-    /* HERO */
-    header.hero{
-      padding: 90px 7% 40px;
-    }
+    .content{padding: 26px 26px 80px;}
 
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 44px;
-      align-items: center;
-    }
+    /* SECTIONS (only one visible) */
+    .section{display:none;}
+    .section.active{display:block;}
 
-    .hero-left{
-      padding: 34px;
+    /* Cards / Panels */
+    .panel{
       border-radius: var(--radius2);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      background: rgba(255,255,255,.04);
       border: 1px solid rgba(255,255,255,.10);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow2);
+      padding: 26px;
       position:relative;
       overflow:hidden;
     }
-    .hero-left::before{
-      content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(600px 300px at 30% 0%, rgba(124,92,255,.35), transparent 55%),
-                  radial-gradient(600px 300px at 90% 20%, rgba(233,30,99,.22), transparent 55%);
-      opacity:.55;
-      z-index:0;
-    }
-    .hero-left > *{position:relative; z-index:1}
+    .panel + .panel{margin-top: 18px;}
 
     .kicker{
       display:inline-flex; align-items:center; gap:10px;
@@ -153,37 +234,42 @@
       background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.10);
       color: rgba(255,255,255,.82);
-      font-weight:800;
-      font-size:.88rem;
+      font-weight:900;
+      font-size:.86rem;
       letter-spacing:.2px;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
-    .dot{
+    .kdot{
       width:10px;height:10px;border-radius:99px;
       background: rgba(124,92,255,1);
       box-shadow: 0 0 0 6px rgba(124,92,255,.18);
     }
 
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      align-items: stretch;
+    }
     .hero-title{
-      font-size: clamp(2.4rem, 4.7vw, 4rem);
+      font-size: clamp(2.1rem, 3.9vw, 3.4rem);
       font-weight: 900;
-      letter-spacing: -2.4px;
-      line-height: 1.02;
-      margin-bottom: 16px;
+      letter-spacing:-2px;
+      line-height:1.04;
+      margin-bottom: 12px;
     }
     .hero-sub{
-      max-width: 58ch;
-      font-size: 1.08rem;
       color: var(--muted);
-      line-height: 1.75;
-      margin-bottom: 22px;
+      line-height:1.75;
+      font-size: 1.06rem;
+      max-width: 70ch;
     }
 
     .lang-split{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
-      margin-top: 12px;
+      margin-top: 16px;
     }
     .lang-box{
       padding: 16px 16px;
@@ -193,41 +279,25 @@
     }
     .lang-box .lang{
       font-weight:900;
-      font-size:.85rem;
+      font-size:.78rem;
       color: rgba(255,255,255,.72);
       text-transform:uppercase;
       letter-spacing:.12em;
       margin-bottom: 8px;
     }
     .lang-box h2{
-      font-size: 1.25rem;
+      font-size: 1.18rem;
       letter-spacing:-.6px;
       line-height:1.2;
       margin-bottom: 8px;
     }
-    .lang-box p{
-      color: rgba(255,255,255,.60);
-      font-size: .98rem;
-      line-height:1.65;
-    }
+    .lang-box p{color: rgba(255,255,255,.60); font-size:.96rem; line-height:1.65;}
 
-    .hero-actions{
-      display:flex; gap:12px; flex-wrap:wrap;
-      margin-top: 18px;
-    }
-
-    .hero-right{
-      padding: 26px;
-      border-radius: var(--radius2);
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow: var(--shadow2);
-      overflow:hidden;
+    .globeCard{
+      min-height: 320px;
       position:relative;
-      min-height: 420px;
+      overflow:hidden;
     }
-
-    /* Premium globe card */
     .globe{
       position:absolute;
       inset: -70px -90px auto auto;
@@ -238,150 +308,34 @@
         radial-gradient(circle at 30% 30%, rgba(124,92,255,.45), transparent 55%),
         radial-gradient(circle at 60% 60%, rgba(233,30,99,.30), transparent 58%),
         radial-gradient(circle at 45% 50%, rgba(255,255,255,.12), rgba(255,255,255,.02) 55%, transparent 66%);
-      filter: blur(.2px);
       opacity: .95;
       border: 1px solid rgba(255,255,255,.10);
       box-shadow: 0 60px 120px rgba(0,0,0,.45);
       animation: floaty 8s ease-in-out infinite;
     }
+    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
 
-    @keyframes floaty{
-      0%,100%{transform: translateY(0px)}
-      50%{transform: translateY(10px)}
-    }
-
-    .hero-right h3{
-      font-size: 1.15rem;
-      font-weight: 900;
-      letter-spacing: -.6px;
-      margin-bottom: 10px;
-    }
-    .hero-right p{
-      color: rgba(255,255,255,.68);
-      line-height:1.7;
-      margin-bottom: 18px;
-      max-width: 46ch;
-    }
-
-    .stat-grid{
+    .statGrid{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
-      margin-top: 18px;
+      margin-top: 14px;
     }
     .stat{
-      padding: 14px 14px;
+      padding: 14px;
       border-radius: 22px;
       background: rgba(255,255,255,.05);
       border: 1px solid rgba(255,255,255,.10);
     }
-    .stat b{
-      display:block;
-      font-size: 1.15rem;
-      letter-spacing:-.6px;
-      margin-bottom: 6px;
-    }
-    .stat span{
-      color: rgba(255,255,255,.62);
-      font-size: .93rem;
-      line-height: 1.55;
-    }
+    .stat b{display:block; font-size:1.1rem; letter-spacing:-.6px; margin-bottom:6px; font-weight:900;}
+    .stat span{color: rgba(255,255,255,.62); font-size:.92rem; line-height:1.55;}
 
-    /* SECTION */
-    section{padding: 78px 7%;}
-    .section-head{
-      display:flex; align-items:flex-end; justify-content:space-between;
-      gap:18px; margin-bottom: 28px;
-    }
-    .section-head h2{
-      font-size: clamp(1.8rem, 3vw, 2.6rem);
-      font-weight: 900;
-      letter-spacing: -1.3px;
-      line-height: 1.1;
-    }
-    .section-head p{
-      color: rgba(255,255,255,.62);
-      max-width: 62ch;
-      line-height: 1.75;
-    }
-
-    /* Mission blocks */
-    .mission{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      align-items:center;
-    }
-    .panel{
-      border-radius: var(--radius2);
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow: var(--shadow2);
-      padding: 26px;
-      position:relative;
-      overflow:hidden;
-    }
-    .panel .label{
-      display:inline-block;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      color: rgba(255,255,255,.78);
-      font-weight: 900;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:.78rem;
-      margin-bottom: 14px;
-    }
-    .panel h3{
-      font-size: 2rem;
-      font-weight: 900;
-      letter-spacing:-1px;
-      margin-bottom: 12px;
-      line-height:1.15;
-    }
-    .panel p{
-      color: rgba(255,255,255,.66);
-      line-height:1.8;
-      font-size: 1.05rem;
-      margin-bottom: 10px;
-    }
-
-    .visual{
-      border-radius: var(--radius2);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow: var(--shadow2);
-      padding: 22px;
-      min-height: 420px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-      overflow:hidden;
-    }
-    .visual .icon{
-      font-size: 5rem;
-      filter: drop-shadow(0 25px 40px rgba(0,0,0,.35));
-      opacity:.95;
-      transform: translateY(-4px);
-    }
-    .visual .glow{
-      position:absolute;
-      width: 520px; height: 520px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, rgba(124,92,255,.35), transparent 58%),
-                  radial-gradient(circle at 70% 70%, rgba(233,30,99,.22), transparent 58%);
-      opacity:.9;
-      filter: blur(0.2px);
-    }
-
-    /* Apps / Platforms (Bento) */
+    /* BENTO */
     .bento{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
-      gap: 18px;
+      gap: 14px;
+      margin-top: 14px;
     }
     .tile{
       border-radius: var(--radius2);
@@ -392,14 +346,11 @@
       min-height: 160px;
       position:relative;
       overflow:hidden;
-      transition:.28s cubic-bezier(.2,1,.2,1);
+      transition:.25s;
       cursor:pointer;
     }
     .tile:hover{transform: translateY(-6px)}
-    .tile .top{
-      display:flex; align-items:center; justify-content:space-between;
-      margin-bottom: 14px;
-    }
+    .tile .top{display:flex; align-items:center; justify-content:space-between; margin-bottom: 12px;}
     .pill{
       padding: 8px 12px;
       border-radius: 999px;
@@ -408,21 +359,12 @@
       font-weight: 900;
       letter-spacing:.12em;
       text-transform:uppercase;
-      font-size:.75rem;
+      font-size:.72rem;
       color: rgba(255,255,255,.80);
     }
-    .tile h4{
-      font-size: 1.25rem;
-      letter-spacing:-.6px;
-      margin-bottom: 8px;
-      font-weight: 900;
-    }
-    .tile p{
-      color: rgba(255,255,255,.64);
-      line-height: 1.65;
-      font-size: .98rem;
-    }
-    .tile .bgshine{
+    .tile h4{font-size:1.2rem; letter-spacing:-.6px; margin-bottom: 8px; font-weight:900;}
+    .tile p{color: rgba(255,255,255,.64); line-height:1.65; font-size:.98rem;}
+    .bgshine{
       position:absolute;
       inset:auto -60px -60px auto;
       width: 240px; height: 240px;
@@ -430,386 +372,417 @@
       background: radial-gradient(circle at 30% 30%, rgba(124,92,255,.30), transparent 62%),
                   radial-gradient(circle at 70% 70%, rgba(233,30,99,.18), transparent 62%);
       opacity:.9;
+      pointer-events:none;
     }
 
     .span-6{grid-column: span 6;}
     .span-4{grid-column: span 4;}
     .span-8{grid-column: span 8;}
+    .span-12{grid-column: span 12;}
 
-    /* Footer */
-    footer{
-      padding: 70px 7%;
-      border-top: 1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.35);
-      backdrop-filter: blur(12px);
+    /* MODAL (Apps details) */
+    .modalBack{
+      position:fixed; inset:0; z-index:2000;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center; justify-content:center;
+      padding: 18px;
     }
-    .foot-grid{
-      display:grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 38px;
-      align-items:flex-start;
+    .modalBack.open{display:flex;}
+    .modal{
+      width:min(860px, 100%);
+      border-radius: 30px;
+      background: rgba(12,12,20,.82);
+      border: 1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 50px 120px rgba(0,0,0,.55);
+      padding: 18px;
     }
-    .foot-brand{
-      display:flex; gap:12px; align-items:flex-start;
+    .modalHead{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 12px;
+      padding: 10px 10px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
     }
-    .foot-brand .mark{
-      width:42px;height:42px;border-radius:14px;
-      background: linear-gradient(135deg, rgba(124,92,255,1), rgba(233,30,99,.85));
-      box-shadow: 0 18px 55px rgba(124,92,255,.22);
-      display:grid; place-items:center;
-      font-weight: 900;
-    }
-    .foot-brand h3{
-      font-size: 1.25rem;
-      font-weight: 900;
-      letter-spacing:-.8px;
-      margin-bottom: 6px;
-    }
-    .foot-brand p{
-      color: rgba(255,255,255,.62);
-      line-height:1.75;
-      max-width: 48ch;
-    }
-
-    .foot-col h4{
-      font-size: 1.05rem;
-      font-weight: 900;
-      letter-spacing:-.6px;
-      margin-bottom: 14px;
-    }
-    .foot-col ul{list-style:none}
-    .foot-col li{
-      margin-bottom: 10px;
-      color: rgba(255,255,255,.62);
-      font-weight: 700;
-      cursor:pointer;
-      transition:.22s;
-    }
-    .foot-col li:hover{color:#fff}
-
-    .social{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin-top: 16px;
-    }
-    .social a{
+    .modalHead b{font-size: 1.05rem; font-weight: 900; letter-spacing:-.4px}
+    .modalBody{padding: 14px 10px 8px; color: rgba(255,255,255,.70); line-height:1.75;}
+    .xbtn{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      border-radius: 12px;
       padding: 10px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.78);
       font-weight: 900;
-      letter-spacing:.08em;
-      font-size:.78rem;
-      transition:.22s;
+      cursor:pointer;
+      color:#fff;
     }
-    .social a:hover{color:#fff; transform: translateY(-2px);}
 
-    /* Responsive */
+    /* Mobile */
+    .menuBtn{display:none;}
     @media (max-width: 980px){
-      .hero-grid{grid-template-columns:1fr}
-      .hero-right{min-height: 340px}
-      .mission{grid-template-columns:1fr}
-      .bento{gap:14px}
-      .span-6,.span-4,.span-8{grid-column: span 12;}
-      .foot-grid{grid-template-columns:1fr; gap:22px}
-      .nav-links{display:none}
+      .app{grid-template-columns: 1fr;}
+      .sidebar{
+        position:fixed; left:0; top:0; bottom:0;
+        width: min(92vw, 340px);
+        transform: translateX(-105%);
+        transition: .25s;
+        z-index:1500;
+      }
+      .sidebar.open{transform: translateX(0);}
+      .menuBtn{
+        display:inline-flex;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border:1px solid rgba(255,255,255,.12);
+        background: rgba(255,255,255,.06);
+        color:#fff;
+        font-weight:900;
+        cursor:pointer;
+      }
+      .hero-grid{grid-template-columns: 1fr;}
+      .lang-split{grid-template-columns: 1fr;}
+      .span-6,.span-4,.span-8,.span-12{grid-column: span 12;}
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
+  <div class="app">
 
-    <nav>
-      <div class="brand">
-        <div class="brand-badge">V</div>
-        <div>
-          <span>V-LAB.AI</span>
-          <small>Global İçerik Mimarı</small>
-        </div>
-      </div>
-
-      <div class="nav-links">
-        <a href="#anasayfa">Anasayfa</a>
-        <a href="#uygulamalar">Uygulamalar</a>
-        <a href="#platformlar">Platform</a>
-        <a href="#hakkimizda">Hakkımızda</a>
-      </div>
-
-      <div class="nav-cta">
-        <a class="btn" href="#iletisim">İletişim</a>
-        <a class="btn btn-primary" href="#uygulamalar">Hemen Başla</a>
-      </div>
-    </nav>
-
-    <!-- HERO -->
-    <header class="hero" id="anasayfa">
-      <div class="hero-grid">
-        <div class="hero-left">
-          <div class="kicker"><span class="dot"></span> Global + Türkiye • Akıllı Strateji Merkezi</div>
-
-          <div class="lang-split">
-            <div class="lang-box">
-              <div class="lang">GLOBAL</div>
-              <h2>Kanalınız İçin Global<br>Akıllı Strateji Merkezi.</h2>
-              <p>Enstrümantal müzikten dijital içerik üretimine kadar, global algoritmaların dilini konuşan yapay zeka araçlarıyla tanışın.</p>
-            </div>
-
-            <div class="lang-box">
-              <div class="lang">TÜRKİYE</div>
-              <h2>Kanalınız İçin Türkiye<br>Akıllı Strateji Merkezi.</h2>
-              <p>Yerel dinamikleri korurken global büyümeyi hedefleyen üreticiler için; hızlı, güvenli ve premium içerik planlama.</p>
-            </div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sb-top">
+        <div class="sb-brand">
+          <div class="sb-mark">V</div>
+          <div class="sb-title">
+            <b>V-LAB.AI</b>
+            <span>Global İçerik Mimarı</span>
           </div>
-
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#uygulamalar">Hemen Başla</a>
-            <a class="btn" href="#hakkimizda">Nasıl Çalışır?</a>
-          </div>
-
-          <p class="hero-sub" style="margin-top:14px">
-            YouTube topluluk kuralları ve reklam politikalarını merkeze alarak; içerik üreticilerinin “ihtar” riskini minimize etmek için tasarlandı.
-          </p>
         </div>
 
-        <div class="hero-right">
-          <div class="globe"></div>
-          <h3>Global İçerik Üretimi ve Politika Analiz Platformu.</h3>
-          <p>
-            Telif, politika ve reklam uygunluğu odağında; içeriğinizi dünyaya taşırken “engel” değil “avantaj” üretir.
-          </p>
+        <div class="sb-channel">
+          <small>Kanalınız</small>
+          <b>heyrose27</b>
 
-          <div class="stat-grid">
-            <div class="stat">
-              <b>Politika Odaklı</b>
-              <span>YouTube kuralları + reklam uygunluğu temelli içerik yaklaşımı</span>
-            </div>
-            <div class="stat">
-              <b>Global Diller</b>
-              <span>İngilizce • İspanyolca • Portekizce anahtar kelime stratejisi</span>
-            </div>
-            <div class="stat">
-              <b>Sanatçı Modu</b>
-              <span>Saksofon / trompet odaklı üreticilere teknik yükü azaltır</span>
-            </div>
-            <div class="stat">
-              <b>Hızlı Akış</b>
-              <span>Planla → üret → yayınla: tek akışta düzenli büyüme</span>
-            </div>
+          <div class="sb-chips">
+            <div class="chip active" data-chip="ytb">ytb</div>
+            <div class="chip" data-chip="insta">insta</div>
+            <div class="chip" data-chip="tiktok">tiktok</div>
+            <div class="chip" data-chip="x">x</div>
+            <div class="chip" data-chip="kanal-analiz">kanal analiz</div>
           </div>
         </div>
       </div>
-    </header>
 
-    <!-- HAKKIMIZDA -->
-    <section id="hakkimizda">
-      <div class="section-head">
-        <div>
-          <h2>Güvenli Üretim İçin<br>Kurulmuş Bir Strateji Sistemi.</h2>
+      <div class="sb-list">
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Kontrol paneli</div></div>
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>İçerik</div></div>
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Analytics</div></div>
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Topluluk</div></div>
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Diller</div></div>
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>İçerik tespiti</div></div>
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Para kazanma</div></div>
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Özelleştirme</div></div>
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Ses kitaplığı</div></div>
+
+        <div class="sb-sep"></div>
+
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>vidIQ badge</div><span class="badge v">vidIQ</span></div>
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Günlük Fikirler</div><span class="badge v">vidIQ</span></div>
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Thumbnail Preview</div><span class="badge v">vidIQ</span></div>
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>More Tools</div><span class="badge">Pro</span></div>
+
+        <div class="sb-sep"></div>
+
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Ayarlar</div></div>
+        <div class="sb-item"><div class="left"><span class="sb-dot"></span>Geri bildirim gönder</div></div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <div class="topbar">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button class="menuBtn" id="menuBtn">Menü</button>
+          <div style="font-weight:900; letter-spacing:-.6px;">Kontrol Paneli</div>
         </div>
-        <p>
-          YouTube topluluk kurallarını ve reklam politikalarını merkeze alarak içerik üreticilerinin “ihtar” riskini sıfıra indirmek için kuruldu.
-          Biz sadece bir araç değiliz; ürettiğiniz içerikleri dünyaya duyururken telif ve politika engellerine takılmamanız için çalışan bir dijital asistandız.
-        </p>
+
+        <div class="nav-links" id="topNav">
+          <a href="#" data-section="home" class="active">Anasayfa</a>
+          <a href="#" data-section="apps">Uygulamalar</a>
+          <a href="#" data-section="platforms">Platform</a>
+          <a href="#" data-section="about">Hakkımızda</a>
+        </div>
+
+        <div style="display:flex; gap:10px; align-items:center;">
+          <a class="btn" href="#" data-section="contact">İletişim</a>
+          <a class="btn btn-primary" href="#" data-section="apps">Hemen Başla</a>
+        </div>
       </div>
 
-      <div class="mission">
-        <div class="visual" aria-hidden="true">
-          <div class="glow"></div>
-          <div class="icon">🎷</div>
-        </div>
+      <div class="content">
 
-        <div class="panel">
-          <div class="label">Biz Kimiz?</div>
-          <h3>İçerik Üreticileri İçin<br>Premium Güvenli Liman.</h3>
-          <p>Politika uyumlu büyüme: başlık, açıklama, anahtar kelime ve format stratejisi tek merkezde.</p>
-          <p>Hedef: içerik üretirken korku değil, netlik ve hız.</p>
+        <!-- HOME (ONLY homepage content) -->
+        <section class="section active" id="sec-home">
+          <div class="hero-grid">
+            <div class="panel">
+              <div class="kicker"><span class="kdot"></span> Global + Türkiye • Akıllı Strateji Merkezi</div>
 
-          <div class="hero-actions" style="margin-top:16px">
-            <a class="btn btn-primary" href="#platformlar">Platform Seç</a>
-            <a class="btn" href="#amacimiz">Amacımız</a>
-          </div>
-        </div>
-      </div>
-    </section>
+              <div class="lang-split">
+                <div class="lang-box">
+                  <div class="lang">GLOBAL</div>
+                  <h2>Kanalınız İçin Global<br>Akıllı Strateji Merkezi.</h2>
+                  <p>Enstrümantal müzikten dijital içerik üretimine kadar, global algoritmaların dilini konuşan yapay zeka araçlarıyla tanışın.</p>
+                </div>
 
-    <!-- UYGULAMALAR -->
-    <section id="uygulamalar">
-      <div class="section-head">
-        <h2>Uygulamalar</h2>
-        <p>İçerik üretimini “global standartta” hızlandıran araçlar. (Butonlar demo; istediğin sayfalara bağlarız.)</p>
-      </div>
+                <div class="lang-box">
+                  <div class="lang">TÜRKİYE</div>
+                  <h2>Kanalınız İçin Türkiye<br>Akıllı Strateji Merkezi.</h2>
+                  <p>Yerel dinamikleri korurken global büyümeyi hedefleyen üreticiler için; hızlı, güvenli ve premium içerik planlama.</p>
+                </div>
+              </div>
 
-      <div class="bento">
-        <div class="tile span-6">
-          <div class="bgshine"></div>
-          <div class="top">
-            <span class="pill">AI TITLE</span>
-            <span class="pill" style="opacity:.75">SEO</span>
-          </div>
-          <h4>Trend Başlık Üretici</h4>
-          <p>Global algoritma mantığına uygun, arama hacmi odaklı başlık önerileri ve alternatif varyasyonlar.</p>
-        </div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
+                <a class="btn btn-primary" href="#" data-section="apps">Hemen Başla</a>
+                <a class="btn" href="#" data-section="about">Nasıl Çalışır?</a>
+              </div>
 
-        <div class="tile span-6">
-          <div class="bgshine"></div>
-          <div class="top">
-            <span class="pill">POLICY</span>
-            <span class="pill" style="opacity:.75">SAFE</span>
-          </div>
-          <h4>Politika / İhtar Risk Analizi</h4>
-          <p>İçerik fikri ve metinler için riskli kelime/tema uyarıları; daha güvenli ifade önerileri.</p>
-        </div>
+              <p class="hero-sub" style="margin-top:14px;">
+                YouTube topluluk kuralları ve reklam politikalarını merkeze alarak; içerik üreticilerinin “ihtar” riskini minimize etmek için tasarlandı.
+              </p>
+            </div>
 
-        <div class="tile span-4">
-          <div class="bgshine"></div>
-          <div class="top"><span class="pill">SHORTS</span></div>
-          <h4>YouTube Shorts Strateji</h4>
-          <p>Format, tempo, hook ve paylaşım düzeniyle büyüme akışı.</p>
-        </div>
+            <div class="panel globeCard">
+              <div class="globe"></div>
+              <div class="kicker"><span class="kdot"></span> Politika + Telif Uyumlu Büyüme</div>
+              <div style="font-weight:900; font-size:1.15rem; letter-spacing:-.6px; margin-bottom:8px;">
+                Global İçerik Üretimi ve Politika Analiz Platformu.
+              </div>
+              <div style="color:rgba(255,255,255,.68); line-height:1.7;">
+                İçeriğinizi dünyaya taşırken “engel” değil “avantaj” üretir.
+              </div>
 
-        <div class="tile span-4">
-          <div class="bgshine"></div>
-          <div class="top"><span class="pill">KEYWORDS</span></div>
-          <h4>Global Anahtar Kelime</h4>
-          <p>EN/ES/PT dilinde keşif odaklı etiket & anahtar kelime yapısı.</p>
-        </div>
-
-        <div class="tile span-4">
-          <div class="bgshine"></div>
-          <div class="top"><span class="pill">SCRIPT</span></div>
-          <h4>Topluluk Post / Metin</h4>
-          <p>Yorum, açıklama ve topluluk metinlerini uygun tonda üretir.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- PLATFORM -->
-    <section id="platformlar">
-      <div class="section-head">
-        <h2>Platform Seç</h2>
-        <p>Hangi platformu büyütmek istiyorsun? Her biri için ayrı strateji akışı.</p>
-      </div>
-
-      <div class="bento">
-        <div class="tile span-6">
-          <div class="bgshine"></div>
-          <div class="top"><span class="pill">YOUTUBE</span></div>
-          <h4>YouTube</h4>
-          <p>Shorts + uzun video için politika uyumlu büyüme ve başlık/format stratejisi.</p>
-        </div>
-
-        <div class="tile span-6">
-          <div class="bgshine"></div>
-          <div class="top"><span class="pill">INSTAGRAM</span></div>
-          <h4>Instagram</h4>
-          <p>Reels odaklı estetik, trend ses ve hızlı etkileşim planı.</p>
-        </div>
-
-        <div class="tile span-6">
-          <div class="bgshine"></div>
-          <div class="top"><span class="pill">TIKTOK</span></div>
-          <h4>TikTok</h4>
-          <p>Global trend takibi, keşfet ritmi ve viral tetikleyiciler.</p>
-        </div>
-
-        <div class="tile span-6">
-          <div class="bgshine"></div>
-          <div class="top"><span class="pill">X</span></div>
-          <h4>X (Twitter)</h4>
-          <p>Thread yapısı, etkileşim taktiği ve müzisyen topluluğu büyütme.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- AMACIMIZ -->
-    <section id="amacimiz">
-      <div class="section-head">
-        <h2>Amacımız<br>Globalde 1 Numara Olmak.</h2>
-        <p>
-          Amacımız, yerel yeteneklerin global pazarda “İngilizce, İspanyolca ve Portekizce” gibi dillerde doğru anahtar kelimelerle öne çıkmasını sağlamaktır.
-          Özellikle saksofon ve trompet gibi evrensel dilleri konuşan sanatçıların, teknik detaylarda boğulmadan sadece sanatlarına odaklanmasına yardımcı oluyoruz.
-        </p>
-      </div>
-
-      <div class="mission">
-        <div class="panel">
-          <div class="label">Vizyon</div>
-          <h3>Global İçerik Üretimi<br>ve Politika Analiz Platformu.</h3>
-          <p>İçerik üreticileri için tek hedef: sürdürülebilir büyüme + minimum risk + maksimum netlik.</p>
-          <p>Global büyüme için dil stratejisi, format stratejisi ve uygunluk (policy) tek çatı altında.</p>
-        </div>
-
-        <div class="visual" aria-hidden="true">
-          <div class="glow"></div>
-          <div class="icon">🌍</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ILETISIM -->
-    <section id="iletisim">
-      <div class="section-head">
-        <h2>İletişim</h2>
-        <p>Kurulum / özel paket / kurumsal kullanım için buradan iletişim bağlantıları eklenebilir.</p>
-      </div>
-
-      <div class="bento">
-        <div class="tile span-8">
-          <div class="bgshine"></div>
-          <div class="top"><span class="pill">DESTEK</span></div>
-          <h4>Premium Destek</h4>
-          <p>Mail / WhatsApp / form bağlantılarını buraya koyarız. İstersen “İletişim Formu” da eklerim.</p>
-        </div>
-        <div class="tile span-4">
-          <div class="bgshine"></div>
-          <div class="top"><span class="pill">SOCIAL</span></div>
-          <h4>Sosyal</h4>
-          <p>Footer’da yazı olarak da var. İstersen ikon yaparım.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-      <div class="foot-grid">
-        <div>
-          <div class="foot-brand">
-            <div class="mark">V</div>
-            <div>
-              <h3>V-LAB.AI</h3>
-              <p>Global İçerik Üretimi ve Politika Analiz Platformu.</p>
-
-              <div class="social">
-                <a href="#">YTB</a>
-                <a href="#">INSTA</a>
-                <a href="#">TIKTOK</a>
-                <a href="#">X</a>
+              <div class="statGrid">
+                <div class="stat"><b>Politika Odaklı</b><span>YouTube kuralları + reklam uygunluğu temelli yaklaşım</span></div>
+                <div class="stat"><b>Global Diller</b><span>EN • ES • PT anahtar kelime stratejisi</span></div>
+                <div class="stat"><b>Sanatçı Modu</b><span>Saksofon / trompet odaklı üreticiler</span></div>
+                <div class="stat"><b>Hızlı Akış</b><span>Planla → üret → yayınla</span></div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div class="foot-col">
-          <h4>Hızlı Erişim</h4>
-          <ul>
-            <li><a href="#anasayfa">Anasayfa</a></li>
-            <li><a href="#hakkimizda">Nasıl Çalışır?</a></li>
-            <li><a href="#uygulamalar">Başarı Hikayeleri</a></li>
-          </ul>
-        </div>
+        <!-- APPS -->
+        <section class="section" id="sec-apps">
+          <div class="panel">
+            <div class="kicker"><span class="kdot"></span> Uygulamalar</div>
+            <div class="hero-title">Araçlar Tek Yerde</div>
+            <div class="hero-sub">Her araç tıklanınca detay penceresi açılır (modal).</div>
 
-        <div class="foot-col">
-          <h4>Yasal</h4>
-          <ul>
-            <li>Gizlilik Politikası</li>
-            <li>YouTube Kuralları</li>
-            <li><a href="#iletisim">İletişim</a></li>
-          </ul>
-        </div>
+            <div class="bento">
+              <div class="tile span-6" data-modal-title="Trend Başlık Üretici" data-modal-body="Global algoritma mantığına uygun, arama hacmi odaklı başlık önerileri ve alternatif varyasyonlar.">
+                <div class="bgshine"></div>
+                <div class="top"><span class="pill">AI TITLE</span><span class="pill" style="opacity:.75">SEO</span></div>
+                <h4>Trend Başlık Üretici</h4>
+                <p>Global arama hacmi odaklı başlık ve varyasyonlar.</p>
+              </div>
+
+              <div class="tile span-6" data-modal-title="Politika / İhtar Risk Analizi" data-modal-body="İçerik fikri ve metinler için riskli kelime/tema uyarıları; daha güvenli ifade önerileri.">
+                <div class="bgshine"></div>
+                <div class="top"><span class="pill">POLICY</span><span class="pill" style="opacity:.75">SAFE</span></div>
+                <h4>Politika / İhtar Risk Analizi</h4>
+                <p>Riskli alanları tespit eder, daha güvenli alternatif sunar.</p>
+              </div>
+
+              <div class="tile span-4" data-modal-title="YouTube Shorts Strateji" data-modal-body="Hook, tempo, format ve paylaşım düzeniyle büyüme akışı.">
+                <div class="bgshine"></div>
+                <div class="top"><span class="pill">SHORTS</span></div>
+                <h4>YouTube Shorts Strateji</h4>
+                <p>Format + tempo + düzenli büyüme akışı.</p>
+              </div>
+
+              <div class="tile span-4" data-modal-title="Global Anahtar Kelime" data-modal-body="EN/ES/PT dilinde keşif odaklı anahtar kelime yapısı ve içerik önerileri.">
+                <div class="bgshine"></div>
+                <div class="top"><span class="pill">KEYWORDS</span></div>
+                <h4>Global Anahtar Kelime</h4>
+                <p>EN/ES/PT anahtar kelime keşfi.</p>
+              </div>
+
+              <div class="tile span-4" data-modal-title="Topluluk Post / Metin" data-modal-body="Yorum, açıklama ve topluluk metinlerini uygun tonda üretir.">
+                <div class="bgshine"></div>
+                <div class="top"><span class="pill">SCRIPT</span></div>
+                <h4>Topluluk Post / Metin</h4>
+                <p>Açıklama / yorum / topluluk metni üretimi.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PLATFORMS -->
+        <section class="section" id="sec-platforms">
+          <div class="panel">
+            <div class="kicker"><span class="kdot"></span> Platform</div>
+            <div class="hero-title">YT • INSTA • TIKTOK • X</div>
+            <div class="hero-sub">Platform seç, o platformun akışı burada açılır.</div>
+
+            <div class="bento">
+              <div class="tile span-6">
+                <div class="bgshine"></div>
+                <div class="top"><span class="pill">YOUTUBE</span></div>
+                <h4>YouTube</h4>
+                <p>Shorts + uzun video için politika uyumlu büyüme.</p>
+              </div>
+              <div class="tile span-6">
+                <div class="bgshine"></div>
+                <div class="top"><span class="pill">INSTAGRAM</span></div>
+                <h4>Instagram</h4>
+                <p>Reels odaklı trend ve etkileşim planı.</p>
+              </div>
+              <div class="tile span-6">
+                <div class="bgshine"></div>
+                <div class="top"><span class="pill">TIKTOK</span></div>
+                <h4>TikTok</h4>
+                <p>Global trend takip + viral tetikleyiciler.</p>
+              </div>
+              <div class="tile span-6">
+                <div class="bgshine"></div>
+                <div class="top"><span class="pill">X</span></div>
+                <h4>X</h4>
+                <p>Thread yapısı + topluluk büyütme.</p>
+              </div>
+
+              <div class="tile span-12">
+                <div class="bgshine"></div>
+                <div class="top"><span class="pill">KANAL ANALİZ</span></div>
+                <h4>Kanal Analiz</h4>
+                <p>Buraya: performans, içerik tipi, büyüme önerileri, dil/ülke hedefleme paneli ekleriz.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section class="section" id="sec-about">
+          <div class="panel">
+            <div class="kicker"><span class="kdot"></span> Hakkımızda</div>
+            <div class="hero-title">Güvenli Üretim Sistemi</div>
+            <div class="hero-sub">
+              YouTube topluluk kuralları ve reklam politikalarını merkeze alarak içerik üreticilerinin “ihtar” riskini minimize etmek için kuruldu.
+              Biz sadece bir araç değiliz; ürettiğiniz içerikleri dünyaya duyururken telif ve politika engellerine takılmamanız için çalışan bir dijital asistandız.
+            </div>
+          </div>
+
+          <div class="panel" style="margin-top:18px;">
+            <div class="kicker"><span class="kdot"></span> Amacımız</div>
+            <div style="font-weight:900; font-size:1.6rem; letter-spacing:-1px; margin-bottom:10px;">
+              Globalde 1 Numara Olmak.
+            </div>
+            <div style="color:rgba(255,255,255,.66); line-height:1.85;">
+              Amacımız, yerel yeteneklerin global pazarda “İngilizce, İspanyolca ve Portekizce” gibi dillerde doğru anahtar kelimelerle öne çıkmasını sağlamaktır.
+              Özellikle saksofon ve trompet gibi evrensel dilleri konuşan sanatçıların, teknik detaylarda boğulmadan sadece sanatlarına odaklanmasına yardımcı oluyoruz.
+            </div>
+          </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="section" id="sec-contact">
+          <div class="panel">
+            <div class="kicker"><span class="kdot"></span> İletişim</div>
+            <div class="hero-title">Premium Destek</div>
+            <div class="hero-sub">Buraya mail / WhatsApp / form bağlantılarını ekleriz.</div>
+          </div>
+        </section>
+
       </div>
-    </footer>
+    </main>
 
   </div>
+
+  <!-- MODAL -->
+  <div class="modalBack" id="modalBack" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modalHead">
+        <b id="modalTitle">Başlık</b>
+        <button class="xbtn" id="modalClose">Kapat</button>
+      </div>
+      <div class="modalBody" id="modalBody">İçerik</div>
+    </div>
+  </div>
+
+  <script>
+    // SECTION TOGGLING (top nav + buttons)
+    const sections = {
+      home: document.getElementById("sec-home"),
+      apps: document.getElementById("sec-apps"),
+      platforms: document.getElementById("sec-platforms"),
+      about: document.getElementById("sec-about"),
+      contact: document.getElementById("sec-contact"),
+    };
+
+    const topNav = document.getElementById("topNav");
+    const navLinks = Array.from(topNav.querySelectorAll("a[data-section]"));
+
+    function showSection(key){
+      Object.values(sections).forEach(s => s.classList.remove("active"));
+      sections[key]?.classList.add("active");
+
+      navLinks.forEach(a => a.classList.toggle("active", a.dataset.section === key));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // mobile: close sidebar
+      sidebar.classList.remove("open");
+    }
+
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-section]");
+      if(btn){
+        e.preventDefault();
+        showSection(btn.dataset.section);
+      }
+    });
+
+    // Mobile sidebar toggle
+    const sidebar = document.getElementById("sidebar");
+    const menuBtn = document.getElementById("menuBtn");
+    if(menuBtn){
+      menuBtn.addEventListener("click", () => sidebar.classList.toggle("open"));
+    }
+
+    // Chips active state (ytb/insta/tiktok/x/kanal analiz)
+    const chips = Array.from(document.querySelectorAll(".chip"));
+    chips.forEach(ch => {
+      ch.addEventListener("click", () => {
+        chips.forEach(c => c.classList.remove("active"));
+        ch.classList.add("active");
+
+        // İstersen chip'e göre otomatik bölüm açtırabiliriz:
+        // kanal analiz tıklandığında platform sayfasına açıp aşağı kaydırmak gibi.
+        // Şimdilik sadece görsel aktiflik.
+      });
+    });
+
+    // MODAL for apps tiles
+    const modalBack = document.getElementById("modalBack");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalBody = document.getElementById("modalBody");
+    const modalClose = document.getElementById("modalClose");
+
+    document.querySelectorAll(".tile[data-modal-title]").forEach(tile => {
+      tile.addEventListener("click", () => {
+        modalTitle.textContent = tile.dataset.modalTitle || "";
+        modalBody.textContent = tile.dataset.modalBody || "";
+        modalBack.classList.add("open");
+        modalBack.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    function closeModal(){
+      modalBack.classList.remove("open");
+      modalBack.setAttribute("aria-hidden", "true");
+    }
+    modalClose.addEventListener("click", closeModal);
+    modalBack.addEventListener("click", (e) => { if(e.target === modalBack) closeModal(); });
+    document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
+  </script>
 </body>
 </html>
