@@ -3,75 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V-LAB.AI | Premium İçerik Yönetimi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>V-LAB.AI | Professional Strategy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #ffffff;
-            --text: #050505;
+            --text: #0b0b0b;
             --accent: #6136fb;
-            --gray-light: #f8f8f9;
-            --border: #eef0f2;
+            --soft-gray: #fcfcfd;
+            --border: #f0f0f2;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); scroll-behavior: smooth; overflow-x: hidden; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
 
-        /* NAVBAR - PREMIUM DÜZEN */
+        /* ULTRA MINIMAL NAV */
         nav {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 8%; background: rgba(255,255,255,0.9);
-            backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 1000;
-            border-bottom: 1px solid var(--border);
+            padding: 25px 8%; position: fixed; width: 100%; top: 0; z-index: 1000;
+            background: rgba(255,255,255,0.8); backdrop-filter: saturate(180%) blur(20px);
         }
-        .logo { font-size: 1.6rem; font-weight: 800; letter-spacing: -1.5px; color: var(--accent); }
-        .nav-links a { text-decoration: none; color: var(--text); margin-left: 35px; font-weight: 600; font-size: 0.95rem; transition: 0.3s; }
-        .nav-links a:hover { color: var(--accent); }
+        .logo { font-size: 1.4rem; font-weight: 800; color: var(--text); letter-spacing: -1px; }
+        .nav-links a { text-decoration: none; color: #666; margin-left: 40px; font-weight: 500; font-size: 0.9rem; transition: 0.2s; }
+        .nav-links a:hover { color: var(--text); }
 
-        /* HERO - İKİLİ STRATEJİ (GÖRSEL 4 TEMELLİ) */
+        /* HERO SECTION (GÖRSEL 4 RE-DESIGN) */
         .hero {
-            padding: 180px 8% 120px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 100px;
-            background: radial-gradient(circle at top right, #f3f0ff, #ffffff);
-            align-items: center;
+            height: 100vh; display: flex; align-items: center; padding: 0 8%;
+            background: radial-gradient(circle at 50% 50%, #f8f6ff 0%, #ffffff 70%);
         }
-        .hero-col h1 { font-size: clamp(2.5rem, 5vw, 4.2rem); font-weight: 800; letter-spacing: -3px; line-height: 1; margin-bottom: 20px; }
-        .left-hero { text-align: left; border-right: 1px solid var(--border); padding-right: 40px; }
-        .right-hero { text-align: right; padding-left: 40px; }
-
-        /* PLATFORM DETAYLARI - SERİ YAPI (GÖRSEL 5'İN DEVAMI) */
-        .platform-section {
-            padding: 100px 8%;
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 80px;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
-        .platform-section.reverse { grid-template-columns: 1fr 1.2fr; }
+        .hero-split { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 100px; position: relative; }
+        .hero-split::after { content: ''; position: absolute; left: 50%; top: 10%; height: 80%; width: 1px; background: var(--border); }
         
-        .mockup-container {
-            width: 100%; height: 500px; background: var(--gray-light);
-            border-radius: 40px; display: flex; align-items: center; justify-content: center;
-            font-size: 6rem; box-shadow: inset 0 0 50px rgba(0,0,0,0.02);
-        }
+        .hero-box h1 { font-size: clamp(2.5rem, 4.5vw, 4rem); font-weight: 800; line-height: 1.05; letter-spacing: -3px; margin-bottom: 20px; }
+        .left-hero { padding-right: 50px; }
+        .right-hero { padding-left: 50px; text-align: right; }
+
+        /* CONTENT SECTION (GÖRSEL 5 RE-DESIGN) */
+        .platform-detail { padding: 160px 8%; border-top: 1px solid var(--border); }
+        .grid-detail { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 120px; align-items: center; }
         
-        .content-box span { color: var(--accent); font-weight: 800; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px; }
-        .content-box h2 { font-size: 3.5rem; font-weight: 800; margin: 15px 0 25px; letter-spacing: -2px; line-height: 1.1; }
-        .content-box p { font-size: 1.2rem; color: #555; line-height: 1.8; margin-bottom: 20px; }
-        .content-box strong { color: var(--text); }
+        .visual-area { background: var(--soft-gray); border-radius: 40px; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; font-size: 8rem; }
+        
+        .text-area span { display: block; font-weight: 700; color: var(--accent); letter-spacing: 2px; font-size: 0.8rem; margin-bottom: 20px; }
+        .text-area h2 { font-size: 3.5rem; font-weight: 800; letter-spacing: -2px; line-height: 1.1; margin-bottom: 30px; }
+        .text-area p { font-size: 1.25rem; color: #505050; line-height: 1.6; margin-bottom: 25px; font-weight: 300; }
+        .text-area strong { font-weight: 700; color: var(--text); }
 
-        footer { padding: 100px 8% 40px; background: #050505; color: #fff; text-align: center; }
-        .footer-logo { font-size: 2rem; font-weight: 800; color: var(--accent); margin-bottom: 20px; }
+        /* FOOTER */
+        footer { padding: 100px 8%; border-top: 1px solid var(--border); text-align: center; color: #999; font-size: 0.8rem; }
 
-        @media (max-width: 1100px) {
-            .hero, .platform-section { grid-template-columns: 1fr !important; text-align: center !important; }
-            .right-hero { padding-left: 0; }
-            .left-hero { border-right: none; padding-right: 0; margin-bottom: 50px; }
-            .mockup-container { order: 2; }
-            .content-box { order: 1; }
+        @media (max-width: 1024px) {
+            .hero-split { grid-template-columns: 1fr; gap: 60px; text-align: center; }
+            .hero-split::after { display: none; }
+            .right-hero { text-align: center; padding-left: 0; }
+            .left-hero { padding-right: 0; }
+            .grid-detail { grid-template-columns: 1fr; gap: 60px; }
         }
     </style>
 </head>
@@ -82,54 +69,14 @@
         <div class="nav-links">
             <a href="#anasayfa">Anasayfa</a>
             <a href="#uygulamalar">Uygulamalar</a>
-            <a href="#hakkimizda">Hakkımızda</a>
             <a href="#platformlar">Platformlar</a>
         </div>
     </nav>
 
-    <header class="hero" id="anasayfa">
-        <div class="hero-col left-hero">
-            <h1>TÜRK KANALLARINIZ İÇİN <br> Akıllı Strateji Merkezi.</h1>
-        </div>
-        <div class="hero-col right-hero">
-            <h1>GLOBAL KANALINIZ İÇİN <br> Akıllı Strateji Merkezi.</h1>
-        </div>
-    </header>
-
-    <section class="platform-section">
-        <div class="mockup-container">🎷</div>
-        <div class="content-box">
-            <span>YOUTUBE</span>
-            <h2>İçerik Üreticileri İçin <br> Güvenli Liman.</h2>
-            <p>V-LAB.AI, YouTube topluluk kurallarını ve reklam politikalarını merkeze alarak içerik üreticilerinin "ihtar" riskini sıfıra indirmek için kuruldu.</p>
-            <p>Biz sadece bir araç değiliz; <strong>üretilen bütün içeriklerinizi</strong> dünyaya duyururken telif ve politika engellerine takılmamanız için çalışan bir dijital asistandız.</p>
-        </div>
-    </section>
-
-    <section class="platform-section reverse" style="background: #fafafa;">
-        <div class="content-box">
-            <span>REELS & TIKTOK</span>
-            <h2>Global Viralite, <br> Sıfır Risk.</h2>
-            <p>Instagram ve TikTok algoritmalarının en güncel telif ve politika verilerini saniyeler içinde analiz ediyoruz.</p>
-            <p>Müzikal ve görsel projelerinizde, **üretilen bütün içeriklerinizi** global trendlerin zirvesine taşırken hesabınızı güvence altına alan bir dijital asistandız.</p>
-        </div>
-        <div class="mockup-container">📱</div>
-    </section>
-
-    <section class="platform-section">
-        <div class="mockup-container">🌐</div>
-        <div class="content-box">
-            <span>X (TWITTER) VIRAL</span>
-            <h2>Düşünceleriniz <br> Sınır Tanımasın.</h2>
-            <p>Metin ve video içeriklerinizin X platformundaki etkileşim kurallarını ihlal etmeden en geniş kitleye ulaşmasını sağlıyoruz.</p>
-            <p>Biz sadece bir araç değiliz; **üretilen bütün içeriklerinizi** güvenle paylaşmanız için çalışan bir dijital asistandız.</p>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-logo">V-LAB.AI</div>
-        <p>&copy; 2026 Premium Content Strategy Center</p>
-    </footer>
-
-</body>
-</html>
+    <section class="hero" id="anasayfa">
+        <div class="hero-split">
+            <div class="hero-box left-hero">
+                <h1>TÜRK KANALLARINIZ İÇİN<br>Akıllı Strateji Merkezi.</h1>
+            </div>
+            <div class="hero-box right-hero">
+                <h1>GLOBAL KANALINIZ İÇİN<br>Akıllı Strateji Merkezi.</h1>
