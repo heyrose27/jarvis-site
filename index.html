@@ -1,720 +1,716 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>V-LAB.AI | Kontrol Paneli</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ViewStats - Viral İçerik Oluştur</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
 
-  <style>
-    :root{
-      --bg:#07070b;
-      --bg2:#0b0b14;
-      --text:#f4f4f6;
-      --muted:rgba(255,255,255,.68);
-      --muted2:rgba(255,255,255,.52);
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-      --accent:#7c5cff;
-      --accent2:#e91e63;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-      --glass: rgba(255,255,255,.06);
-      --border: rgba(255,255,255,.10);
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
 
-      --shadow: 0 30px 70px rgba(0,0,0,.45);
-      --shadow2: 0 20px 60px rgba(0,0,0,.35);
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
 
-      --radius: 28px;
-      --radius2: 34px;
+        .nav-links a:hover {
+            opacity: 0.7;
+        }
 
-      --sidebarW: 290px;
-    }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
 
-    *{margin:0;padding:0;box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      font-family:'Plus Jakarta Sans', sans-serif;
-      background: radial-gradient(1200px 700px at 20% 0%, rgba(124,92,255,.22), transparent 55%),
-                  radial-gradient(1000px 600px at 85% 10%, rgba(233,30,99,.16), transparent 55%),
-                  linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
-      color:var(--text);
-      overflow-x:hidden;
-    }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
 
-    body::before{
-      content:"";
-      position:fixed; inset:0;
-      pointer-events:none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
-      mix-blend-mode:overlay;
-      opacity:.10;
-      z-index:0;
-    }
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
 
-    a{color:inherit;text-decoration:none}
-    .app{position:relative; z-index:1; display:grid; grid-template-columns: var(--sidebarW) 1fr; min-height:100vh;}
+        .btn-secondary:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
 
-    /* SIDEBAR */
-    .sidebar{
-      position:sticky; top:0; height:100vh;
-      padding:16px 14px;
-      background: rgba(10,10,18,.55);
-      backdrop-filter: blur(16px);
-      border-right: 1px solid rgba(255,255,255,.08);
-      overflow:auto;
-    }
+        .hero {
+            margin-top: 80px;
+            padding: 6rem 2rem;
+            text-align: center;
+            background: radial-gradient(circle at 50% 0%, rgba(102, 126, 234, 0.15) 0%, transparent 50%);
+        }
 
-    .sb-top{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      border-radius: 22px;
-      padding: 14px 14px;
-      box-shadow: 0 14px 40px rgba(0,0,0,.25);
-      margin-bottom: 14px;
-    }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 0.8s ease-out;
+        }
 
-    .sb-brand{
-      display:flex; align-items:center; gap:10px;
-      margin-bottom: 0;
-    }
-    .sb-mark{
-      width:36px; height:36px; border-radius:12px;
-      display:grid; place-items:center;
-      font-weight:900;
-      background: linear-gradient(135deg, rgba(124,92,255,1), rgba(233,30,99,.85));
-      box-shadow: 0 16px 45px rgba(124,92,255,.22);
-    }
-    .sb-title{
-      line-height:1.1;
-    }
-    .sb-title b{display:block; font-size:.95rem; letter-spacing:-.4px}
-    .sb-title span{display:block; color:rgba(255,255,255,.62); font-weight:800; font-size:.82rem}
+        .hero p {
+            font-size: 1.25rem;
+            color: #a0a0b0;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
 
-    .sb-sep{
-      height: 1px;
-      background: rgba(255,255,255,.08);
-      margin: 12px 0;
-    }
+        .platform-tags {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
 
-    .sb-list{margin-top: 0;}
-    .sb-item{
-      display:flex; align-items:center; justify-content:space-between;
-      padding: 10px 12px;
-      border-radius: 14px;
-      color: rgba(255,255,255,.80);
-      font-weight: 800;
-      font-size: .92rem;
-      cursor:pointer;
-      transition:.2s;
-      border: 1px solid transparent;
-    }
-    .sb-item:hover{
-      background: rgba(255,255,255,.05);
-      border-color: rgba(255,255,255,.08);
-    }
-    .sb-item.active{
-      background: linear-gradient(135deg, rgba(124,92,255,.35), rgba(233,30,99,.18));
-      border-color: rgba(255,255,255,.12);
-      color:#fff;
-    }
-    .sb-item .left{display:flex; align-items:center; gap:10px;}
-    .sb-dot{
-      width:8px; height:8px; border-radius:99px;
-      background: rgba(255,255,255,.28);
-    }
+        .platform-tag {
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
 
-    /* MAIN */
-    .main{min-width:0;}
-    .topbar{
-      position:sticky; top:0; z-index:1000;
-      display:flex; align-items:center; justify-content:space-between;
-      padding: 18px 26px;
-      background: rgba(10,10,18,.55);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-    .nav-links{display:flex; gap:18px; align-items:center; font-weight:900; color:rgba(255,255,255,.78);}
-    .nav-links a{padding:10px 12px; border-radius:999px; transition:.22s;}
-    .nav-links a:hover{background: rgba(255,255,255,.05); color:#fff;}
-    .nav-links a.active{
-      background: linear-gradient(135deg, rgba(124,92,255,1), rgba(233,30,99,.75));
-      color:#fff;
-    }
+        .platform-tag.youtube {
+            background: rgba(255, 0, 0, 0.15);
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            animation-delay: 0.3s;
+        }
 
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:12px 16px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color:#fff;
-      font-weight:900;
-      transition:.25s;
-    }
-    .btn:hover{transform: translateY(-2px); border-color: rgba(255,255,255,.22)}
-    .btn-primary{
-      border:0;
-      background: linear-gradient(135deg, rgba(124,92,255,1), rgba(233,30,99,.85));
-      box-shadow: 0 18px 50px rgba(124,92,255,.24);
-    }
+        .platform-tag.instagram {
+            background: linear-gradient(135deg, rgba(225, 48, 108, 0.15), rgba(253, 216, 53, 0.15));
+            border: 2px solid rgba(225, 48, 108, 0.3);
+            animation-delay: 0.4s;
+        }
 
-    .content{padding: 26px 26px 80px;}
+        .platform-tag.tiktok {
+            background: rgba(0, 242, 234, 0.15);
+            border: 2px solid rgba(0, 242, 234, 0.3);
+            animation-delay: 0.5s;
+        }
 
-    /* SECTIONS */
-    .section{display:none;}
-    .section.active{display:block;}
+        .platform-tag.x {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation-delay: 0.6s;
+        }
 
-    /* Panels */
-    .panel{
-      border-radius: var(--radius2);
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow: var(--shadow2);
-      padding: 26px;
-      position:relative;
-      overflow:hidden;
-    }
-    .panel + .panel{margin-top: 18px;}
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
 
-    .kicker{
-      display:inline-flex; align-items:center; gap:10px;
-      padding: 10px 14px;
-      border-radius:999px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      color: rgba(255,255,255,.82);
-      font-weight:900;
-      font-size:.86rem;
-      letter-spacing:.2px;
-      margin-bottom: 14px;
-    }
-    .kdot{
-      width:10px;height:10px;border-radius:99px;
-      background: rgba(124,92,255,1);
-      box-shadow: 0 0 0 6px rgba(124,92,255,.18);
-    }
+        .hero-image {
+            max-width: 900px;
+            margin: 3rem auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 0.8s ease-out 0.6s backwards;
+        }
 
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 18px;
-      align-items: stretch;
-    }
-    .hero-title{
-      font-size: clamp(2.1rem, 3.9vw, 3.4rem);
-      font-weight: 900;
-      letter-spacing:-2px;
-      line-height:1.04;
-      margin-bottom: 12px;
-    }
-    .hero-sub{
-      color: var(--muted);
-      line-height:1.75;
-      font-size: 1.06rem;
-      max-width: 70ch;
-    }
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
 
-    .lang-split{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 16px;
-    }
-    .lang-box{
-      padding: 16px 16px;
-      border-radius: 22px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.10);
-    }
-    .lang-box .lang{
-      font-weight:900;
-      font-size:.78rem;
-      color: rgba(255,255,255,.72);
-      text-transform:uppercase;
-      letter-spacing:.12em;
-      margin-bottom: 8px;
-    }
-    .lang-box h2{
-      font-size: 1.18rem;
-      letter-spacing:-.6px;
-      line-height:1.2;
-      margin-bottom: 8px;
-    }
-    .lang-box p{color: rgba(255,255,255,.60); font-size:.96rem; line-height:1.65;}
+        .features {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-    .globeCard{min-height: 320px; position:relative; overflow:hidden;}
-    .globe{
-      position:absolute;
-      inset: -70px -90px auto auto;
-      width: 420px;
-      height: 420px;
-      border-radius: 999px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(124,92,255,.45), transparent 55%),
-        radial-gradient(circle at 60% 60%, rgba(233,30,99,.30), transparent 58%),
-        radial-gradient(circle at 45% 50%, rgba(255,255,255,.12), rgba(255,255,255,.02) 55%, transparent 66%);
-      opacity: .95;
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow: 0 60px 120px rgba(0,0,0,.45);
-      animation: floaty 8s ease-in-out infinite;
-    }
-    @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, #fff 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    .statGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 14px;
-    }
-    .stat{
-      padding: 14px;
-      border-radius: 22px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid rgba(255,255,255,.10);
-    }
-    .stat b{display:block; font-size:1.1rem; letter-spacing:-.6px; margin-bottom:6px; font-weight:900;}
-    .stat span{color: rgba(255,255,255,.62); font-size:.92rem; line-height:1.55;}
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
 
-    /* BENTO */
-    .bento{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-      margin-top: 14px;
-    }
-    .tile{
-      border-radius: var(--radius2);
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow: var(--shadow2);
-      padding: 18px;
-      min-height: 160px;
-      position:relative;
-      overflow:hidden;
-      transition:.25s;
-      cursor:pointer;
-    }
-    .tile:hover{transform: translateY(-6px)}
-    .tile .top{display:flex; align-items:center; justify-content:space-between; margin-bottom: 12px;}
-    .pill{
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      font-weight: 900;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      font-size:.72rem;
-      color: rgba(255,255,255,.80);
-    }
-    .tile h4{font-size:1.2rem; letter-spacing:-.6px; margin-bottom: 8px; font-weight:900;}
-    .tile p{color: rgba(255,255,255,.64); line-height:1.65; font-size:.98rem;}
-    .bgshine{
-      position:absolute;
-      inset:auto -60px -60px auto;
-      width: 240px; height: 240px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, rgba(124,92,255,.30), transparent 62%),
-                  radial-gradient(circle at 70% 70%, rgba(233,30,99,.18), transparent 62%);
-      opacity:.9;
-      pointer-events:none;
-    }
+        .feature-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
 
-    .span-6{grid-column: span 6;}
-    .span-4{grid-column: span 4;}
-    .span-8{grid-column: span 8;}
-    .span-12{grid-column: span 12;}
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.2s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+        .feature-card:nth-child(4) { animation-delay: 0.4s; }
+        .feature-card:nth-child(5) { animation-delay: 0.5s; }
+        .feature-card:nth-child(6) { animation-delay: 0.6s; }
 
-    /* MODAL */
-    .modalBack{
-      position:fixed; inset:0; z-index:2000;
-      background: rgba(0,0,0,.55);
-      display:none;
-      align-items:center; justify-content:center;
-      padding: 18px;
-    }
-    .modalBack.open{display:flex;}
-    .modal{
-      width:min(860px, 100%);
-      border-radius: 30px;
-      background: rgba(12,12,20,.82);
-      border: 1px solid rgba(255,255,255,.12);
-      backdrop-filter: blur(16px);
-      box-shadow: 0 50px 120px rgba(0,0,0,.55);
-      padding: 18px;
-    }
-    .modalHead{
-      display:flex; align-items:center; justify-content:space-between;
-      gap: 12px;
-      padding: 10px 10px 14px;
-      border-bottom: 1px solid rgba(255,255,255,.10);
-    }
-    .modalHead b{font-size: 1.05rem; font-weight: 900; letter-spacing:-.4px}
-    .modalBody{padding: 14px 10px 8px; color: rgba(255,255,255,.70); line-height:1.75;}
-    .xbtn{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-weight: 900;
-      cursor:pointer;
-      color:#fff;
-    }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
 
-    /* Mobile */
-    .menuBtn{display:none;}
-    @media (max-width: 980px){
-      .app{grid-template-columns: 1fr;}
-      .sidebar{
-        position:fixed; left:0; top:0; bottom:0;
-        width: min(92vw, 340px);
-        transform: translateX(-105%);
-        transition: .25s;
-        z-index:1500;
-      }
-      .sidebar.open{transform: translateX(0);}
-      .menuBtn{
-        display:inline-flex;
-        padding: 10px 12px;
-        border-radius: 12px;
-        border:1px solid rgba(255,255,255,.12);
-        background: rgba(255,255,255,.06);
-        color:#fff;
-        font-weight:900;
-        cursor:pointer;
-      }
-      .hero-grid{grid-template-columns: 1fr;}
-      .lang-split{grid-template-columns: 1fr;}
-      .span-6,.span-4,.span-8,.span-12{grid-column: span 12;}
-    }
-  </style>
+        .feature-card img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .feature-card p {
+            color: #a0a0b0;
+            line-height: 1.6;
+        }
+
+        .stats {
+            padding: 6rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        }
+
+        .stats h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .stat-item:nth-child(1) { animation-delay: 0.1s; }
+        .stat-item:nth-child(2) { animation-delay: 0.2s; }
+        .stat-item:nth-child(3) { animation-delay: 0.3s; }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #a0a0b0;
+            font-size: 1.1rem;
+        }
+
+        .pricing {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #fff 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .pricing-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .pricing-card:nth-child(1) { animation-delay: 0.1s; }
+        .pricing-card:nth-child(2) { animation-delay: 0.2s; }
+
+        .pricing-card:hover {
+            transform: scale(1.05);
+            border-color: #667eea;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .pricing-card ul {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .pricing-card li {
+            padding: 0.75rem 0;
+            color: #a0a0b0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pricing-card li:before {
+            content: "✓";
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .faq {
+            padding: 6rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #fff 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .faq-item:nth-child(1) { animation-delay: 0.1s; }
+        .faq-item:nth-child(2) { animation-delay: 0.2s; }
+        .faq-item:nth-child(3) { animation-delay: 0.3s; }
+        .faq-item:nth-child(4) { animation-delay: 0.4s; }
+
+        .faq-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+            border-color: #667eea;
+        }
+
+        .faq-question {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .faq-answer {
+            color: #a0a0b0;
+            line-height: 1.6;
+        }
+
+        .cta {
+            padding: 6rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta p {
+            font-size: 1.25rem;
+            color: #a0a0b0;
+            margin-bottom: 2rem;
+        }
+
+        footer {
+            padding: 4rem 2rem 2rem;
+            background: #05050a;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section a {
+            display: block;
+            color: #a0a0b0;
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #667eea;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background: #667eea;
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #666;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .feature-grid,
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .platform-tags {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <div class="app">
+    <nav class="nav">
+        <div class="logo">ViewStats</div>
+        <div class="nav-links">
+            <a href="#features">Özellikler</a>
+            <a href="#pricing">Fiyatlandırma</a>
+            <a href="#faq">SSS</a>
+            <button class="btn-secondary">Giriş Yap</button>
+            <button class="btn-primary">Kaydol</button>
+        </div>
+    </nav>
 
-    <!-- SIDEBAR (ONLY: ytb / insta / tiktok / x / kanal analiz) -->
-    <aside class="sidebar" id="sidebar">
-      <div class="sb-top">
-        <div class="sb-brand">
-          <div class="sb-mark">V</div>
-          <div class="sb-title">
-            <b>V-LAB.AI</b>
-            <span>Global İçerik Mimarı</span>
-          </div>
+    <section class="hero">
+        <h1>Viral İçerikler Oluştur</h1>
+        <p>Kayda basmadan önce neyin viral olacağını öğren. Trendleri takip edin, rakipleri analiz edin, A/B testleri yapın ve nişinizdeki popüler içerikleri keşfedin—tüm bunlar gerçek zamanlı sosyal medya verileri ile desteklenir</p>
+        
+        <div class="platform-tags">
+            <div class="platform-tag youtube">
+                <span>▶</span> YouTube
+            </div>
+            <div class="platform-tag instagram">
+                <span>📷</span> Instagram
+            </div>
+            <div class="platform-tag tiktok">
+                <span>♪</span> TikTok
+            </div>
+            <div class="platform-tag x">
+                <span>𝕏</span> X (Twitter)
+            </div>
         </div>
 
-        <div class="sb-sep"></div>
-
-        <div class="sb-list">
-          <div class="sb-item sb-sideLink active" data-open="platforms" data-chip="ytb">
-            <div class="left"><span class="sb-dot"></span>ytb</div>
-          </div>
-
-          <div class="sb-item sb-sideLink" data-open="platforms" data-chip="insta">
-            <div class="left"><span class="sb-dot"></span>insta</div>
-          </div>
-
-          <div class="sb-item sb-sideLink" data-open="platforms" data-chip="tiktok">
-            <div class="left"><span class="sb-dot"></span>tiktok</div>
-          </div>
-
-          <div class="sb-item sb-sideLink" data-open="platforms" data-chip="x">
-            <div class="left"><span class="sb-dot"></span>x</div>
-          </div>
-
-          <div class="sb-item sb-sideLink" data-open="platforms" data-chip="kanal-analiz">
-            <div class="left"><span class="sb-dot"></span>kanal analiz</div>
-          </div>
-        </div>
-      </div>
-    </aside>
-
-    <!-- MAIN -->
-    <main class="main">
-
-      <div class="topbar">
-        <div style="display:flex; align-items:center; gap:10px;">
-          <button class="menuBtn" id="menuBtn">Menü</button>
-          <div style="font-weight:900; letter-spacing:-.6px;">Kontrol Paneli</div>
+        <div class="hero-buttons">
+            <button class="btn-primary">Ücretsiz Başla</button>
+            <button class="btn-secondary">Demo İzle</button>
         </div>
 
-        <div class="nav-links" id="topNav">
-          <a href="#" data-section="home" class="active">Anasayfa</a>
-          <a href="#" data-section="apps">Uygulamalar</a>
-          <a href="#" data-section="platforms">Platform</a>
-          <a href="#" data-section="about">Hakkımızda</a>
+        <div class="hero-image">
+            <svg width="900" height="500" viewBox="0 0 900 500" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
+                <rect x="50" y="50" width="800" height="400" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(102,126,234,0.3)" stroke-width="2"/>
+                <text x="450" y="250" text-anchor="middle" fill="#667eea" font-size="48" font-weight="bold">Analytics Dashboard</text>
+                <circle cx="150" cy="150" r="40" fill="rgba(102,126,234,0.3)"/>
+                <circle cx="750" cy="150" r="40" fill="rgba(118,75,162,0.3)"/>
+                <circle cx="150" cy="350" r="40" fill="rgba(102,126,234,0.3)"/>
+                <circle cx="750" cy="350" r="40" fill="rgba(118,75,162,0.3)"/>
+            </svg>
         </div>
+    </section>
 
-        <div style="display:flex; gap:10px; align-items:center;">
-          <a class="btn" href="#" data-section="contact">İletişim</a>
-          <a class="btn btn-primary" href="#" data-section="apps">Hemen Başla</a>
+    <section class="stats">
+        <h2>Güvenilir Verilerle Büyüyün</h2>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">2,500x</div>
+                <div class="stat-label">Daha Fazla Veri</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">17K+</div>
+                <div class="stat-label">Aktif Kullanıcı</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Platform Desteği</div>
+            </div>
         </div>
-      </div>
+    </section>
 
-      <div class="content">
-
-        <!-- HOME -->
-        <section class="section active" id="sec-home">
-          <div class="hero-grid">
-            <div class="panel">
-              <div class="kicker"><span class="kdot"></span> Global + Türkiye • Akıllı Strateji Merkezi</div>
-
-              <div class="lang-split">
-                <div class="lang-box">
-                  <div class="lang">GLOBAL</div>
-                  <h2>Kanalınız İçin Global<br>Akıllı Strateji Merkezi.</h2>
-                  <p>Enstrümantal müzikten dijital içerik üretimine kadar, global algoritmaların dilini konuşan yapay zeka araçlarıyla tanışın.</p>
-                </div>
-
-                <div class="lang-box">
-                  <div class="lang">TÜRKİYE</div>
-                  <h2>Kanalınız İçin Türkiye<br>Akıllı Strateji Merkezi.</h2>
-                  <p>Yerel dinamikleri korurken global büyümeyi hedefleyen üreticiler için; hızlı, güvenli ve premium içerik planlama.</p>
-                </div>
-              </div>
-
-              <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;">
-                <a class="btn btn-primary" href="#" data-section="apps">Hemen Başla</a>
-                <a class="btn" href="#" data-section="about">Nasıl Çalışır?</a>
-              </div>
-
-              <p class="hero-sub" style="margin-top:14px;">
-                YouTube topluluk kuralları ve reklam politikalarını merkeze alarak; içerik üreticilerinin “ihtar” riskini minimize etmek için tasarlandı.
-              </p>
+    <section class="features" id="features">
+        <h2>En Güçlü İçerik Üretici Araçları</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <svg width="100%" height="200" viewBox="0 0 400 200">
+                    <rect width="400" height="200" fill="url(#grad1)"/>
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:rgba(102,126,234,0.3);stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:rgba(118,75,162,0.3);stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <text x="200" y="100" text-anchor="middle" fill="#fff" font-size="24">📊 Outlier Videolar</text>
+                </svg>
+                <h3>Viral Outlier İçerikleri Keşfedin</h3>
+                <p>Beklenenden çok daha iyi performans gösteren içerikleri bulun ve kendi içeriklerinizde uygulayın.</p>
             </div>
 
-            <div class="panel globeCard">
-              <div class="globe"></div>
-              <div class="kicker"><span class="kdot"></span> Politika + Telif Uyumlu Büyüme</div>
-              <div style="font-weight:900; font-size:1.15rem; letter-spacing:-.6px; margin-bottom:8px;">
-                Global İçerik Üretimi ve Politika Analiz Platformu.
-              </div>
-              <div style="color:rgba(255,255,255,.68); line-height:1.7;">
-                İçeriğinizi dünyaya taşırken “engel” değil “avantaj” üretir.
-              </div>
-
-              <div class="statGrid">
-                <div class="stat"><b>Politika Odaklı</b><span>YouTube kuralları + reklam uygunluğu temelli yaklaşım</span></div>
-                <div class="stat"><b>Global Diller</b><span>EN • ES • PT anahtar kelime stratejisi</span></div>
-                <div class="stat"><b>Sanatçı Modu</b><span>Saksofon / trompet odaklı üreticiler</span></div>
-                <div class="stat"><b>Hızlı Akış</b><span>Planla → üret → yayınla</span></div>
-              </div>
+            <div class="feature-card">
+                <svg width="100%" height="200" viewBox="0 0 400 200">
+                    <rect width="400" height="200" fill="url(#grad2)"/>
+                    <defs>
+                        <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:rgba(118,75,162,0.3);stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:rgba(102,126,234,0.3);stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <text x="200" y="100" text-anchor="middle" fill="#fff" font-size="24">📈 Performans</text>
+                </svg>
+                <h3>Hesap ve İçerik Performansını Analiz Edin</h3>
+                <p>Analytics ile neyin büyüme ve görüntülenme sağladığını keşfedin.</p>
             </div>
-          </div>
-        </section>
 
-        <!-- APPS -->
-        <section class="section" id="sec-apps">
-          <div class="panel">
-            <div class="kicker"><span class="kdot"></span> Uygulamalar</div>
-            <div class="hero-title">Araçlar Tek Yerde</div>
-            <div class="hero-sub">Her araç tıklanınca detay penceresi açılır (modal).</div>
-
-            <div class="bento">
-              <div class="tile span-6" data-modal-title="Trend Başlık Üretici" data-modal-body="Global algoritma mantığına uygun, arama hacmi odaklı başlık önerileri ve alternatif varyasyonlar.">
-                <div class="bgshine"></div>
-                <div class="top"><span class="pill">AI TITLE</span><span class="pill" style="opacity:.75">SEO</span></div>
-                <h4>Trend Başlık Üretici</h4>
-                <p>Global arama hacmi odaklı başlık ve varyasyonlar.</p>
-              </div>
-
-              <div class="tile span-6" data-modal-title="Politika / İhtar Risk Analizi" data-modal-body="İçerik fikri ve metinler için riskli kelime/tema uyarıları; daha güvenli ifade önerileri.">
-                <div class="bgshine"></div>
-                <div class="top"><span class="pill">POLICY</span><span class="pill" style="opacity:.75">SAFE</span></div>
-                <h4>Politika / İhtar Risk Analizi</h4>
-                <p>Riskli alanları tespit eder, daha güvenli alternatif sunar.</p>
-              </div>
-
-              <div class="tile span-4" data-modal-title="YouTube Shorts Strateji" data-modal-body="Hook, tempo, format ve paylaşım düzeniyle büyüme akışı.">
-                <div class="bgshine"></div>
-                <div class="top"><span class="pill">SHORTS</span></div>
-                <h4>YouTube Shorts Strateji</h4>
-                <p>Format + tempo + düzenli büyüme akışı.</p>
-              </div>
-
-              <div class="tile span-4" data-modal-title="Global Anahtar Kelime" data-modal-body="EN/ES/PT dilinde keşif odaklı anahtar kelime yapısı ve içerik önerileri.">
-                <div class="bgshine"></div>
-                <div class="top"><span class="pill">KEYWORDS</span></div>
-                <h4>Global Anahtar Kelime</h4>
-                <p>EN/ES/PT anahtar kelime keşfi.</p>
-              </div>
-
-              <div class="tile span-4" data-modal-title="Topluluk Post / Metin" data-modal-body="Yorum, açıklama ve topluluk metinlerini uygun tonda üretir.">
-                <div class="bgshine"></div>
-                <div class="top"><span class="pill">SCRIPT</span></div>
-                <h4>Topluluk Post / Metin</h4>
-                <p>Açıklama / yorum / topluluk metni üretimi.</p>
-              </div>
+            <div class="feature-card">
+                <svg width="100%" height="200" viewBox="0 0 400 200">
+                    <rect width="400" height="200" fill="url(#grad3)"/>
+                    <defs>
+                        <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:rgba(102,126,234,0.3);stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:rgba(118,75,162,0.3);stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <text x="200" y="100" text-anchor="middle" fill="#fff" font-size="24">🖼️ Görseller</text>
+                </svg>
+                <h3>En İyi Performans Gösteren Görselleri Analiz Edin</h3>
+                <p>Nişinizde hangi görsel stillerinin tıklanma aldığını dakikalar içinde bulun.</p>
             </div>
-          </div>
-        </section>
 
-        <!-- PLATFORMS -->
-        <section class="section" id="sec-platforms">
-          <div class="panel">
-            <div class="kicker"><span class="kdot"></span> Platform</div>
-            <div class="hero-title">YT • INSTA • TIKTOK • X</div>
-            <div class="hero-sub">Platform seç, o platformun akışı burada açılır.</div>
-
-            <div class="bento">
-              <div class="tile span-6">
-                <div class="bgshine"></div>
-                <div class="top"><span class="pill">YOUTUBE</span></div>
-                <h4>YouTube</h4>
-                <p>Shorts + uzun video için politika uyumlu büyüme.</p>
-              </div>
-              <div class="tile span-6">
-                <div class="bgshine"></div>
-                <div class="top"><span class="pill">INSTAGRAM</span></div>
-                <h4>Instagram</h4>
-                <p>Reels odaklı trend ve etkileşim planı.</p>
-              </div>
-              <div class="tile span-6">
-                <div class="bgshine"></div>
-                <div class="top"><span class="pill">TIKTOK</span></div>
-                <h4>TikTok</h4>
-                <p>Global trend takip + viral tetikleyiciler.</p>
-              </div>
-              <div class="tile span-6">
-                <div class="bgshine"></div>
-                <div class="top"><span class="pill">X</span></div>
-                <h4>X</h4>
-                <p>Thread yapısı + topluluk büyütme.</p>
-              </div>
-
-              <div class="tile span-12">
-                <div class="bgshine"></div>
-                <div class="top"><span class="pill">KANAL ANALİZ</span></div>
-                <h4>Kanal Analiz</h4>
-                <p>Buraya: performans, içerik tipi, büyüme önerileri, dil/ülke hedefleme paneli ekleriz.</p>
-              </div>
+            <div class="feature-card">
+                <svg width="100%" height="200" viewBox="0 0 400 200">
+                    <rect width="400" height="200" fill="url(#grad4)"/>
+                    <defs>
+                        <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:rgba(118,75,162,0.3);stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:rgba(102,126,234,0.3);stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <text x="200" y="100" text-anchor="middle" fill="#fff" font-size="24">🎯 Rakipler</text>
+                </svg>
+                <h3>Rakip Hesapları Takip Edin</h3>
+                <p>Nişinizdeki diğer içerik üreticiler için neyin işe yaradığını takip edin.</p>
             </div>
-          </div>
-        </section>
 
-        <!-- ABOUT -->
-        <section class="section" id="sec-about">
-          <div class="panel">
-            <div class="kicker"><span class="kdot"></span> Hakkımızda</div>
-            <div class="hero-title">Güvenli Üretim Sistemi</div>
-            <div class="hero-sub">
-              YouTube topluluk kuralları ve reklam politikalarını merkeze alarak içerik üreticilerinin “ihtar” riskini minimize etmek için kuruldu.
-              Biz sadece bir araç değiliz; ürettiğiniz içerikleri dünyaya duyururken telif ve politika engellerine takılmamanız için çalışan bir dijital asistandız.
+            <div class="feature-card">
+                <svg width="100%" height="200" viewBox="0 0 400 200">
+                    <rect width="400" height="200" fill="url(#grad5)"/>
+                    <defs>
+                        <linearGradient id="grad5" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:rgba(102,126,234,0.3);stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:rgba(118,75,162,0.3);stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <text x="200" y="100" text-anchor="middle" fill="#fff" font-size="24">🔔 Uyarılar</text>
+                </svg>
+                <h3>Uyarılarla Hiçbir Şeyi Kaçırmayın</h3>
+                <p>Nişinizde trendler ortaya çıktığında ilk siz öğrenin.</p>
             </div>
-          </div>
 
-          <div class="panel" style="margin-top:18px;">
-            <div class="kicker"><span class="kdot"></span> Amacımız</div>
-            <div style="font-weight:900; font-size:1.6rem; letter-spacing:-1px; margin-bottom:10px;">
-              Globalde 1 Numara Olmak.
+            <div class="feature-card">
+                <svg width="100%" height="200" viewBox="0 0 400 200">
+                    <rect width="400" height="200" fill="url(#grad6)"/>
+                    <defs>
+                        <linearGradient id="grad6" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:rgba(118,75,162,0.3);stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:rgba(102,126,234,0.3);stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <text x="200" y="100" text-anchor="middle" fill="#fff" font-size="24">📚 Koleksiyonlar</text>
+                </svg>
+                <h3>İlham ve Araştırma Panoları Oluşturun</h3>
+                <p>Koleksiyonlar ile organize kalın.</p>
             </div>
-            <div style="color:rgba(255,255,255,.66); line-height:1.85;">
-              Amacımız, yerel yeteneklerin global pazarda “İngilizce, İspanyolca ve Portekizce” gibi dillerde doğru anahtar kelimelerle öne çıkmasını sağlamaktır.
-              Özellikle saksofon ve trompet gibi evrensel dilleri konuşan sanatçıların, teknik detaylarda boğulmadan sadece sanatlarına odaklanmasına yardımcı oluyoruz.
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <h2>Bir Sonraki İçeriğiniz Viral Olmalı. Bugün ViewStats ile Başlayın</h2>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>Pro</h3>
+                <div class="price">$49<span style="font-size: 1.5rem;">/ay</span></div>
+                <p style="color: #a0a0b0; margin-bottom: 1.5rem;">Tüm boyutlardaki içerik üreticiler için mükemmel sosyal medya analytics paketi</p>
+                <ul>
+                    <li>Nişinizde olanları takip edin ve Rakipler ile asla geride kalmayın</li>
+                    <li>Outliers ile algoritmayı alt edin ve sonraki viral videonuz için ilham bulun</li>
+                    <li>Uyarılar ile hiçbir içgörüyü kaçırmayın</li>
+                    <li>Koleksiyonlar ile organize kalın</li>
+                    <li>A/B Testleri ile saatlerce araştırmadan tasarruf edin</li>
+                    <li>Görsel Arama ile nişinizde neyin tıklanma aldığını bulun</li>
+                    <li>Pro Discord kanallarına erişim</li>
+                </ul>
+                <button class="btn-primary" style="width: 100%;">Başla</button>
             </div>
-          </div>
-        </section>
 
-        <!-- CONTACT -->
-        <section class="section" id="sec-contact">
-          <div class="panel">
-            <div class="kicker"><span class="kdot"></span> İletişim</div>
-            <div class="hero-title">Premium Destek</div>
-            <div class="hero-sub">Buraya mail / WhatsApp / form bağlantılarını ekleriz.</div>
-          </div>
-        </section>
-
-      </div>
-    </main>
-
-  </div>
-
-  <!-- MODAL -->
-  <div class="modalBack" id="modalBack" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true">
-      <div class="modalHead">
-        <b id="modalTitle">Başlık</b>
-        <button class="xbtn" id="modalClose">Kapat</button>
-      </div>
-      <div class="modalBody" id="modalBody">İçerik</div>
-    </div>
-  </div>
-
-  <script>
-    // SECTION TOGGLING (top nav + buttons)
-    const sections = {
-      home: document.getElementById("sec-home"),
-      apps: document.getElementById("sec-apps"),
-      platforms: document.getElementById("sec-platforms"),
-      about: document.getElementById("sec-about"),
-      contact: document.getElementById("sec-contact"),
-    };
-
-    const topNav = document.getElementById("topNav");
-    const navLinks = Array.from(topNav.querySelectorAll("a[data-section]"));
-
-    function showSection(key){
-      Object.values(sections).forEach(s => s.classList.remove("active"));
-      sections[key]?.classList.add("active");
-
-      navLinks.forEach(a => a.classList.toggle("active", a.dataset.section === key));
-      window.scrollTo({ top: 0, behavior: "smooth" });
-
-      // mobile: close sidebar
-      sidebar.classList.remove("open");
-    }
-
-    document.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-section]");
-      if(btn){
-        e.preventDefault();
-        showSection(btn.dataset.section);
-      }
-    });
-
-    // Mobile sidebar toggle
-    const sidebar = document.getElementById("sidebar");
-    const menuBtn = document.getElementById("menuBtn");
-    if(menuBtn){
-      menuBtn.addEventListener("click", () => sidebar.classList.toggle("open"));
-    }
-
-    // Left sidebar quick links -> open platforms + active state
-    const sideLinks = Array.from(document.querySelectorAll(".sb-sideLink"));
-    sideLinks.forEach(item => {
-      item.addEventListener("click", (e) => {
-        e.preventDefault();
-
-        sideLinks.forEach(x => x.classList.remove("active"));
-        item.classList.add("active");
-
-        showSection(item.dataset.open || "platforms");
-      });
-    });
-
-    // MODAL for apps tiles
-    const modalBack = document.getElementById("modalBack");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalBody = document.getElementById("modalBody");
-    const modalClose = document.getElementById("modalClose");
-
-    document.querySelectorAll(".tile[data-modal-title]").forEach(tile => {
-      tile.addEventListener("click", () => {
-        modalTitle.textContent = tile.dataset.modalTitle || "";
-        modalBody.textContent = tile.dataset.modalBody || "";
-        modalBack.classList.add("open");
-        modalBack.setAttribute("aria-hidden", "false");
-      });
-    });
-
-    function closeModal(){
-      modalBack.classList.remove("open");
-      modalBack.setAttribute("aria-hidden", "true");
-    }
-    modalClose.addEventListener("click", closeModal);
-    modalBack.addEventListener("click", (e) => { if(e.target === modalBack) closeModal(); });
-    document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
-  </script>
-</body>
-</html>
+            <div class="pricing-card">
+                <h3>Business</h3>
+                <div class="price">$249<span style="font-size: 1.5rem;">/ay</span></div>
+                <p style="color: #a0a0b0; margin-bottom: 1.5rem;">Sınırsız kredilerle en güçlü planımız. Ekipler ve ajanslar için harika</p>
+                <ul>
+                    <li>Toplu Lisans fiyatlandırması</li>
+                    <li>Gelişmiş İş/İçerik Üretici Analitiği</li>
+                    <li>İçerik Üretici Keşfi</li>
