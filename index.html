@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ViewStats - Viral İçerik Oluştur</title>
+    <title>JarvisHeyrose - Viral İçerik Oluştur</title>
     <style>
         * {
             margin: 0;
@@ -13,8 +13,8 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #0a0a0f;
-            color: #ffffff;
+            background: #ffffff;
+            color: #1a1a1a;
             overflow-x: hidden;
         }
 
@@ -22,14 +22,15 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(10, 10, 15, 0.95);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .logo {
@@ -47,13 +48,14 @@
         }
 
         .nav-links a {
-            color: #fff;
+            color: #1a1a1a;
             text-decoration: none;
-            transition: opacity 0.3s;
+            transition: color 0.3s;
+            font-weight: 500;
         }
 
         .nav-links a:hover {
-            opacity: 0.7;
+            color: #667eea;
         }
 
         .btn-primary {
@@ -74,10 +76,10 @@
 
         .btn-secondary {
             background: transparent;
-            color: white;
+            color: #1a1a1a;
             padding: 0.75rem 1.5rem;
             border-radius: 25px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(0, 0, 0, 0.2);
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s;
@@ -92,13 +94,13 @@
             margin-top: 80px;
             padding: 6rem 2rem;
             text-align: center;
-            background: radial-gradient(circle at 50% 0%, rgba(102, 126, 234, 0.15) 0%, transparent 50%);
+            background: linear-gradient(180deg, #f8f9ff 0%, #ffffff 100%);
         }
 
         .hero h1 {
             font-size: 3.5rem;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #fff 0%, #667eea 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #667eea 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: fadeInUp 0.8s ease-out;
@@ -106,11 +108,48 @@
 
         .hero p {
             font-size: 1.25rem;
-            color: #a0a0b0;
+            color: #666;
             max-width: 800px;
             margin: 0 auto 2rem;
             line-height: 1.6;
             animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .language-selector {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .language-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .language-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .language-btn:hover {
+            border-color: #667eea;
+        }
+
+        .hero-content {
+            display: none;
+        }
+
+        .hero-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
         }
 
         .platform-tags {
@@ -132,26 +171,30 @@
         }
 
         .platform-tag.youtube {
-            background: rgba(255, 0, 0, 0.15);
+            background: rgba(255, 0, 0, 0.1);
             border: 2px solid rgba(255, 0, 0, 0.3);
+            color: #ff0000;
             animation-delay: 0.3s;
         }
 
         .platform-tag.instagram {
-            background: linear-gradient(135deg, rgba(225, 48, 108, 0.15), rgba(253, 216, 53, 0.15));
+            background: linear-gradient(135deg, rgba(225, 48, 108, 0.1), rgba(253, 216, 53, 0.1));
             border: 2px solid rgba(225, 48, 108, 0.3);
+            color: #e1306c;
             animation-delay: 0.4s;
         }
 
         .platform-tag.tiktok {
-            background: rgba(0, 242, 234, 0.15);
+            background: rgba(0, 242, 234, 0.1);
             border: 2px solid rgba(0, 242, 234, 0.3);
+            color: #00f2ea;
             animation-delay: 0.5s;
         }
 
         .platform-tag.x {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.05);
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            color: #000000;
             animation-delay: 0.6s;
         }
 
@@ -168,27 +211,22 @@
             margin: 3rem auto;
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
             animation: fadeInUp 0.8s ease-out 0.6s backwards;
-        }
-
-        .hero-image img {
-            width: 100%;
-            height: auto;
-            display: block;
         }
 
         .features {
             padding: 6rem 2rem;
             max-width: 1400px;
             margin: 0 auto;
+            background: white;
         }
 
         .features h2 {
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 4rem;
-            background: linear-gradient(135deg, #fff 0%, #667eea 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #667eea 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -200,8 +238,8 @@
         }
 
         .feature-card {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 20px;
             padding: 2rem;
             transition: transform 0.3s, box-shadow 0.3s;
@@ -215,27 +253,29 @@
         .feature-card:nth-child(4) { animation-delay: 0.4s; }
         .feature-card:nth-child(5) { animation-delay: 0.5s; }
         .feature-card:nth-child(6) { animation-delay: 0.6s; }
+        .feature-card:nth-child(7) { animation-delay: 0.7s; }
+        .feature-card:nth-child(8) { animation-delay: 0.8s; }
 
         .feature-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
-        }
-
-        .feature-card img {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
         }
 
         .feature-card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
-            color: #fff;
+            color: #1a1a1a;
+            margin-top: 1rem;
         }
 
         .feature-card p {
-            color: #a0a0b0;
+            color: #666;
             line-height: 1.6;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
         }
 
         .stats {
@@ -247,6 +287,7 @@
         .stats h2 {
             font-size: 2.5rem;
             margin-bottom: 3rem;
+            color: #1a1a1a;
         }
 
         .stats-grid {
@@ -276,7 +317,7 @@
         }
 
         .stat-label {
-            color: #a0a0b0;
+            color: #666;
             font-size: 1.1rem;
         }
 
@@ -284,13 +325,14 @@
             padding: 6rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
+            background: white;
         }
 
         .pricing h2 {
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 3rem;
-            background: linear-gradient(135deg, #fff 0%, #667eea 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #667eea 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -302,8 +344,8 @@
         }
 
         .pricing-card {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            border: 2px solid rgba(0, 0, 0, 0.1);
             border-radius: 20px;
             padding: 2.5rem;
             transition: all 0.3s;
@@ -322,6 +364,7 @@
         .pricing-card h3 {
             font-size: 1.8rem;
             margin-bottom: 1rem;
+            color: #1a1a1a;
         }
 
         .price {
@@ -340,7 +383,7 @@
 
         .pricing-card li {
             padding: 0.75rem 0;
-            color: #a0a0b0;
+            color: #666;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -356,20 +399,21 @@
             padding: 6rem 2rem;
             max-width: 900px;
             margin: 0 auto;
+            background: white;
         }
 
         .faq h2 {
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 3rem;
-            background: linear-gradient(135deg, #fff 0%, #667eea 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #667eea 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .faq-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 15px;
             padding: 2rem;
             margin-bottom: 1.5rem;
@@ -385,7 +429,7 @@
         .faq-item:nth-child(4) { animation-delay: 0.4s; }
 
         .faq-item:hover {
-            background: rgba(102, 126, 234, 0.1);
+            background: rgba(102, 126, 234, 0.05);
             border-color: #667eea;
         }
 
@@ -393,35 +437,36 @@
             font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: 1rem;
-            color: #fff;
+            color: #1a1a1a;
         }
 
         .faq-answer {
-            color: #a0a0b0;
+            color: #666;
             line-height: 1.6;
         }
 
         .cta {
             padding: 6rem 2rem;
             text-align: center;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
         }
 
         .cta h2 {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
+            color: #1a1a1a;
         }
 
         .cta p {
             font-size: 1.25rem;
-            color: #a0a0b0;
+            color: #666;
             margin-bottom: 2rem;
         }
 
         footer {
             padding: 4rem 2rem 2rem;
-            background: #05050a;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: #f8f9ff;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
         }
 
         .footer-content {
@@ -436,11 +481,12 @@
         .footer-section h4 {
             margin-bottom: 1.5rem;
             font-size: 1.2rem;
+            color: #1a1a1a;
         }
 
         .footer-section a {
             display: block;
-            color: #a0a0b0;
+            color: #666;
             text-decoration: none;
             margin-bottom: 0.75rem;
             transition: color 0.3s;
@@ -459,23 +505,27 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.05);
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: 600;
         }
 
         .social-link:hover {
             background: #667eea;
+            color: white;
             transform: translateY(-3px);
         }
 
         .copyright {
             text-align: center;
             padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #666;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            color: #999;
         }
 
         @keyframes fadeIn {
@@ -528,19 +578,45 @@
 </head>
 <body>
     <nav class="nav">
-        <div class="logo">ViewStats</div>
+        <div class="logo">JarvisHeyrose</div>
         <div class="nav-links">
+            <a href="#home">Anasayfa</a>
             <a href="#features">Özellikler</a>
-            <a href="#pricing">Fiyatlandırma</a>
+            <a href="#apps">Uygulamalar</a>
+            <a href="#platforms">Platformlar</a>
             <a href="#faq">SSS</a>
             <button class="btn-secondary">Giriş Yap</button>
             <button class="btn-primary">Kaydol</button>
         </div>
     </nav>
 
-    <section class="hero">
-        <h1>Viral İçerikler Oluştur</h1>
-        <p>Kayda basmadan önce neyin viral olacağını öğren. Trendleri takip edin, rakipleri analiz edin, A/B testleri yapın ve nişinizdeki popüler içerikleri keşfedin—tüm bunlar gerçek zamanlı sosyal medya verileri ile desteklenir</p>
+    <section class="hero" id="home">
+        <div class="language-selector">
+            <button class="language-btn active" onclick="changeLanguage('tr')">Türkçe</button>
+            <button class="language-btn" onclick="changeLanguage('en')">English</button>
+            <button class="language-btn" onclick="changeLanguage('es')">Español</button>
+            <button class="language-btn" onclick="changeLanguage('pt')">Português</button>
+        </div>
+
+        <div class="hero-content active" id="content-tr">
+            <h1>Viral İçerikler Oluştur</h1>
+            <p>Kayda basmadan önce neyin viral olacağını öğren. Nişinizdeki popüler içerikleri keşfedin—tüm bunlar gerçek zamanlı sosyal medya verileri ile desteklenir</p>
+        </div>
+
+        <div class="hero-content" id="content-en">
+            <h1>Create Viral Content</h1>
+            <p>Learn what will go viral before you hit record. Discover popular content in your niche—all powered by real-time social media data</p>
+        </div>
+
+        <div class="hero-content" id="content-es">
+            <h1>Crea Contenido Viral</h1>
+            <p>Aprende qué será viral antes de grabar. Descubre contenido popular en tu nicho—todo impulsado por datos de redes sociales en tiempo real</p>
+        </div>
+
+        <div class="hero-content" id="content-pt">
+            <h1>Crie Conteúdo Viral</h1>
+            <p>Aprenda o que será viral antes de gravar. Descubra conteúdo popular em seu nicho—tudo alimentado por dados de mídia social em tempo real</p>
+        </div>
         
         <div class="platform-tags">
             <div class="platform-tag youtube">
@@ -558,13 +634,12 @@
         </div>
 
         <div class="hero-buttons">
-            <button class="btn-primary">Ücretsiz Başla</button>
-            <button class="btn-secondary">Demo İzle</button>
+            <button class="btn-primary">Başla</button>
         </div>
 
         <div class="hero-image">
-            <svg width="900" height="500" viewBox="0 0 900 500" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);">
-                <rect x="50" y="50" width="800" height="400" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(102,126,234,0.3)" stroke-width="2"/>
+            <svg width="900" height="500" viewBox="0 0 900 500" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8ebff 100%);">
+                <rect x="50" y="50" width="800" height="400" rx="10" fill="white" stroke="rgba(102,126,234,0.3)" stroke-width="2"/>
                 <text x="450" y="250" text-anchor="middle" fill="#667eea" font-size="48" font-weight="bold">Analytics Dashboard</text>
                 <circle cx="150" cy="150" r="40" fill="rgba(102,126,234,0.3)"/>
                 <circle cx="750" cy="150" r="40" fill="rgba(118,75,162,0.3)"/>
@@ -596,104 +671,62 @@
         <h2>En Güçlü İçerik Üretici Araçları</h2>
         <div class="feature-grid">
             <div class="feature-card">
-                <svg width="100%" height="200" viewBox="0 0 400 200">
-                    <rect width="400" height="200" fill="url(#grad1)"/>
-                    <defs>
-                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:rgba(102,126,234,0.3);stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:rgba(118,75,162,0.3);stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <text x="200" y="100" text-anchor="middle" fill="#fff" font-size="24">📊 Outlier Videolar</text>
-                </svg>
-                <h3>Viral Outlier İçerikleri Keşfedin</h3>
-                <p>Beklenenden çok daha iyi performans gösteren içerikleri bulun ve kendi içeriklerinizde uygulayın.</p>
+                <div class="feature-icon">▶️</div>
+                <h3>YouTube Başlık</h3>
+                <p>En çok izlenen videolar için optimize edilmiş başlık önerileri alın ve izlenme sayınızı artırın.</p>
             </div>
 
             <div class="feature-card">
-                <svg width="100%" height="200" viewBox="0 0 400 200">
-                    <rect width="400" height="200" fill="url(#grad2)"/>
-                    <defs>
-                        <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:rgba(118,75,162,0.3);stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:rgba(102,126,234,0.3);stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <text x="200" y="100" text-anchor="middle" fill="#fff" font-size="24">📈 Performans</text>
-                </svg>
-                <h3>Hesap ve İçerik Performansını Analiz Edin</h3>
-                <p>Analytics ile neyin büyüme ve görüntülenme sağladığını keşfedin.</p>
+                <div class="feature-icon">#️⃣</div>
+                <h3>YouTube Hashtag</h3>
+                <p>Trend olan ve nişinize uygun hashtag'leri keşfedin, videolarınızın keşfedilebilirliğini artırın.</p>
             </div>
 
             <div class="feature-card">
-                <svg width="100%" height="200" viewBox="0 0 400 200">
-                    <rect width="400" height="200" fill="url(#grad3)"/>
-                    <defs>
-                        <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:rgba(102,126,234,0.3);stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:rgba(118,75,162,0.3);stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <text x="200" y="100" text-anchor="middle" fill="#fff" font-size="24">🖼️ Görseller</text>
-                </svg>
-                <h3>En İyi Performans Gösteren Görselleri Analiz Edin</h3>
-                <p>Nişinizde hangi görsel stillerinin tıklanma aldığını dakikalar içinde bulun.</p>
+                <div class="feature-icon">📷</div>
+                <h3>Instagram Başlık</h3>
+                <p>Etkileşim oranını artıran, ilgi çekici Instagram gönderi başlıkları oluşturun.</p>
             </div>
 
             <div class="feature-card">
-                <svg width="100%" height="200" viewBox="0 0 400 200">
-                    <rect width="400" height="200" fill="url(#grad4)"/>
-                    <defs>
-                        <linearGradient id="grad4" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:rgba(118,75,162,0.3);stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:rgba(102,126,234,0.3);stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <text x="200" y="100" text-anchor="middle" fill="#fff" font-size="24">🎯 Rakipler</text>
-                </svg>
-                <h3>Rakip Hesapları Takip Edin</h3>
-                <p>Nişinizdeki diğer içerik üreticiler için neyin işe yaradığını takip edin.</p>
+                <div class="feature-icon">#️⃣</div>
+                <h3>Instagram Hashtag</h3>
+                <p>Instagram algoritmasına uygun, viral potansiyeli yüksek hashtag kombinasyonları bulun.</p>
             </div>
 
             <div class="feature-card">
-                <svg width="100%" height="200" viewBox="0 0 400 200">
-                    <rect width="400" height="200" fill="url(#grad5)"/>
-                    <defs>
-                        <linearGradient id="grad5" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:rgba(102,126,234,0.3);stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:rgba(118,75,162,0.3);stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <text x="200" y="100" text-anchor="middle" fill="#fff" font-size="24">🔔 Uyarılar</text>
-                </svg>
-                <h3>Uyarılarla Hiçbir Şeyi Kaçırmayın</h3>
-                <p>Nişinizde trendler ortaya çıktığında ilk siz öğrenin.</p>
+                <div class="feature-icon">♪</div>
+                <h3>TikTok Başlık</h3>
+                <p>For You sayfasında öne çıkan, viral olma potansiyeli yüksek TikTok başlıkları oluşturun.</p>
             </div>
 
             <div class="feature-card">
-                <svg width="100%" height="200" viewBox="0 0 400 200">
-                    <rect width="400" height="200" fill="url(#grad6)"/>
-                    <defs>
-                        <linearGradient id="grad6" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:rgba(118,75,162,0.3);stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:rgba(102,126,234,0.3);stop-opacity:1" />
-                        </linearGradient>
-                    </defs>
-                    <text x="200" y="100" text-anchor="middle" fill="#fff" font-size="24">📚 Koleksiyonlar</text>
-                </svg>
-                <h3>İlham ve Araştırma Panoları Oluşturun</h3>
-                <p>Koleksiyonlar ile organize kalın.</p>
+                <div class="feature-icon">#️⃣</div>
+                <h3>TikTok Hashtag</h3>
+                <p>Trend hashtag'leri ve challenge'ları takip edin, içeriğinizin erişimini maksimize edin.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">𝕏</div>
+                <h3>X Başlık</h3>
+                <p>Retweet ve etkileşim alan, viral olma potansiyeli yüksek tweet başlıkları yazın.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">#️⃣</div>
+                <h3>X Hashtag</h3>
+                <p>X platformunda trend olan hashtag'leri keşfedin ve görünürlüğünüzü artırın.</p>
             </div>
         </div>
     </section>
 
     <section class="pricing" id="pricing">
-        <h2>Bir Sonraki İçeriğiniz Viral Olmalı. Bugün ViewStats ile Başlayın</h2>
+        <h2>Bir Sonraki İçeriğiniz Viral Olmalı. Bugün JarvisHeyrose ile Başlayın</h2>
         <div class="pricing-grid">
             <div class="pricing-card">
                 <h3>Pro</h3>
                 <div class="price">$49<span style="font-size: 1.5rem;">/ay</span></div>
-                <p style="color: #a0a0b0; margin-bottom: 1.5rem;">Tüm boyutlardaki içerik üreticiler için mükemmel sosyal medya analytics paketi</p>
+                <p style="color: #666; margin-bottom: 1.5rem;">Tüm boyutlardaki içerik üreticiler için mükemmel sosyal medya analytics paketi</p>
                 <ul>
                     <li>Nişinizde olanları takip edin ve Rakipler ile asla geride kalmayın</li>
                     <li>Outliers ile algoritmayı alt edin ve sonraki viral videonuz için ilham bulun</li>
@@ -709,8 +742,23 @@
             <div class="pricing-card">
                 <h3>Business</h3>
                 <div class="price">$249<span style="font-size: 1.5rem;">/ay</span></div>
-                <p style="color: #a0a0b0; margin-bottom: 1.5rem;">Sınırsız kredilerle en güçlü planımız. Ekipler ve ajanslar için harika</p>
+                <p style="color: #666; margin-bottom: 1.5rem;">Sınırsız kredilerle en güçlü planımız. Ekipler ve ajanslar için harika</p>
                 <ul>
                     <li>Toplu Lisans fiyatlandırması</li>
                     <li>Gelişmiş İş/İçerik Üretici Analitiği</li>
                     <li>İçerik Üretici Keşfi</li>
+                    <li>Özelleştirilmiş Yazılım çözümleri</li>
+                    <li>Business API</li>
+                    <li>Özel Çözümler</li>
+                </ul>
+                <button class="btn-primary" style="width: 100%;">Görüşme Planlayın</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq" id="faq">
+        <h2>Sıkça Sorulan Sorular</h2>
+        
+        <div class="faq-item">
+            <div class="faq-question">ViewStats Pro'yu rakiplerinden ayıran nedir?</div>
+            <div class="faq-answer">ViewStats Pro, daha fazla görüntülenme almak ve hesabınızı büyütmek isteyen içerik üreticiler için oluşturuldu. Viral olmanın ne gerektirdiğini biliyoruz ve bunu gerçekleştirmek için size en iyi araçları ve gerçek zamanlı içgörüleri sunuyoruz. Sektörün en büy
