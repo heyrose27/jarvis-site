@@ -160,6 +160,7 @@
             transition: color 0.3s;
             display: block;
             margin-bottom: 0.5rem;
+            cursor: pointer;
         }
         .footer-link:hover { color: #dc2626; }
         .footer-heading {
@@ -246,18 +247,81 @@
                         </div>
                     </div>
                     
-                    <div class="hero-image-container relative flex items-center justify-center bg-gray-900 rounded-3xl p-4 min-h-[400px]">
-                        <img 
-                            src="ChatGPT Image 25 Oca 2026 23_33_18.png" 
-                            alt="JarvisHeyrose Görseli" 
-                            class="w-full rounded-2xl shadow-2xl border border-white/10 z-10 relative" 
-                            onerror="this.style.display='none'; document.getElementById('fallback-msg').style.display='flex';"
-                        >
-                        <div id="fallback-msg" class="absolute inset-0 flex flex-col items-center justify-center text-center p-6 hidden">
-                            <i class="fas fa-robot text-6xl text-gray-700 mb-4 animate-pulse"></i>
-                            <p class="text-white font-bold text-lg">JarvisHeyrose AI</p>
-                            <p class="text-gray-500 text-xs mt-2">Görsel yüklenemedi, sistem aktif.</p>
+                    <div class="hero-image-container relative flex items-center justify-center rounded-3xl p-4 min-h-[400px]">
+                        <img src="hero.png" style="width:100%; height:100%; object-fit:cover; border-radius:20px;" alt="JarvisHeyrose">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HAKKIMIZDA & İLETİŞİM BÖLÜMÜ -->
+        <section id="about">
+            <div class="max-w-4xl mx-auto px-4 py-20">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <h2 class="text-3xl font-bold mb-6 gradient-text">Hakkımızda</h2>
+                    <div class="space-y-6 text-gray-700 leading-relaxed">
+                        <p class="text-lg font-semibold">Jarvis Heyrose, içerik üreticilerinin en büyük problemini çözer: daha hızlı, daha güçlü ve daha viral içerik üretmek.</p>
+                        
+                        <p>Biz sohbet eden bir bot değiliz; sonuç üreten bir araç tasarladık. YouTube, Instagram ve TikTok gibi platformlarda öne çıkmak için yalnızca iyi içerik yetmez… <strong>Doğru başlık, doğru hashtag ve doğru açıklama gerekir.</strong></p>
+                        
+                        <p>Jarvis Heyrose tam olarak bunu saniyeler içinde hazırlar.</p>
+                        
+                        <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-red-500">
+                            <h3 class="font-bold text-xl mb-2 text-gray-900">Amacımız Basit:</h3>
+                            <p>İçeriğinizi profesyonel gösteren, izlenmeyi artıran ve markanızı büyüten metinleri tek tıkla üretmek. Daha az uğraş, daha fazla etki.</p>
+                            <p class="mt-2 font-bold italic">Jarvis Heyrose — Viral içerik üretiminin premium yolu.</p>
                         </div>
+
+                        <div class="mt-8 pt-8 border-t border-gray-200">
+                            <h3 class="text-xl font-bold mb-4">İletişim</h3>
+                            <div class="flex items-center space-x-3 text-lg">
+                                <i class="fas fa-envelope text-red-600"></i>
+                                <a href="mailto:jarvisheyrose@gmail.com" class="hover:text-red-600 font-medium">jarvisheyrose@gmail.com</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- YASAL BİLGİLENDİRME BÖLÜMÜ -->
+        <section id="legal">
+            <div class="max-w-4xl mx-auto px-4 py-20">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <h2 class="text-3xl font-bold mb-8 gradient-text">Yasal Bilgilendirme</h2>
+                    
+                    <!-- Gizlilik -->
+                    <div class="mb-10">
+                        <h3 class="text-xl font-bold mb-3 flex items-center"><i class="fas fa-shield-alt text-indigo-500 mr-2"></i> Gizlilik Politikası</h3>
+                        <p class="text-xs text-gray-500 mb-3">Son Güncelleme: 2026</p>
+                        <p class="text-gray-700 mb-2">Jarvis Heyrose olarak kullanıcı gizliliğine önem veriyoruz. Bu platform, trend başlık, hashtag ve kanal açıklaması üretmek amacıyla hizmet verir.</p>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700 text-sm">
+                            <li><strong>Google ile Giriş:</strong> Platformda güvenlik amacıyla Google ile giriş kullanılabilir. Giriş sırasında doğrulanan temel bilgiler yalnızca hesap yönetimi ve güvenlik için işlenebilir.</li>
+                            <li><strong>Verilerin Kullanımı:</strong> Kişisel veriler reklam amacıyla kullanılmaz, satılmaz ve izinsiz paylaşılmaz. Amaç yalnızca hizmetin güvenli şekilde çalışmasını sağlamaktır.</li>
+                            <li><strong>Ödeme:</strong> Ödeme işlemleri üçüncü taraf sağlayıcılar üzerinden yapılır. Kart bilgileriniz tarafımızca saklanmaz.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Kullanım Şartları -->
+                    <div class="mb-10">
+                        <h3 class="text-xl font-bold mb-3 flex items-center"><i class="fas fa-file-contract text-indigo-500 mr-2"></i> Kullanım Şartları</h3>
+                        <p class="text-xs text-gray-500 mb-3">Son Güncelleme: 2026</p>
+                        <p class="text-gray-700 mb-2">Jarvis Heyrose hizmetlerini kullanarak bu şartları kabul etmiş olursunuz.</p>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-700 text-sm">
+                            <li>Platform; başlık, hashtag ve açıklama üretmek için tasarlanmıştır. Kullanıcı, platformu yasalara uygun şekilde kullanmayı, spam/kötüye kullanım yapmamayı ve üçüncü kişilerin haklarını ihlal etmemeyi kabul eder.</li>
+                            <li>Üretilen içeriklerin kullanımı ve sonuçları kullanıcı sorumluluğundadır. Platform herhangi bir performans veya sonuç garantisi vermez.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Çerez Politikası -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold mb-3 flex items-center"><i class="fas fa-cookie-bite text-indigo-500 mr-2"></i> Çerez Politikası</h3>
+                        <p class="text-xs text-gray-500 mb-3">Son Güncelleme: 2026</p>
+                        <p class="text-gray-700 text-sm">Web sitemiz, oturum yönetimi ve güvenlik gibi amaçlarla çerezler kullanabilir. Tarayıcı ayarlarınızdan çerezleri silebilir veya engelleyebilirsiniz. Çerezleri kapatmanız durumunda bazı özellikler çalışmayabilir.</p>
+                    </div>
+
+                    <div class="mt-8 pt-6 border-t border-gray-100 text-sm text-gray-600">
+                        <p>Tüm yasal sorularınız için: <strong>jarvisheyrose@gmail.com</strong></p>
                     </div>
                 </div>
             </div>
@@ -392,7 +456,7 @@
                 <div>
                     <h3 class="footer-heading">Kurumsal</h3>
                     <ul class="space-y-2">
-                        <li><a href="#" class="footer-link">Hakkımızda</a></li>
+                        <li><a onclick="showSection('about')" class="footer-link">Hakkımızda</a></li>
                         <li><a href="#" class="footer-link">Kariyer</a></li>
                         <li><a href="#" class="footer-link">Basın Odası</a></li>
                         <li><a href="#" class="footer-link">Marka Varlıkları</a></li>
@@ -403,11 +467,11 @@
                 <div>
                     <h3 class="footer-heading">Destek & Yasal</h3>
                     <ul class="space-y-2">
-                        <li><a href="#" class="footer-link">İletişim</a></li>
+                        <li><a onclick="showSection('about')" class="footer-link">İletişim</a></li>
                         <li><a href="#" class="footer-link">Yardım Merkezi</a></li>
-                        <li><a href="#" class="footer-link">Gizlilik Politikası</a></li>
-                        <li><a href="#" class="footer-link">Kullanım Şartları</a></li>
-                        <li><a href="#" class="footer-link">Güvenlik</a></li>
+                        <li><a onclick="showSection('legal')" class="footer-link">Gizlilik Politikası</a></li>
+                        <li><a onclick="showSection('legal')" class="footer-link">Kullanım Şartları</a></li>
+                        <li><a onclick="showSection('legal')" class="footer-link">Güvenlik</a></li>
                     </ul>
                 </div>
 
