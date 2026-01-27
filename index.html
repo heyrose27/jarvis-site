@@ -61,7 +61,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(5px);
-            z-index: 100;
+            z-index: 1000; /* Z-index artırıldı */
             justify-content: center;
             align-items: center;
         }
@@ -105,7 +105,7 @@
             font-size: 0.9rem;
             font-weight: 500;
             color: #111827;
-            word-break: break-all; /* Uzun başlıkları kırma */
+            word-break: break-all;
             position: relative;
         }
         .limit-badge {
@@ -184,9 +184,9 @@
         /* FAQ Özel Stiller */
         .faqSection {
             margin-top: 42px;
-            padding: 40px 16px; /* Padding artırıldı */
-            background: #111827; /* Koyu tema için arka plan */
-            min-height: 80vh; /* Sayfa bütünlüğü için min yükseklik */
+            padding: 40px 16px; 
+            background: #111827; 
+            min-height: 80vh; 
         }
 
         .faqHead {
@@ -704,6 +704,18 @@
     </div>
 
     <script>
+        // Global Değişkenler
+        window.toolLimits = { 
+            'YouTube Başlık': 3, 'YouTube Hashtag': 3, 
+            'Instagram Başlık': 3, 'Instagram Hashtag': 3, 
+            'TikTok Başlık': 3, 'TikTok Hashtag': 3, 
+            'X Başlık': 3, 'X Hashtag': 3, 
+            'Kanal Verisi': 3, 'Kanal Durumu': 3 
+        };
+        window.currentTool = '';
+        window.storedGeminiKey = localStorage.getItem('gemini_api_key') || '';
+        window.isLoggedIn = false;
+
         // Çeviri Verisi
         const translations = {
             tr: {
@@ -822,15 +834,11 @@
             }
         };
 
-        function setLanguage(lang, btn) {
-            // Aktif sınıfı güncelle
+        window.setLanguage = function(lang, btn) {
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-
             const t = translations[lang];
             if (!t) return;
-
-            // Elementleri güncelle
             const ids = [
                 'nav-home', 'nav-apps', 'nav-platform', 'nav-tools', 'nav-login', 'nav-logout',
                 'hero-title', 'hero-desc', 'hero-btn', 'stat-data', 'stat-user',
@@ -842,53 +850,47 @@
                 'f-about', 'f-career', 'f-press', 'f-brand',
                 'f-contact', 'f-help', 'f-faq', 'f-priv', 'f-terms', 'f-sec'
             ];
-
             ids.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) {
-                    // ID key formatına çevir (nav-home -> nav_home)
                     const key = id.replace(/-/g, '_');
                     if(t[key]) el.innerHTML = t[key];
                 }
             });
-
-            // Ortak sınıflar (birden fazla yerde kullanılanlar)
             document.querySelectorAll('.common-soon').forEach(el => el.innerText = t.common_soon);
-        }
-
-        // --- ARAÇ MANTIĞI VE LİMİTLER ---
-        let toolLimits = { 
-            'YouTube Başlık': 3, 'YouTube Hashtag': 3, 
-            'Instagram Başlık': 3, 'Instagram Hashtag': 3, 
-            'TikTok Başlık': 3, 'TikTok Hashtag': 3, 
-            'X Başlık': 3, 'X Hashtag': 3, 
-            'Kanal Verisi': 3, 'Kanal Durumu': 3 
         };
-        
-        let currentTool = '';
-        let storedGeminiKey = localStorage.getItem('gemini_api_key') || '';
-        let isLoggedIn = false;
 
-        function showSection(sectionId) {
+        window.showSection = function(sectionId) {
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
             document.getElementById(sectionId).classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-        function handleGoogleLogin() {
+        };
+
+        window.handleGoogleLogin = function() {
             alert("Google ile giriş yapılıyor...");
-            setTimeout(() => { isLoggedIn = true; document.getElementById('loginBtn').classList.add('hidden'); document.getElementById('userProfile').classList.remove('hidden'); localStorage.setItem('isLoggedIn', 'true'); }, 1000);
-        }
-        function handleLogout() {
-            if(confirm("Çıkış yapmak istediğinize emin misiniz?")) { isLoggedIn = false; document.getElementById('loginBtn').classList.remove('hidden'); document.getElementById('userProfile').classList.add('hidden'); localStorage.removeItem('isLoggedIn'); window.location.reload(); }
-        }
-        window.onload = function() {
-            if(localStorage.getItem('isLoggedIn') === 'true') { isLoggedIn = true; document.getElementById('loginBtn').classList.add('hidden'); document.getElementById('userProfile').classList.remove('hidden'); }
-        }
-        function openToolModal(toolName) {
-            currentTool = toolName; 
+            setTimeout(() => { 
+                window.isLoggedIn = true; 
+                document.getElementById('loginBtn').classList.add('hidden'); 
+                document.getElementById('userProfile').classList.remove('hidden'); 
+                localStorage.setItem('isLoggedIn', 'true'); 
+            }, 1000);
+        };
+
+        window.handleLogout = function() {
+            if(confirm("Çıkış yapmak istediğinize emin misiniz?")) { 
+                window.isLoggedIn = false; 
+                document.getElementById('loginBtn').classList.remove('hidden'); 
+                document.getElementById('userProfile').classList.add('hidden'); 
+                localStorage.removeItem('isLoggedIn'); 
+                window.location.reload(); 
+            }
+        };
+
+        window.openToolModal = function(toolName) {
+            window.currentTool = toolName; 
             const modal = document.getElementById('toolModal'); 
             document.getElementById('modalTitle').innerText = toolName;
-            document.getElementById('limitBadge').innerText = "Kalan Hakkınız: " + toolLimits[toolName];
+            document.getElementById('limitBadge').innerText = "Kalan Hakkınız: " + window.toolLimits[toolName];
             
             let placeholder = "Örn: Futbol, Müzik, Seyahat...";
             if(toolName.includes("Kanal")) { 
@@ -904,76 +906,79 @@
             document.getElementById('loadingContainer').style.display = 'none'; 
             document.getElementById('resultArea').classList.add('hidden'); 
             document.getElementById('userInput').value = '';
-            modal.style.display = 'flex';
-        }
-
-        function closeModal(event) { if (event.target === document.getElementById('toolModal')) document.getElementById('toolModal').style.display = 'none'; }
-        function closeModalForce() { document.getElementById('toolModal').style.display = 'none'; }
-        
-        function startGeneration() {
-            const input = document.getElementById('userInput').value.trim(); if (!input) { alert("Giriş yapın!"); return; }
             
-            // LİMİT KONTROLÜ
-            if (toolLimits[currentTool] <= 0) {
+            // Flex display zorlama
+            modal.style.display = 'flex';
+        };
+
+        window.closeModal = function(event) { if (event.target === document.getElementById('toolModal')) document.getElementById('toolModal').style.display = 'none'; };
+        window.closeModalForce = function() { document.getElementById('toolModal').style.display = 'none'; };
+        
+        window.startGeneration = function() {
+            const input = document.getElementById('userInput').value.trim(); 
+            if (!input) { alert("Giriş yapın!"); return; }
+            
+            if (window.toolLimits[window.currentTool] <= 0) {
                 alert("Bugünkü kullanım hakkınız dolmuştur. Yarın tekrar deneyebilirsiniz.");
                 return;
             }
 
-            document.getElementById('inputArea').style.display = 'none'; document.getElementById('loadingContainer').style.display = 'block'; document.getElementById('loadingFill').style.width = '0%';
+            document.getElementById('inputArea').style.display = 'none'; 
+            document.getElementById('loadingContainer').style.display = 'block'; 
+            document.getElementById('loadingFill').style.width = '0%';
             
-            setTimeout(() => { document.getElementById('loadingFill').style.width = '100%'; }, 100);
-
-            // API anahtarı varsa API çağır, yoksa Mock (Simülasyon) çağır
-            if (storedGeminiKey) {
-                callGeminiAPI(input);
-            } else {
-                setTimeout(() => {
-                    generateMockResults(input);
-                }, 2000);
-            }
-        }
-
-        // --- GERÇEK GEMINI API ÇAĞRISI ---
-        async function callGeminiAPI(topic) {
-            const apiKey = storedGeminiKey;
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-            // PROMPT HAZIRLAMA (YENİ KURALLARA GÖRE)
-            let promptText = "";
-            let systemInstruction = "You are a helpful social media assistant. Ensure all content is safe, free of spam, and compliant with platform policies (YouTube, Instagram, TikTok, X). Do not generate misleading or prohibited content.";
-
-            const platformName = currentTool.split(" ")[0]; // "YouTube", "Instagram" vb.
-
-            if (currentTool.includes("Başlık")) {
-                // BAŞLIK İÇİN ÖZEL PROMPT: 40 Karakter, Boşluksuz
-                promptText = `Generate 2 distinct titles for ${platformName} about "${topic}". 
-                CRITICAL RULES:
-                1. Each title MUST be EXACTLY 40 characters long (including emojis). 
-                2. NO SPACES allowed in the title string. Use CamelCase or emojis to separate words if needed, but strictly NO space characters.
-                3. Content must be engaging and viral for ${platformName}.
-                4. Output only the titles separated by a newline.`;
-            } else if (currentTool.includes("Hashtag")) {
-                // HASHTAG İÇİN ÖZEL PROMPT: Max 59 Karakter
-                promptText = `Generate 2 distinct hashtag sets for ${platformName} about "${topic}".
-                CRITICAL RULES:
-                1. The total length of each hashtag set string MUST be less than or equal to 59 characters.
-                2. Hashtags must be relevant and viral for ${platformName}.
-                3. Output only the hashtag sets separated by a newline.`;
-            } else if (currentTool.includes("Kanal Verisi")) {
-                promptText = `Analyze the potential content strategy for a YouTube channel focused on "${topic}". 
-                Provide a brief 2-sentence summary of video ideas that would work well for this niche.`;
-            } else if (currentTool.includes("Kanal Durumu")) {
-                 promptText = `Simulate a channel health check for a channel about "${topic}". 
-                 Provide a fictional 'Health Score' out of 100 and a brief status (e.g., 'Rising Star', 'Needs Improvement').`;
-            }
-
-            const payload = {
-                "contents": [{
-                    "parts": [{"text": systemInstruction + "\n" + promptText}]
-                }]
-            };
+            // Animasyon için kısa gecikme
+            setTimeout(() => { document.getElementById('loadingFill').style.width = '100%'; }, 50);
 
             try {
+                if (window.storedGeminiKey) {
+                    callGeminiAPI(input);
+                } else {
+                    // Simülasyonu tetikle
+                    setTimeout(() => {
+                        generateMockResults(input);
+                    }, 2000);
+                }
+            } catch (e) {
+                console.error("Error starting generation:", e);
+                alert("Bir hata oluştu. Lütfen tekrar deneyin.");
+                window.resetModal();
+            }
+        };
+
+        async function callGeminiAPI(topic) {
+            try {
+                const apiKey = window.storedGeminiKey;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                let promptText = "";
+                let systemInstruction = "You are a helpful social media assistant. Ensure all content is safe, free of spam, and compliant with platform policies (YouTube, Instagram, TikTok, X). Do not generate misleading or prohibited content.";
+
+                const platformName = window.currentTool.split(" ")[0]; 
+
+                if (window.currentTool.includes("Başlık")) {
+                    promptText = `Generate 2 distinct titles for ${platformName} about "${topic}". 
+                    CRITICAL RULES:
+                    1. Each title MUST be EXACTLY 40 characters long (including emojis). 
+                    2. NO SPACES allowed in the title string. Use CamelCase or emojis to separate words if needed, but strictly NO space characters.
+                    3. Content must be engaging and viral for ${platformName}.
+                    4. Output only the titles separated by a newline.`;
+                } else if (window.currentTool.includes("Hashtag")) {
+                    promptText = `Generate 2 distinct hashtag sets for ${platformName} about "${topic}".
+                    CRITICAL RULES:
+                    1. The total length of each hashtag set string MUST be less than or equal to 59 characters.
+                    2. Hashtags must be relevant and viral for ${platformName}.
+                    3. Output only the hashtag sets separated by a newline.`;
+                } else if (window.currentTool.includes("Kanal Verisi")) {
+                    promptText = `Analyze the potential content strategy for a YouTube channel focused on "${topic}". 
+                    Provide a brief 2-sentence summary of video ideas that would work well for this niche.`;
+                } else if (window.currentTool.includes("Kanal Durumu")) {
+                     promptText = `Simulate a channel health check for a channel about "${topic}". 
+                     Provide a fictional 'Health Score' out of 100 and a brief status (e.g., 'Rising Star', 'Needs Improvement').`;
+                }
+
+                const payload = { "contents": [{ "parts": [{"text": systemInstruction + "\n" + promptText}] }] };
+
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
@@ -987,20 +992,17 @@
                     const outputs = rawText.split('\n').filter(line => line.trim() !== '').slice(0, 2);
                     displayResults(outputs);
                 } else {
-                    console.error("API Error:", data);
-                    alert("Gemini API bir hata verdi. Simülasyon moduna geçiliyor.");
-                    generateMockResults(topic);
+                    throw new Error("API Response invalid");
                 }
             } catch (error) {
-                console.error("Fetch Error:", error);
-                alert("Bağlantı hatası. Simülasyon moduna geçiliyor.");
+                console.error("API Error, switching to mock:", error);
                 generateMockResults(topic);
             }
         }
 
-        function displayResults(outputs) {
-            toolLimits[currentTool]--;
-            document.getElementById('limitBadge').innerText = "Kalan Hakkınız: " + toolLimits[currentTool];
+        window.displayResults = function(outputs) {
+            window.toolLimits[window.currentTool]--;
+            document.getElementById('limitBadge').innerText = "Kalan Hakkınız: " + window.toolLimits[window.currentTool];
             
             const resultContent = document.getElementById('resultContent');
             resultContent.innerHTML = '';
@@ -1008,107 +1010,114 @@
             outputs.forEach(text => {
                 const div = document.createElement('div');
                 div.className = 'result-box';
-                // HTML içerik olabilir (Kanal verisi için), bu yüzden innerHTML kullanıyoruz
                 div.innerHTML = text.replace(/\*\*/g, ''); 
                 resultContent.appendChild(div);
             });
 
             document.getElementById('loadingContainer').style.display = 'none';
             document.getElementById('resultArea').classList.remove('hidden');
-        }
+        };
 
-        // --- SİMÜLASYON (MOCK) SİSTEMİ - PLATFORMA ÖZEL ---
-        function generateMockResults(topic) {
-            let outputs = [];
-            const t = topic.replace(/\s/g, ''); // Konudaki boşlukları sil
-            const cleanTopic = t.replace(/[^a-zA-Z0-9çğıöşüÇĞİÖŞÜ]/g, '').substring(0, 15);
+        window.generateMockResults = function(topic) {
+            try {
+                let outputs = [];
+                // Konu temizliği, boş gelirse 'Viral' varsayılanı kullan
+                const t = topic ? topic.replace(/\s/g, '') : "Viral"; 
+                const cleanTopic = t.replace(/[^a-zA-Z0-9çğıöşüÇĞİÖŞÜ]/g, '').substring(0, 15) || "Viral";
 
-            // Simülasyon Modunda Tam 40 Karakter Başlık Üretme
-            function createFixedTitle(base, emojiSet = "🔥🚀⚡") {
-                let cleanBase = base;
-                if(cleanBase.length > 30) cleanBase = cleanBase.substring(0,30);
-                
-                let needed = 40 - cleanBase.length;
-                let suffix = "";
-                
-                for(let i=0; i<Math.floor(needed/2); i++) {
-                    suffix += emojiSet[i % emojiSet.length];
+                function createFixedTitle(base, emojiSet = "🔥🚀⚡") {
+                    let cleanBase = base;
+                    if(cleanBase.length > 30) cleanBase = cleanBase.substring(0,30);
+                    let needed = 40 - cleanBase.length;
+                    let suffix = "";
+                    for(let i=0; i<Math.max(1, Math.floor(needed/2)); i++) {
+                        suffix += emojiSet[i % emojiSet.length];
+                    }
+                    let result = cleanBase + suffix;
+                    while(result.length < 40) result += "!";
+                    if(result.length > 40) result = result.substring(0, 40);
+                    return result;
                 }
-                
-                let result = cleanBase + suffix;
-                while(result.length < 40) result += "!";
-                if(result.length > 40) result = result.substring(0, 40);
-                return result;
-            }
 
-            // Simülasyon Modunda Max 59 Karakter Hashtag Üretme
-            function createFixedHashtags(base, platformTags) {
-                let tag1 = "#" + base;
-                let set = `${tag1} ${platformTags} 🔥`;
-                if(set.length > 59) set = set.substring(0, 59);
-                return set;
-            }
+                function createFixedHashtags(base, platformTags) {
+                    let tag1 = "#" + base;
+                    let set = `${tag1} ${platformTags} 🔥`;
+                    if(set.length > 59) set = set.substring(0, 59);
+                    return set;
+                }
 
-            // PLATFORMA ÖZEL MANTIK
-            if (currentTool.includes("Başlık")) {
-                let emojis = "🔥🚀⚡";
-                let prefix = "Super";
-                
-                if (currentTool.includes("YouTube")) { emojis = "🔴▶️📹"; prefix = "Video"; }
-                else if (currentTool.includes("Instagram")) { emojis = "📸✨💖"; prefix = "Insta"; }
-                else if (currentTool.includes("TikTok")) { emojis = "🎵🕺💃"; prefix = "Trend"; }
-                else if (currentTool.includes("X")) { emojis = "🐦💬📢"; prefix = "News"; }
+                if (window.currentTool.includes("Başlık")) {
+                    let emojis = "🔥🚀⚡";
+                    let prefix = "Super";
+                    
+                    if (window.currentTool.includes("YouTube")) { emojis = "🔴▶️📹"; prefix = "Video"; }
+                    else if (window.currentTool.includes("Instagram")) { emojis = "📸✨💖"; prefix = "Insta"; }
+                    else if (window.currentTool.includes("TikTok")) { emojis = "🎵🕺💃"; prefix = "Trend"; }
+                    else if (window.currentTool.includes("X")) { emojis = "🐦💬📢"; prefix = "News"; }
 
-                outputs = [
-                    createFixedTitle(cleanTopic + prefix, emojis),
-                    createFixedTitle("Mega" + cleanTopic, emojis)
-                ];
+                    outputs = [
+                        createFixedTitle(cleanTopic + prefix, emojis),
+                        createFixedTitle("Mega" + cleanTopic, emojis)
+                    ];
 
-            } else if (currentTool.includes("Hashtag")) {
-                let tags = "#Viral #Kesfet";
-                
-                if (currentTool.includes("YouTube")) tags = "#Shorts #YouTuber";
-                else if (currentTool.includes("Instagram")) tags = "#InstaGood #Reels";
-                else if (currentTool.includes("TikTok")) tags = "#FYP #TikTok";
-                else if (currentTool.includes("X")) tags = "#TrendTopic #News";
+                } else if (window.currentTool.includes("Hashtag")) {
+                    let tags = "#Viral #Kesfet";
+                    if (window.currentTool.includes("YouTube")) tags = "#Shorts #YouTuber";
+                    else if (window.currentTool.includes("Instagram")) tags = "#InstaGood #Reels";
+                    else if (window.currentTool.includes("TikTok")) tags = "#FYP #TikTok";
+                    else if (window.currentTool.includes("X")) tags = "#TrendTopic #News";
 
-                outputs = [
-                    createFixedHashtags(cleanTopic, tags),
-                    createFixedHashtags(cleanTopic + "2026", tags)
-                ];
+                    outputs = [
+                        createFixedHashtags(cleanTopic, tags),
+                        createFixedHashtags(cleanTopic + "2026", tags)
+                    ];
 
-            } else if (currentTool.includes("Kanal Verisi")) {
-                 let statusText = Math.random() > 0.5 ? "İYİ" : "ORTA";
-                 let colorClass = statusText === "İYİ" ? "text-green-600" : "text-yellow-600";
-                 outputs = [`
-                        <div class="p-6 bg-white border rounded-lg shadow-sm text-center">
-                            <h4 class="text-xl font-bold mb-4">Kanal Analiz Sonucu</h4>
-                            <div class="text-4xl font-extrabold ${colorClass} mb-4">${statusText}</div>
-                            <p class="text-gray-600">İzleyici etkileşimi artışta.</p>
-                        </div>
-                    `];
-
-            } else if (currentTool.includes("Kanal Durumu")) {
-                let score = Math.floor(Math.random() * (95 - 60 + 1) + 60);
-                outputs = [`
-                        <div class="p-3 bg-white border rounded-lg shadow-sm">
-                            <div class="flex items-center justify-between mb-2">
-                                <span class="font-bold text-lg">Kanal Durumu</span>
-                                <span class="text-xs bg-gray-100 px-2 py-1 rounded">Skor: ${score}/100</span>
+                } else if (window.currentTool.includes("Kanal Verisi")) {
+                     let statusText = Math.random() > 0.5 ? "İYİ" : "ORTA";
+                     let colorClass = statusText === "İYİ" ? "text-green-600" : "text-yellow-600";
+                     outputs = [`
+                            <div class="p-4 bg-white border rounded shadow-sm text-center">
+                                <h4 class="font-bold mb-2">Tahmin</h4>
+                                <div class="text-3xl font-extrabold ${colorClass} mb-2">${statusText}</div>
+                                <p class="text-xs text-gray-500">Etkileşim potansiyeli.</p>
                             </div>
-                            <div class="flex items-center gap-2 mb-2">
-                                <i class='fas fa-arrow-trend-up text-green-500'></i> <span class="font-bold">YÜKSELİŞTE</span>
+                        `];
+
+                } else if (window.currentTool.includes("Kanal Durumu")) {
+                    let score = Math.floor(Math.random() * (95 - 60 + 1) + 60);
+                    outputs = [`
+                            <div class="p-3 bg-white border rounded shadow-sm">
+                                <div class="flex justify-between mb-2"><span class="font-bold">Skor</span><span>${score}/100</span></div>
+                                <div class="text-green-500 font-bold"><i class="fas fa-arrow-up"></i> Yükselişte</div>
                             </div>
-                        </div>
-                    `];
+                        `];
+                }
+
+                window.displayResults(outputs);
+            } catch (e) {
+                console.error("Mock generation error:", e);
+                alert("Sonuç üretilemedi.");
+                window.resetModal();
             }
+        };
 
-            displayResults(outputs);
-        }
+        window.resetModal = function() { 
+            document.getElementById('resultArea').classList.add('hidden'); 
+            document.getElementById('inputArea').style.display = 'block'; 
+            document.getElementById('userInput').value = ''; 
+        };
 
-        function resetModal() { document.getElementById('resultArea').classList.add('hidden'); document.getElementById('inputArea').style.display = 'block'; document.getElementById('userInput').value = ''; }
-        function toggleApiKeyArea() { document.getElementById('apiKeyArea').classList.toggle('hidden'); }
-        function saveGeminiKey() { alert("Key kaydedildi (Simülasyon)"); document.getElementById('apiKeyArea').classList.add('hidden'); }
+        window.toggleApiKeyArea = function() { document.getElementById('apiKeyArea').classList.toggle('hidden'); };
+        window.saveGeminiKey = function() { alert("Key kaydedildi (Simülasyon)"); document.getElementById('apiKeyArea').classList.add('hidden'); };
+
+        // Sayfa yüklendiğinde giriş kontrolü
+        window.onload = function() {
+            if(localStorage.getItem('isLoggedIn') === 'true') { 
+                window.isLoggedIn = true; 
+                document.getElementById('loginBtn').classList.add('hidden'); 
+                document.getElementById('userProfile').classList.remove('hidden'); 
+            }
+        };
     </script>
 </body>
 </html>
