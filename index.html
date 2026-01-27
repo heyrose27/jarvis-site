@@ -105,7 +105,7 @@
             font-size: 0.9rem;
             font-weight: 500;
             color: #111827;
-            word-break: break-word;
+            word-break: break-all; /* Uzun başlıkları kırma */
             position: relative;
         }
         .limit-badge {
@@ -344,7 +344,7 @@
                     </div>
                     
                     <div class="hero-image-container relative flex items-center justify-center rounded-3xl p-4 min-h-[400px]">
-                        <img src="hero.png" style="width:100%; height:100%; object-fit:cover; border-radius:20px;" alt="JarvisHeyrose">
+                        <img src="hero.png" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop'" style="width:100%; height:100%; object-fit:cover; border-radius:20px;" alt="JarvisHeyrose">
                     </div>
                 </div>
             </div>
@@ -856,8 +856,15 @@
             document.querySelectorAll('.common-soon').forEach(el => el.innerText = t.common_soon);
         }
 
-        // ... Diğer JS kodları (toolLimits, currentTool, openToolModal vb.) aynı kalacak ...
-        let toolLimits = { 'YouTube Başlık': 3, 'YouTube Hashtag': 3, 'Instagram Başlık': 3, 'Instagram Hashtag': 3, 'TikTok Başlık': 3, 'TikTok Hashtag': 3, 'X Başlık': 3, 'X Hashtag': 3, 'Kanal Verisi': 3, 'Kanal Durumu': 3 };
+        // --- ARAÇ MANTIĞI VE LİMİTLER ---
+        let toolLimits = { 
+            'YouTube Başlık': 3, 'YouTube Hashtag': 3, 
+            'Instagram Başlık': 3, 'Instagram Hashtag': 3, 
+            'TikTok Başlık': 3, 'TikTok Hashtag': 3, 
+            'X Başlık': 3, 'X Hashtag': 3, 
+            'Kanal Verisi': 3, 'Kanal Durumu': 3 
+        };
+        
         let currentTool = '';
         let storedGeminiKey = localStorage.getItem('gemini_api_key') || '';
         let isLoggedIn = false;
@@ -890,16 +897,182 @@
         }
         function closeModal(event) { if (event.target === document.getElementById('toolModal')) document.getElementById('toolModal').style.display = 'none'; }
         function closeModalForce() { document.getElementById('toolModal').style.display = 'none'; }
+        
         function startGeneration() {
             const input = document.getElementById('userInput').value.trim(); if (!input) { alert("Giriş yapın!"); return; }
+            
+            // LİMİT KONTROLÜ
+            if (toolLimits[currentTool] <= 0) {
+                alert("Bugünkü kullanım hakkınız dolmuştur. Yarın tekrar deneyebilirsiniz.");
+                return;
+            }
+
             document.getElementById('inputArea').style.display = 'none'; document.getElementById('loadingContainer').style.display = 'block'; document.getElementById('loadingFill').style.width = '0%';
-            setTimeout(() => { document.getElementById('loadingFill').style.width = '100%'; setTimeout(() => {
-                const results = [`${input} İçin Örnek Sonuç 1`, `${input} Hakkında Viral Fikir 2`];
-                const rc = document.getElementById('resultContent'); rc.innerHTML = '';
-                results.forEach(r => { const d = document.createElement('div'); d.className = 'result-box'; d.innerText = r; rc.appendChild(d); });
-                document.getElementById('loadingContainer').style.display = 'none'; document.getElementById('resultArea').classList.remove('hidden');
-            }, 1500); }, 100);
+            
+            setTimeout(() => { document.getElementById('loadingFill').style.width = '100%'; }, 100);
+
+            if (storedGeminiKey && !currentTool.includes("Kanal")) {
+                callGeminiAPI(input);
+            } else {
+                setTimeout(() => {
+                    generateMockResults(input);
+                }, 2000);
+            }
         }
+
+        // --- GERÇEK GEMINI API ÇAĞRISI ---
+        async function callGeminiAPI(topic) {
+            const apiKey = storedGeminiKey;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            // PROMPT HAZIRLAMA (YENİ KURALLARA GÖRE)
+            let promptText = "";
+            let systemInstruction = "You are a helpful social media assistant. Ensure all content is safe, free of spam, and compliant with platform policies (YouTube, Instagram, TikTok, X). Do not generate misleading or prohibited content.";
+
+            if (currentTool.includes("Başlık")) {
+                // BAŞLIK İÇİN ÖZEL PROMPT: 40 Karakter, Boşluksuz
+                promptText = `Generate 2 distinct titles for ${currentTool.split(" ")[0]} about "${topic}". 
+                CRITICAL RULES:
+                1. Each title MUST be EXACTLY 40 characters long (including emojis). 
+                2. NO SPACES allowed in the title string. Use CamelCase or emojis to separate words if needed, but strictly NO space characters.
+                3. Content must be engaging and viral.
+                4. Output only the titles separated by a newline.`;
+            } else if (currentTool.includes("Hashtag")) {
+                // HASHTAG İÇİN ÖZEL PROMPT: Max 59 Karakter
+                promptText = `Generate 2 distinct hashtag sets for ${currentTool.split(" ")[0]} about "${topic}".
+                CRITICAL RULES:
+                1. The total length of each hashtag set string MUST be less than or equal to 59 characters.
+                2. Hashtags must be relevant and viral.
+                3. Output only the hashtag sets separated by a newline.`;
+            }
+
+            const payload = {
+                "contents": [{
+                    "parts": [{"text": systemInstruction + "\n" + promptText}]
+                }]
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                
+                if (data.candidates && data.candidates[0].content) {
+                    const rawText = data.candidates[0].content.parts[0].text;
+                    const outputs = rawText.split('\n').filter(line => line.trim() !== '').slice(0, 2);
+                    displayResults(outputs);
+                } else {
+                    console.error("API Error:", data);
+                    alert("Gemini API bir hata verdi. Simülasyon moduna geçiliyor.");
+                    generateMockResults(topic);
+                }
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                alert("Bağlantı hatası. Simülasyon moduna geçiliyor.");
+                generateMockResults(topic);
+            }
+        }
+
+        function displayResults(outputs) {
+            toolLimits[currentTool]--;
+            document.getElementById('limitBadge').innerText = "Kalan Hakkınız: " + toolLimits[currentTool];
+            
+            const resultContent = document.getElementById('resultContent');
+            resultContent.innerHTML = '';
+
+            outputs.forEach(text => {
+                const div = document.createElement('div');
+                div.className = 'result-box';
+                div.innerHTML = text.replace(/\*\*/g, ''); 
+                resultContent.appendChild(div);
+            });
+
+            document.getElementById('loadingContainer').style.display = 'none';
+            document.getElementById('resultArea').classList.remove('hidden');
+        }
+
+        // --- SİMÜLASYON (MOCK) SİSTEMİ - KURALLARA UYGUN ---
+        function generateMockResults(topic) {
+            let outputs = [];
+            const t = topic.replace(/\s/g, ''); // Konudaki boşlukları sil
+            
+            // Simülasyon Modunda Tam 40 Karakter Başlık Üretme
+            function createFixedTitle(base) {
+                let cleanBase = base.replace(/[^a-zA-Z0-9çğıöşüÇĞİÖŞÜ]/g, ''); // Sadece harf rakam
+                if(cleanBase.length > 30) cleanBase = cleanBase.substring(0,30);
+                
+                // Geriye kalan kısmı emojilerle tamamla
+                let needed = 40 - cleanBase.length;
+                let emojis = "🔥🚀⚡💣💥✨💎🏆⚽🏀🎵✈️🍔🎮";
+                let suffix = "";
+                
+                // Basit bir döngü ile tamamla
+                for(let i=0; i<Math.floor(needed/2); i++) {
+                    suffix += emojis[i % emojis.length];
+                }
+                
+                // Tam 40 karaktere tamamlamak için gerekirse harf ekle (emoji 2 char olabilir)
+                let result = cleanBase + suffix;
+                while(result.length < 40) result += "!";
+                if(result.length > 40) result = result.substring(0, 40);
+                
+                return result;
+            }
+
+            // Simülasyon Modunda Max 59 Karakter Hashtag Üretme
+            function createFixedHashtags(base) {
+                // Max 59 karakter
+                let tag1 = "#" + base;
+                let tag2 = "#Viral";
+                let tag3 = "#Kesfet";
+                let set = `${tag1} ${tag2} ${tag3} 🔥`;
+                if(set.length > 59) set = set.substring(0, 59);
+                return set;
+            }
+
+            if (currentTool.includes("Başlık")) {
+                // 40 Karakter, Boşluksuz
+                outputs = [
+                    createFixedTitle(t + "Firsati"),
+                    createFixedTitle("Super" + t)
+                ];
+            } else if (currentTool.includes("Hashtag")) {
+                // Max 59 Karakter
+                outputs = [
+                    createFixedHashtags(t),
+                    createFixedHashtags(t + "Trend")
+                ];
+            } else if (currentTool.includes("Kanal Verisi")) {
+                 let statusText = Math.random() > 0.5 ? "İYİ" : "ORTA";
+                 let colorClass = statusText === "İYİ" ? "text-green-600" : "text-yellow-600";
+                 outputs = [`
+                        <div class="p-6 bg-white border rounded-lg shadow-sm text-center">
+                            <h4 class="text-xl font-bold mb-4">Kanal Analiz Sonucu</h4>
+                            <div class="text-4xl font-extrabold ${colorClass} mb-4">${statusText}</div>
+                            <p class="text-gray-600">İzleyici etkileşimi artışta.</p>
+                        </div>
+                    `];
+            } else if (currentTool.includes("Kanal Durumu")) {
+                outputs = [`
+                        <div class="p-3 bg-white border rounded-lg shadow-sm">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-bold text-lg">Kanal Durumu</span>
+                                <span class="text-xs bg-gray-100 px-2 py-1 rounded">Skor: 78/100</span>
+                            </div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class='fas fa-arrow-trend-up text-green-500'></i> <span class="font-bold">YÜKSELİŞTE</span>
+                            </div>
+                        </div>
+                    `];
+            }
+
+            displayResults(outputs);
+        }
+
         function resetModal() { document.getElementById('resultArea').classList.add('hidden'); document.getElementById('inputArea').style.display = 'block'; document.getElementById('userInput').value = ''; }
         function toggleApiKeyArea() { document.getElementById('apiKeyArea').classList.toggle('hidden'); }
         function saveGeminiKey() { alert("Key kaydedildi (Simülasyon)"); document.getElementById('apiKeyArea').classList.add('hidden'); }
