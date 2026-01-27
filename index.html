@@ -885,16 +885,28 @@
             if(localStorage.getItem('isLoggedIn') === 'true') { isLoggedIn = true; document.getElementById('loginBtn').classList.add('hidden'); document.getElementById('userProfile').classList.remove('hidden'); }
         }
         function openToolModal(toolName) {
-            currentTool = toolName; const modal = document.getElementById('toolModal'); document.getElementById('modalTitle').innerText = toolName;
+            currentTool = toolName; 
+            const modal = document.getElementById('toolModal'); 
+            document.getElementById('modalTitle').innerText = toolName;
             document.getElementById('limitBadge').innerText = "Kalan Hakkınız: " + toolLimits[toolName];
+            
             let placeholder = "Örn: Futbol, Müzik, Seyahat...";
-            if(toolName.includes("Kanal")) { placeholder = "https://youtube.com/..."; document.getElementById('modalDesc').innerText = "Lütfen kanal linkinizi atın."; } 
-            else { document.getElementById('modalDesc').innerText = "İçeriğiniz için bir konu girin."; }
+            if(toolName.includes("Kanal")) { 
+                placeholder = "https://youtube.com/..."; 
+                document.getElementById('modalDesc').innerText = "Lütfen kanal linkinizi atın."; 
+            } else { 
+                document.getElementById('modalDesc').innerText = "İçeriğiniz için bir konu girin."; 
+            }
+            
             document.getElementById('userInput').placeholder = placeholder;
             document.getElementById('apiKeyArea').classList.add('hidden');
-            document.getElementById('inputArea').style.display = 'block'; document.getElementById('loadingContainer').style.display = 'none'; document.getElementById('resultArea').classList.add('hidden'); document.getElementById('userInput').value = '';
+            document.getElementById('inputArea').style.display = 'block'; 
+            document.getElementById('loadingContainer').style.display = 'none'; 
+            document.getElementById('resultArea').classList.add('hidden'); 
+            document.getElementById('userInput').value = '';
             modal.style.display = 'flex';
         }
+
         function closeModal(event) { if (event.target === document.getElementById('toolModal')) document.getElementById('toolModal').style.display = 'none'; }
         function closeModalForce() { document.getElementById('toolModal').style.display = 'none'; }
         
@@ -911,7 +923,8 @@
             
             setTimeout(() => { document.getElementById('loadingFill').style.width = '100%'; }, 100);
 
-            if (storedGeminiKey && !currentTool.includes("Kanal")) {
+            // API anahtarı varsa API çağır, yoksa Mock (Simülasyon) çağır
+            if (storedGeminiKey) {
                 callGeminiAPI(input);
             } else {
                 setTimeout(() => {
@@ -929,21 +942,29 @@
             let promptText = "";
             let systemInstruction = "You are a helpful social media assistant. Ensure all content is safe, free of spam, and compliant with platform policies (YouTube, Instagram, TikTok, X). Do not generate misleading or prohibited content.";
 
+            const platformName = currentTool.split(" ")[0]; // "YouTube", "Instagram" vb.
+
             if (currentTool.includes("Başlık")) {
                 // BAŞLIK İÇİN ÖZEL PROMPT: 40 Karakter, Boşluksuz
-                promptText = `Generate 2 distinct titles for ${currentTool.split(" ")[0]} about "${topic}". 
+                promptText = `Generate 2 distinct titles for ${platformName} about "${topic}". 
                 CRITICAL RULES:
                 1. Each title MUST be EXACTLY 40 characters long (including emojis). 
                 2. NO SPACES allowed in the title string. Use CamelCase or emojis to separate words if needed, but strictly NO space characters.
-                3. Content must be engaging and viral.
+                3. Content must be engaging and viral for ${platformName}.
                 4. Output only the titles separated by a newline.`;
             } else if (currentTool.includes("Hashtag")) {
                 // HASHTAG İÇİN ÖZEL PROMPT: Max 59 Karakter
-                promptText = `Generate 2 distinct hashtag sets for ${currentTool.split(" ")[0]} about "${topic}".
+                promptText = `Generate 2 distinct hashtag sets for ${platformName} about "${topic}".
                 CRITICAL RULES:
                 1. The total length of each hashtag set string MUST be less than or equal to 59 characters.
-                2. Hashtags must be relevant and viral.
+                2. Hashtags must be relevant and viral for ${platformName}.
                 3. Output only the hashtag sets separated by a newline.`;
+            } else if (currentTool.includes("Kanal Verisi")) {
+                promptText = `Analyze the potential content strategy for a YouTube channel focused on "${topic}". 
+                Provide a brief 2-sentence summary of video ideas that would work well for this niche.`;
+            } else if (currentTool.includes("Kanal Durumu")) {
+                 promptText = `Simulate a channel health check for a channel about "${topic}". 
+                 Provide a fictional 'Health Score' out of 100 and a brief status (e.g., 'Rising Star', 'Needs Improvement').`;
             }
 
             const payload = {
@@ -987,6 +1008,7 @@
             outputs.forEach(text => {
                 const div = document.createElement('div');
                 div.className = 'result-box';
+                // HTML içerik olabilir (Kanal verisi için), bu yüzden innerHTML kullanıyoruz
                 div.innerHTML = text.replace(/\*\*/g, ''); 
                 resultContent.appendChild(div);
             });
@@ -995,57 +1017,66 @@
             document.getElementById('resultArea').classList.remove('hidden');
         }
 
-        // --- SİMÜLASYON (MOCK) SİSTEMİ - KURALLARA UYGUN ---
+        // --- SİMÜLASYON (MOCK) SİSTEMİ - PLATFORMA ÖZEL ---
         function generateMockResults(topic) {
             let outputs = [];
             const t = topic.replace(/\s/g, ''); // Konudaki boşlukları sil
-            
+            const cleanTopic = t.replace(/[^a-zA-Z0-9çğıöşüÇĞİÖŞÜ]/g, '').substring(0, 15);
+
             // Simülasyon Modunda Tam 40 Karakter Başlık Üretme
-            function createFixedTitle(base) {
-                let cleanBase = base.replace(/[^a-zA-Z0-9çğıöşüÇĞİÖŞÜ]/g, ''); // Sadece harf rakam
+            function createFixedTitle(base, emojiSet = "🔥🚀⚡") {
+                let cleanBase = base;
                 if(cleanBase.length > 30) cleanBase = cleanBase.substring(0,30);
                 
-                // Geriye kalan kısmı emojilerle tamamla
                 let needed = 40 - cleanBase.length;
-                let emojis = "🔥🚀⚡💣💥✨💎🏆⚽🏀🎵✈️🍔🎮";
                 let suffix = "";
                 
-                // Basit bir döngü ile tamamla
                 for(let i=0; i<Math.floor(needed/2); i++) {
-                    suffix += emojis[i % emojis.length];
+                    suffix += emojiSet[i % emojiSet.length];
                 }
                 
-                // Tam 40 karaktere tamamlamak için gerekirse harf ekle (emoji 2 char olabilir)
                 let result = cleanBase + suffix;
                 while(result.length < 40) result += "!";
                 if(result.length > 40) result = result.substring(0, 40);
-                
                 return result;
             }
 
             // Simülasyon Modunda Max 59 Karakter Hashtag Üretme
-            function createFixedHashtags(base) {
-                // Max 59 karakter
+            function createFixedHashtags(base, platformTags) {
                 let tag1 = "#" + base;
-                let tag2 = "#Viral";
-                let tag3 = "#Kesfet";
-                let set = `${tag1} ${tag2} ${tag3} 🔥`;
+                let set = `${tag1} ${platformTags} 🔥`;
                 if(set.length > 59) set = set.substring(0, 59);
                 return set;
             }
 
+            // PLATFORMA ÖZEL MANTIK
             if (currentTool.includes("Başlık")) {
-                // 40 Karakter, Boşluksuz
+                let emojis = "🔥🚀⚡";
+                let prefix = "Super";
+                
+                if (currentTool.includes("YouTube")) { emojis = "🔴▶️📹"; prefix = "Video"; }
+                else if (currentTool.includes("Instagram")) { emojis = "📸✨💖"; prefix = "Insta"; }
+                else if (currentTool.includes("TikTok")) { emojis = "🎵🕺💃"; prefix = "Trend"; }
+                else if (currentTool.includes("X")) { emojis = "🐦💬📢"; prefix = "News"; }
+
                 outputs = [
-                    createFixedTitle(t + "Firsati"),
-                    createFixedTitle("Super" + t)
+                    createFixedTitle(cleanTopic + prefix, emojis),
+                    createFixedTitle("Mega" + cleanTopic, emojis)
                 ];
+
             } else if (currentTool.includes("Hashtag")) {
-                // Max 59 Karakter
+                let tags = "#Viral #Kesfet";
+                
+                if (currentTool.includes("YouTube")) tags = "#Shorts #YouTuber";
+                else if (currentTool.includes("Instagram")) tags = "#InstaGood #Reels";
+                else if (currentTool.includes("TikTok")) tags = "#FYP #TikTok";
+                else if (currentTool.includes("X")) tags = "#TrendTopic #News";
+
                 outputs = [
-                    createFixedHashtags(t),
-                    createFixedHashtags(t + "Trend")
+                    createFixedHashtags(cleanTopic, tags),
+                    createFixedHashtags(cleanTopic + "2026", tags)
                 ];
+
             } else if (currentTool.includes("Kanal Verisi")) {
                  let statusText = Math.random() > 0.5 ? "İYİ" : "ORTA";
                  let colorClass = statusText === "İYİ" ? "text-green-600" : "text-yellow-600";
@@ -1056,12 +1087,14 @@
                             <p class="text-gray-600">İzleyici etkileşimi artışta.</p>
                         </div>
                     `];
+
             } else if (currentTool.includes("Kanal Durumu")) {
+                let score = Math.floor(Math.random() * (95 - 60 + 1) + 60);
                 outputs = [`
                         <div class="p-3 bg-white border rounded-lg shadow-sm">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="font-bold text-lg">Kanal Durumu</span>
-                                <span class="text-xs bg-gray-100 px-2 py-1 rounded">Skor: 78/100</span>
+                                <span class="text-xs bg-gray-100 px-2 py-1 rounded">Skor: ${score}/100</span>
                             </div>
                             <div class="flex items-center gap-2 mb-2">
                                 <i class='fas fa-arrow-trend-up text-green-500'></i> <span class="font-bold">YÜKSELİŞTE</span>
