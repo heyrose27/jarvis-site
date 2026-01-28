@@ -6,6 +6,8 @@
     <title>JarvisHeyrose - Global İçerik Üretici Merkezi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase SDK (Tek ve geçerli SDK) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         
@@ -597,43 +599,40 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-
-        // *** FIREBASE AYARLARI (KENDİ PROJE BİLGİLERİNİZLE DOLDURUN) ***
-        const firebaseConfig = {
-            apiKey: "API_KEY",
-            authDomain: "PROJECT.firebaseapp.com",
-            projectId: "PROJECT_ID",
-            storageBucket: "PROJECT.appspot.com",
-            messagingSenderId: "SENDER_ID",
-            appId: "APP_ID"
-        };
-
-        let app, auth, provider, db;
+    <script>
+        // *** SUPABASE AYARLARI (LÜTFEN KENDİ SUPABASE PROJE BİLGİLERİNİZLE DOLDURUN) ***
+        const SUPABASE_URL = 'https://YOUR_PROJECT_ID.supabase.co';
+        const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';
+        
+        let supabase;
         const DEFAULT_LIMIT = 3;
 
         try {
-            app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            provider = new GoogleAuthProvider();
-            db = getFirestore(app);
-            console.log("Firebase initialized");
+            // Supabase istemcisini başlat
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log("Supabase initialized");
         } catch (error) {
-            console.error("Firebase config error:", error);
+            console.error("Supabase init error:", error);
         }
 
         // Global User State
         window.currentUser = null;
-        window.userLimits = {}; 
+        window.userLimits = { remaining_credits: DEFAULT_LIMIT };
 
-        // --- AUTH ---
+        // --- AUTH (SUPABASE) ---
         window.handleGoogleLogin = async () => {
-            if (!auth) { alert("Firebase ayarları eksik!"); return; }
+            if (!supabase) { alert("Supabase ayarları eksik!"); return; }
+            
             try {
-                await signInWithPopup(auth, provider);
+                const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.href // Başarılı girişten sonra bu sayfaya dön
+                    }
+                });
+                
+                if (error) throw error;
+                // OAuth akışı kullanıcıyı Google'a yönlendirecektir.
             } catch (error) {
                 console.error("Login error:", error);
                 alert("Giriş hatası: " + error.message);
@@ -641,31 +640,36 @@
         };
 
         window.handleLogout = async () => {
-            if (!auth) return;
+            if (!supabase) return;
             try {
-                await signOut(auth);
+                const { error } = await supabase.auth.signOut();
+                if (error) throw error;
                 window.location.reload();
-            } catch (error) { console.error(error); }
+            } catch (error) { console.error("Logout error:", error); }
         };
 
-        if (auth) {
-            onAuthStateChanged(auth, async (user) => {
+        // Oturum Durumunu Dinle
+        if (supabase) {
+            supabase.auth.onAuthStateChange(async (event, session) => {
                 const loginBtn = document.getElementById('loginBtn');
                 const userProfile = document.getElementById('userProfile');
                 
-                if (user) {
-                    window.currentUser = user;
+                if (session && session.user) {
+                    window.currentUser = session.user;
+                    
                     // UI Update
                     if(loginBtn) loginBtn.classList.add('hidden');
                     if(userProfile) {
                         userProfile.classList.remove('hidden');
-                        document.getElementById('userName').innerText = user.displayName;
-                        if (user.photoURL) document.getElementById('userAvatar').src = user.photoURL;
+                        // Google meta verilerinden isim ve resim al
+                        const meta = session.user.user_metadata;
+                        document.getElementById('userName').innerText = meta.full_name || meta.name || "Kullanıcı";
+                        if (meta.avatar_url) document.getElementById('userAvatar').src = meta.avatar_url;
                     }
                     
                     // Veri Çekme (Limitler)
-                    await fetchUserLimits(user.uid);
-
+                    await fetchUserLimits(session.user.id);
+                    
                 } else {
                     window.currentUser = null;
                     if(loginBtn) loginBtn.classList.remove('hidden');
@@ -674,60 +678,89 @@
             });
         }
 
-        // --- FIRESTORE / MEMORY LOGIC ---
+        // --- SUPABASE DB LOGIC ---
+        // Veritabanında 'profiles' tablosu olduğunu varsayıyoruz.
+        // Tablo yapısı: id (uuid, PK, references auth.users), remaining_credits (int4)
+        
         async function fetchUserLimits(uid) {
-            // Eğer Firestore çalışmazsa bellekte tut (Fallback)
-            if (!db) {
-                window.userLimits = { remaining: DEFAULT_LIMIT };
-                return;
+            if (!supabase) {
+                 window.userLimits = { remaining_credits: DEFAULT_LIMIT };
+                 return;
             }
 
             try {
-                // Not: Gerçek bir 'appId' yoksa 'default' kullanıyoruz
-                const userRef = doc(db, "artifacts", "jarvis-app", "users", uid);
-                const docSnap = await getDoc(userRef);
+                // 1. Kullanıcı profilini çek
+                let { data, error } = await supabase
+                    .from('profiles')
+                    .select('remaining_credits')
+                    .eq('id', uid)
+                    .single();
 
-                if (docSnap.exists()) {
-                    window.userLimits = docSnap.data();
-                    // Gün kontrolü eklenebilir (Bugün mü?)
-                } else {
-                    // Yeni kullanıcı
-                    window.userLimits = { remaining: DEFAULT_LIMIT, lastReset: new Date().toISOString() };
-                    await setDoc(userRef, window.userLimits);
+                if (error && error.code === 'PGRST116') {
+                    // Kayıt yoksa (yeni kullanıcı), oluştur
+                    const { data: newData, error: insertError } = await supabase
+                        .from('profiles')
+                        .insert([{ id: uid, remaining_credits: DEFAULT_LIMIT }])
+                        .select()
+                        .single();
+                    
+                    if (insertError) throw insertError;
+                    data = newData;
+                } else if (error) {
+                    throw error;
+                }
+
+                if (data) {
+                    window.userLimits = data;
                 }
             } catch (e) {
-                console.warn("Firestore access failed (Rules/Config?), using memory.", e);
-                window.userLimits = { remaining: DEFAULT_LIMIT };
+                console.warn("Supabase DB error (profiles tablosu var mı?):", e);
+                // Fallback: Bellekte tut
+                window.userLimits = { remaining_credits: DEFAULT_LIMIT };
             }
+            
+            updateLimitUI();
         }
 
         async function updateUserLimit(uid, newLimit) {
-            window.userLimits.remaining = newLimit;
-            // UI Güncelle
-            const badge = document.getElementById('limitBadge');
-            if(badge) badge.innerText = "Kalan Hakkınız: " + newLimit;
+            // Bellekte güncelle
+            window.userLimits.remaining_credits = newLimit;
+            updateLimitUI();
 
-            if (db) {
+            // DB'de güncelle
+            if (supabase) {
                 try {
-                    const userRef = doc(db, "artifacts", "jarvis-app", "users", uid);
-                    await updateDoc(userRef, { remaining: newLimit });
+                    const { error } = await supabase
+                        .from('profiles')
+                        .update({ remaining_credits: newLimit })
+                        .eq('id', uid);
+                        
+                    if(error) console.error("Limit update error:", error);
                 } catch(e) { console.log("Save failed", e); }
             }
         }
+        
+        function updateLimitUI() {
+            const badge = document.getElementById('limitBadge');
+            const rem = window.getUserRemaining();
+            if(badge) badge.innerText = "Kalan Hakkınız: " + rem;
+        }
 
-        // Global erişim için
-        window.getUserRemaining = () => window.userLimits.remaining !== undefined ? window.userLimits.remaining : 0;
+        // Global erişim için yardımcılar
+        window.getUserRemaining = () => window.userLimits.remaining_credits !== undefined ? window.userLimits.remaining_credits : 0;
+        
         window.decrementUserLimit = async () => {
             if (window.currentUser) {
                 let current = window.getUserRemaining();
                 if (current > 0) {
-                    await updateUserLimit(window.currentUser.uid, current - 1);
+                    await updateUserLimit(window.currentUser.id, current - 1);
                 }
             }
         };
+        
         window.resetUserLimit = async () => {
              if (window.currentUser) {
-                await updateUserLimit(window.currentUser.uid, DEFAULT_LIMIT);
+                await updateUserLimit(window.currentUser.id, DEFAULT_LIMIT);
             }
         };
     </script>
@@ -736,7 +769,158 @@
         // --- UI Logic & Mock Ad System ---
         
         document.addEventListener('DOMContentLoaded', () => {
-            window.setLanguage = function(lang, btn) { /* (Aynı çeviri kodu buraya gelecek - kısaltıldı) */ };
+            // Dil Çevirileri
+            window.setLanguage = function(lang, btn) { 
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const translations = {
+                    tr: {
+                        nav_home: "Anasayfa", nav_apps: "Uygulamalar", nav_platform: "Platform", nav_tools: "Araçlar", nav_login: "Giriş Yap", nav_logout: "Çıkış",
+                        hero_title: "Viral İçerikler <br><span class='text-red-600'>Oluşturun</span>",
+                        hero_desc: "Kayda basmadan önce neyin viral olacağını öğrenin. Yapay zeka ile geleceği öngörün, algoritmayı yönetin.",
+                        hero_subdesc: "İçerik üreticileri için dünyanın en gelişmiş yapay zeka destekli analiz platformu.",
+                        hero_btn: "Hemen Başla", stat_data: "Daha Fazla Veri", stat_user: "Aktif Kullanıcı",
+                        about_title: "Hakkımızda", contact_title: "İletişim", help_title: "Yardım Merkezi", help_msg: "Yakında aktif olacaktır.",
+                        career_title: "Kariyer", career_msg: "Ekibe katılmak istediğiniz için teşekkürler.",
+                        press_title: "Basın Odası", press_msg: "Basın bültenleri hazırlanıyor.",
+                        brand_title: "Marka Varlıkları", brand_msg: "Kurumsal kimlik güncelleniyor.",
+                        faq_title: "Sık Sorulan Sorular", faq_desc: "En çok merak edilenler.",
+                        tools_title: "Üretici Araçları", tools_desc: "Her araç için günlük 3 istek hakkınız bulunur.",
+                        mobile_title: "Mobil Dünyada Biz", mobile_desc: "JarvisHeyrose çok yakında cebinizde.",
+                        ai_title: "Yapay Zeka Motoru", ai_desc: "Google Gemini altyapısı ile içeriklerinizi analiz ediyor, trendleri tahmin ediyoruz.", ai_btn: "Araçları Dene",
+                        footer_desc: "İçerik üreticileri için dünyanın en gelişmiş yapay zeka destekli analiz platformu.",
+                        footer_corp: "Kurumsal", footer_sup: "Destek & Yasal",
+                        f_about: "Hakkımızda", f_career: "Kariyer", f_press: "Basın Odası", f_brand: "Marka",
+                        f_contact: "İletişim", f_help: "Yardım", f_faq: "SSS", f_priv: "Gizlilik", f_terms: "Şartlar", f_sec: "Güvenlik",
+                        common_soon: "Bu sayfa yakında aktif olacaktır."
+                    },
+                    en: {
+                        nav_home: "Home", nav_apps: "Apps", nav_platform: "Platform", nav_tools: "Tools", nav_login: "Login", nav_logout: "Logout",
+                        hero_title: "Create <br><span class='text-red-600'>Viral Content</span>",
+                        hero_desc: "Know what goes viral before hitting record. Predict the future with AI, master the algorithm.",
+                        hero_subdesc: "The world's most advanced AI-powered analysis platform for content creators.",
+                        hero_btn: "Start Now", stat_data: "More Data", stat_user: "Active Users",
+                        about_title: "About Us", contact_title: "Contact", help_title: "Help Center", help_msg: "Coming soon.",
+                        career_title: "Careers", career_msg: "Thanks for your interest in joining the team.",
+                        press_title: "Press Room", press_msg: "Press releases are being prepared.",
+                        brand_title: "Brand Assets", brand_msg: "Brand identity is being updated.",
+                        faq_title: "FAQ", faq_desc: "Frequently asked questions.",
+                        tools_title: "Creator Tools", tools_desc: "You have 3 requests per tool daily.",
+                        mobile_title: "We are Mobile", mobile_desc: "JarvisHeyrose in your pocket soon.",
+                        ai_title: "AI Engine", ai_desc: "Powered by Google Gemini to analyze content and predict trends.", ai_btn: "Try Tools",
+                        footer_desc: "World's most advanced AI-powered analysis platform for creators.",
+                        footer_corp: "Corporate", footer_sup: "Support & Legal",
+                        f_about: "About Us", f_career: "Careers", f_press: "Press Room", f_brand: "Brand",
+                        f_contact: "Contact", f_help: "Help", f_faq: "FAQ", f_priv: "Privacy", f_terms: "Terms", f_sec: "Security",
+                        common_soon: "This page will be active soon."
+                    },
+                    fr: {
+                        nav_home: "Accueil", nav_apps: "Applications", nav_platform: "Plateforme", nav_tools: "Outils", nav_login: "Connexion", nav_logout: "Déconnexion",
+                        hero_title: "Créez du Contenu <br><span class='text-red-600'>Viral</span>",
+                        hero_desc: "Sachez ce qui deviendra viral avant d'enregistrer. Maîtrisez l'algorithme avec l'IA.",
+                        hero_subdesc: "La plateforme d'analyse IA la plus avancée au monde pour les créateurs.",
+                        hero_btn: "Commencer", stat_data: "Plus de Données", stat_user: "Utilisateurs Actifs",
+                        about_title: "À Propos", contact_title: "Contact", help_title: "Centre d'Aide", help_msg: "Bientôt disponible.",
+                        career_title: "Carrières", career_msg: "Merci de vouloir rejoindre l'équipe.",
+                        press_title: "Salle de Presse", press_msg: "Les communiqués sont en préparation.",
+                        brand_title: "Marque", brand_msg: "L'identité visuelle est mise à jour.",
+                        faq_title: "FAQ", faq_desc: "Questions fréquemment posées.",
+                        tools_title: "Outils Créateurs", tools_desc: "3 requêtes par jour par outil.",
+                        mobile_title: "Sur Mobile", mobile_desc: "Bientôt dans votre poche.",
+                        ai_title: "Moteur IA", ai_desc: "Propulsé par Google Gemini pour analyser et prédire.", ai_btn: "Essayer",
+                        footer_desc: "Plateforme d'analyse IA la plus avancée pour les créateurs.",
+                        footer_corp: "Entreprise", footer_sup: "Support & Légal",
+                        f_about: "À Propos", f_career: "Carrières", f_press: "Presse", f_brand: "Marque",
+                        f_contact: "Contact", f_help: "Aide", f_faq: "FAQ", f_priv: "Confidentialité", f_terms: "Conditions", f_sec: "Sécurité",
+                        common_soon: "Cette page sera bientôt active."
+                    },
+                    de: {
+                        nav_home: "Startseite", nav_apps: "Apps", nav_platform: "Plattform", nav_tools: "Tools", nav_login: "Anmelden", nav_logout: "Abmelden",
+                        hero_title: "Erstellen Sie <br><span class='text-red-600'>Virale Inhalte</span>",
+                        hero_desc: "Wissen, was viral geht. Vorhersage mit KI, Algorithmus meistern.",
+                        hero_subdesc: "Die weltweit fortschrittlichste KI-Analyseplattform für Creator.",
+                        hero_btn: "Jetzt Starten", stat_data: "Mehr Daten", stat_user: "Aktive Nutzer",
+                        about_title: "Über Uns", contact_title: "Kontakt", help_title: "Hilfezentrum", help_msg: "Demnächst verfügbar.",
+                        career_title: "Karriere", career_msg: "Danke für Ihr Interesse.",
+                        press_title: "Pressebereich", press_msg: "Pressemitteilungen in Vorbereitung.",
+                        brand_title: "Markenwerte", brand_msg: "Identität wird aktualisiert.",
+                        faq_title: "FAQ", faq_desc: "Häufig gestellte Fragen.",
+                        tools_title: "Creator Tools", tools_desc: "3 Anfragen pro Tool täglich.",
+                        mobile_title: "Wir sind Mobil", mobile_desc: "Bald in Ihrer Tasche.",
+                        ai_title: "KI-Engine", ai_desc: "Angetrieben von Google Gemini zur Analyse.", ai_btn: "Tools Testen",
+                        footer_desc: "Fortschrittlichste KI-Analyseplattform für Creator.",
+                        footer_corp: "Unternehmen", footer_sup: "Support & Recht",
+                        f_about: "Über Uns", f_career: "Karriere", f_press: "Presse", f_brand: "Marke",
+                        f_contact: "Kontakt", f_help: "Hilfe", f_faq: "FAQ", f_priv: "Datenschutz", f_terms: "AGB", f_sec: "Sicherheit",
+                        common_soon: "Diese Seite ist bald aktiv."
+                    },
+                    es: {
+                        nav_home: "Inicio", nav_apps: "Apps", nav_platform: "Plataforma", nav_tools: "Herramientas", nav_login: "Acceso", nav_logout: "Salir",
+                        hero_title: "Crea Contenido <br><span class='text-red-600'>Viral</span>",
+                        hero_desc: "Sepa qué será viral. Prediga el futuro con IA, domine el algoritmo.",
+                        hero_subdesc: "La plataforma de análisis con IA más avanzada para creadores.",
+                        hero_btn: "Empezar", stat_data: "Más Datos", stat_user: "Usuarios Activos",
+                        about_title: "Nosotros", contact_title: "Contacto", help_title: "Ayuda", help_msg: "Próximamente.",
+                        career_title: "Carreras", career_msg: "Gracias por su interés.",
+                        press_title: "Prensa", press_msg: "Comunicados en preparación.",
+                        brand_title: "Marca", brand_msg: "Identidad actualizándose.",
+                        faq_title: "FAQ", faq_desc: "Preguntas frecuentes.",
+                        tools_title: "Herramientas", tools_desc: "3 solicitudes diarias por herramienta.",
+                        mobile_title: "Móvil", mobile_desc: "Pronto en tu bolsillo.",
+                        ai_title: "Motor IA", ai_desc: "Impulsado por Google Gemini.", ai_btn: "Probar",
+                        footer_desc: "Plataforma de análisis IA avanzada para creadores.",
+                        footer_corp: "Corporativo", footer_sup: "Soporte y Legal",
+                        f_about: "Nosotros", f_career: "Carreras", f_press: "Prensa", f_brand: "Marca",
+                        f_contact: "Contacto", f_help: "Ayuda", f_faq: "FAQ", f_priv: "Privacidad", f_terms: "Términos", f_sec: "Seguridad",
+                        common_soon: "Esta página estará activa pronto."
+                    },
+                    pt: {
+                        nav_home: "Início", nav_apps: "Apps", nav_platform: "Plataforma", nav_tools: "Ferramentas", nav_login: "Entrar", nav_logout: "Sair",
+                        hero_title: "Crie Conteúdo <br><span class='text-red-600'>Viral</span>",
+                        hero_desc: "Saiba o que viraliza. Preveja o futuro com IA.",
+                        hero_subdesc: "A plataforma de análise com IA mais avançada para criadores.",
+                        hero_btn: "Começar", stat_data: "Mais Dados", stat_user: "Usuários Ativos",
+                        about_title: "Sobre", contact_title: "Contato", help_title: "Ajuda", help_msg: "Em breve.",
+                        career_title: "Carreiras", career_msg: "Obrigado pelo interesse.",
+                        press_title: "Imprensa", press_msg: "Comunicados em preparação.",
+                        brand_title: "Marca", brand_msg: "Identidade sendo atualizada.",
+                        faq_title: "FAQ", faq_desc: "Perguntas frequentes.",
+                        tools_title: "Ferramentas", tools_desc: "3 solicitações diárias.",
+                        mobile_title: "Mobile", mobile_desc: "Em breve no seu bolso.",
+                        ai_title: "Motor IA", ai_desc: "Desenvolvido com Google Gemini.", ai_btn: "Testar",
+                        footer_desc: "Plataforma de análise de IA avançada para criadores.",
+                        footer_corp: "Corporativo", footer_sup: "Suporte & Legal",
+                        f_about: "Sobre", f_career: "Carreiras", f_press: "Imprensa", f_brand: "Marca",
+                        f_contact: "Contato", f_help: "Ajuda", f_faq: "FAQ", f_priv: "Privacidade", f_terms: "Termos", f_sec: "Segurança",
+                        common_soon: "Esta página estará ativa em breve."
+                    }
+                };
+
+                const t = translations[lang];
+                if (!t) return;
+                
+                const ids = [
+                    'nav-home', 'nav-apps', 'nav-platform', 'nav-tools', 'nav-login', 'nav-logout',
+                    'hero-title', 'hero-desc', 'hero-subdesc', 'hero-btn', 'stat-data', 'stat-user',
+                    'about-title', 'contact-title', 'help-title', 'help-msg',
+                    'career-title', 'career-msg', 'press-title', 'press-msg', 'brand-title', 'brand-msg',
+                    'faq-title', 'faq-desc', 'tools-title', 'tools-desc',
+                    'mobile-title', 'mobile-desc', 'ai-title', 'ai-desc', 'ai-btn',
+                    'footer-desc', 'footer-corp', 'footer-sup',
+                    'f-about', 'f-career', 'f-press', 'f-brand',
+                    'f-contact', 'f-help', 'f-faq', 'f-priv', 'f-terms', 'f-sec'
+                ];
+                ids.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        const key = id.replace(/-/g, '_');
+                        if(t[key]) el.innerHTML = t[key];
+                    }
+                });
+                document.querySelectorAll('.common-soon').forEach(el => el.innerText = t.common_soon);
+            };
+
             window.showSection = function(sectionId) {
                 document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
                 const sec = document.getElementById(sectionId);
