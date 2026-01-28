@@ -44,7 +44,7 @@
         /* Dil Seçici */
         .lang-btn {
             cursor: pointer; padding: 4px 12px; border-radius: 20px; transition: all 0.3s;
-            font-size: 0.85rem; font-weight: 600; color: #6b7280; display: inline-block; margin-bottom: 0.5rem;
+            font-size: 0.75rem; font-weight: 600; color: #6b7280; display: inline-block; margin-bottom: 0.5rem;
         }
         .lang-btn:hover { color: #dc2626; background: #fee2e2; }
         .lang-btn.active { color: #fff; background: #dc2626; box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3); }
@@ -88,12 +88,15 @@
         /* Sol Sabit Reklam Alanı (Desktop) */
         .fixed-ad-left {
             position: fixed; top: 50%; left: 0; transform: translateY(-50%);
-            width: 120px; height: 400px; background: #f3f4f6; border-right: 1px solid #e5e7eb;
+            width: 160px; height: 600px; background: #f3f4f6; border-right: 1px solid #e5e7eb;
             display: none; flex-direction: column; align-items: center; justify-content: center;
             z-index: 40; border-top-right-radius: 10px; border-bottom-right-radius: 10px;
         }
-        /* DÜZELTME: Sadece ekran çok genişse (1500px+) reklamı göster ki yazıların üstüne binmesin */
-        @media (min-width: 1500px) { .fixed-ad-left { display: flex; } }
+        /* Geniş ekranlarda reklam görünür, içerik sağa kayar */
+        @media (min-width: 1500px) { 
+            .fixed-ad-left { display: flex; } 
+            main { padding-left: 180px; } /* İçeriği sağa it */
+        }
         
         /* FAQ Özel Stiller */
         .faqSection { margin-top: 42px; padding: 40px 16px; background: #111827; min-height: 80vh; }
@@ -132,8 +135,8 @@
     <!-- Sol Sabit Reklam -->
     <div class="fixed-ad-left">
         <span class="text-xs text-gray-400 mb-2 tracking-widest rotate-90">REKLAM</span>
-        <div class="w-20 h-64 bg-gray-200 rounded flex items-center justify-center text-center p-2">
-            <span class="text-xs text-gray-500">Google Ads Yerleşimi</span>
+        <div class="w-32 h-96 bg-gray-200 rounded flex items-center justify-center text-center p-2">
+            <span class="text-xs text-gray-500">Sponsorlu Alan</span>
         </div>
     </div>
 
@@ -179,11 +182,15 @@
                 <div class="flex flex-wrap justify-center md:justify-start gap-2 mb-8">
                     <span class="lang-btn active" onclick="window.setLanguage('tr', this)">Türkçe</span>
                     <span class="lang-btn" onclick="window.setLanguage('en', this)">English</span>
-                    <!-- Diğer diller kod karmaşası olmaması için kısaltıldı, mantık aynı -->
+                    <span class="lang-btn" onclick="window.setLanguage('de', this)">Deutsch</span>
+                    <span class="lang-btn" onclick="window.setLanguage('fr', this)">Français</span>
+                    <span class="lang-btn" onclick="window.setLanguage('es', this)">Español</span>
+                    <span class="lang-btn" onclick="window.setLanguage('pt', this)">Português</span>
                 </div>
 
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <div class="text-left animate-fade-in">
+                    <!-- Sol Taraf (Metin ve Reklam Alanı için Kaydırılan İçerik) -->
+                    <div class="text-left animate-fade-in pl-0 lg:pl-4">
                         <h1 id="hero-title" class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">
                             Viral İçerikler <br><span class="text-red-600">Oluşturun</span>
                         </h1>
@@ -209,17 +216,18 @@
                             </div>
                         </div>
 
-                        <!-- Sol Taraftaki Görsel Alanı -->
-                        <div class="w-full mb-4">
-                            <img src="hero (2).png" class="left-hero shadow-sm" alt="Tanıtım Görseli" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1000&q=80'">
+                        <!-- 2. Hero Görseli (Sağa kaydırılmış) -->
+                        <div class="w-full mb-4 pl-4">
+                            <img src="hero (2).png" class="left-hero shadow-sm rounded-lg" alt="Tanıtım" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1000&q=80'">
                         </div>
 
                         <!-- Reklam Alanı Placeholder -->
                         <div class="w-full h-24 bg-gray-50 rounded-lg border border-gray-200 flex items-center justify-center">
-                            <span class="text-gray-400 text-xs uppercase tracking-widest"><i class="fas fa-ad mr-2"></i>Reklam Alanı</span>
+                            <span class="text-gray-400 text-xs uppercase tracking-widest"><i class="fas fa-ad mr-2"></i>Sponsorlu Alan</span>
                         </div>
                     </div>
                     
+                    <!-- Sağ Taraf (Ana Hero Görseli) -->
                     <div class="hero-image-container relative flex items-center justify-center rounded-3xl p-4 min-h-[400px]">
                         <img src="hero (3).png" style="width:100%; height:100%; object-fit:cover; border-radius:20px;" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1000&auto=format&fit=crop'" alt="JarvisHeyrose">
                     </div>
@@ -234,11 +242,8 @@
                     <h2 id="about-title" class="text-3xl font-bold mb-6 gradient-text">Hakkımızda</h2>
                     <div class="space-y-6 text-gray-700 leading-relaxed">
                         <p class="text-lg font-semibold">Jarvis Heyrose, içerik üreticilerinin en büyük problemini çözer: daha hızlı, daha güçlü ve daha viral içerik üretmek.</p>
-                        
                         <p>Biz sohbet eden bir bot değiliz; sonuç üreten bir araç tasarladık. YouTube, Instagram ve TikTok gibi platformlarda öne çıkmak için yalnızca iyi içerik yetmez… <strong>Doğru başlık, doğru hashtag ve doğru açıklama gerekir.</strong></p>
-                        
                         <p>Jarvis Heyrose tam olarak bunu saniyeler içinde hazırlar.</p>
-                        
                         <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-red-500">
                             <h3 class="font-bold text-xl mb-2 text-gray-900">Amacımız Basit:</h3>
                             <p>İçeriğinizi profesyonel gösteren, izlenmeyi artıran ve markanızı büyüten metinleri tek tıkla üretmek. Daha az uğraş, daha fazla etki.</p>
@@ -264,7 +269,7 @@
             </div>
         </section>
 
-        <!-- YARDIM MERKEZİ BÖLÜMÜ -->
+        <!-- YARDIM MERKEZİ -->
         <section id="help">
             <div class="max-w-4xl mx-auto px-4 py-20">
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
@@ -277,7 +282,7 @@
             </div>
         </section>
         
-        <!-- KARİYER BÖLÜMÜ -->
+        <!-- KARİYER -->
         <section id="career">
             <div class="max-w-4xl mx-auto px-4 py-20">
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
@@ -291,7 +296,7 @@
             </div>
         </section>
 
-        <!-- BASIN ODASI BÖLÜMÜ -->
+        <!-- BASIN ODASI -->
         <section id="press">
             <div class="max-w-4xl mx-auto px-4 py-20">
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
@@ -305,7 +310,7 @@
             </div>
         </section>
 
-        <!-- MARKA VARLIKLARI BÖLÜMÜ -->
+        <!-- MARKA VARLIKLARI -->
         <section id="brand">
             <div class="max-w-4xl mx-auto px-4 py-20">
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
@@ -334,28 +339,24 @@
                             YouTube, Instagram, TikTok ve X için başlık, hashtag ve kanal açıklaması üretir. Yapay zeka altyapımız ile viral potansiyeli yüksek içerik fikirleri sunar.
                         </div>
                     </details>
-                
                     <details class="faqItem">
                         <summary>Ücretsiz kullanım var mı?</summary>
                         <div class="faqAnswer">
-                            Evet. Her gün yenilenen ücretsiz kullanım haklarınız bulunur. Limit bitince reklam izleyerek devam edebilirsiniz.
+                            Evet. Her gün yenilenen 2 ücretsiz kullanım hakkınız bulunur. Reklam destekli 1 bonus hak daha kazanabilirsiniz.
                         </div>
                     </details>
-                
                     <details class="faqItem">
                         <summary>Google ile giriş neden zorunlu?</summary>
                         <div class="faqAnswer">
                             Güvenlik, spam koruması ve limitlerinizi (kredilerinizi) hesabınıza tanımlamak için Google ile giriş zorunludur. Şifrenizi asla kaydetmeyiz.
                         </div>
                     </details>
-                
                     <details class="faqItem">
                         <summary>Üretilen içerikler saklanıyor mu?</summary>
                         <div class="faqAnswer">
                             Hayır. Kullanıcı gizliliği için üretilen içerikler oturumunuz süresince görünür, kalıcı olarak sunucularımızda saklanmaz.
                         </div>
                     </details>
-                
                     <details class="faqItem">
                         <summary>Destek için nereye ulaşabilirim?</summary>
                         <div class="faqAnswer">
@@ -366,7 +367,7 @@
             </div>
         </section>
 
-        <!-- GİZLİLİK POLİTİKASI BÖLÜMÜ -->
+        <!-- GİZLİLİK POLİTİKASI -->
         <section id="privacy">
             <div class="max-w-4xl mx-auto px-4 py-20">
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
@@ -375,15 +376,15 @@
                         <p class="text-xs text-gray-500 mb-3">Son Güncelleme: 2026</p>
                         <p class="text-gray-700 mb-4">Jarvis Heyrose olarak kullanıcı gizliliğine en üst düzeyde önem veriyoruz. Hizmetlerimizi kullanırken kişisel verilerinizin nasıl işlendiğini bilmeniz hakkınızdır.</p>
                         <h3 class="font-bold text-lg mt-4 mb-2">1. Toplanan Veriler</h3>
-                        <p class="text-gray-600 mb-2">Sadece Google OAuth aracılığıyla sağlanan temel profil bilgilerinizi (Ad, E-posta, Profil Resmi) kullanırız. Şifrelerinize veya diğer özel verilerinize erişimimiz yoktur.</p>
+                        <p class="text-gray-600 mb-2">Sadece Google OAuth aracılığıyla sağlanan temel profil bilgilerinizi (Ad, E-posta, Profil Resmi) kullanırız.</p>
                         <h3 class="font-bold text-lg mt-4 mb-2">2. Veri Kullanımı</h3>
-                        <p class="text-gray-600 mb-2">Verileriniz sadece size özel içerik üretimi ve kullanım limitlerinizin takibi için kullanılır. Üçüncü taraflarla paylaşılmaz.</p>
+                        <p class="text-gray-600 mb-2">Verileriniz sadece size özel içerik üretimi ve kullanım limitlerinizin takibi için kullanılır. Üçüncü taraflarla paylaşılmaz. Kanal analiz verileri kaydedilmez.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- KULLANIM ŞARTLARI BÖLÜMÜ -->
+        <!-- KULLANIM ŞARTLARI -->
         <section id="terms">
             <div class="max-w-4xl mx-auto px-4 py-20">
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
@@ -393,7 +394,7 @@
                          <ul class="list-disc list-inside text-gray-600 space-y-2">
                              <li>Platformu yasa dışı amaçlar için kullanamazsınız.</li>
                              <li>Üretilen içeriklerin sorumluluğu kullanıcıya aittir.</li>
-                             <li>Sistem güvenliğini tehlikeye atacak girişimlerde bulunmak yasaktır.</li>
+                             <li>Kesin başarı veya izlenme garantisi verilmez.</li>
                              <li>Jarvis Heyrose, hizmet özelliklerini önceden bildirmeksizin değiştirme hakkını saklı tutar.</li>
                          </ul>
                     </div>
@@ -401,7 +402,7 @@
             </div>
         </section>
 
-        <!-- GÜVENLİK BÖLÜMÜ -->
+        <!-- GÜVENLİK -->
         <section id="security">
             <div class="max-w-4xl mx-auto px-4 py-20">
                 <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
@@ -409,18 +410,18 @@
                     <div class="py-6">
                         <i class="fas fa-shield-alt text-6xl text-green-500 mb-6"></i>
                         <p class="text-lg text-gray-700 mt-4 mb-2">Verileriniz Güvende.</p>
-                        <p class="text-gray-500">Jarvis Heyrose, Google altyapısı üzerinden güvenli giriş sağlar (OAuth 2.0). Veritabanı bağlantılarımız SSL ile şifrelenmiştir ve düzenli güvenlik taramalarından geçirilir.</p>
+                        <p class="text-gray-500">Jarvis Heyrose, Google altyapısı üzerinden güvenli giriş sağlar (OAuth 2.0). Veritabanı bağlantılarımız SSL ile şifrelenmiştir.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ARAÇLAR (DÜZELTİLEN ALAN) -->
+        <!-- ARAÇLAR -->
         <section id="tools">
             <div class="max-w-7xl mx-auto px-4 py-16">
                 <div class="text-center mb-16">
                     <h2 id="tools-title" class="text-4xl font-bold mb-4">Üretici Araçları</h2>
-                    <p id="tools-desc" class="text-gray-600">Günlük 2 Başlık ve 2 Hashtag hakkınız vardır.</p>
+                    <p id="tools-desc" class="text-gray-600">Günlük 2 adet içerik üretim hakkınız mevcuttur.</p>
                 </div>
                 
                 <!-- GRID SİSTEMİ: 2 SÜTUN -->
@@ -474,11 +475,11 @@
                     </div>
 
                     <!-- KANAL VERİ ANALİZ (Tam Genişlik) -->
-                    <div class="tool-card bg-gradient-to-r from-gray-900 to-black text-white p-6 rounded-2xl md:col-span-2 flex items-center justify-between" onclick="alert('Kanal analiz modülü yükleniyor...')">
+                    <div class="tool-card bg-gradient-to-r from-gray-900 to-black text-white p-6 rounded-2xl md:col-span-2 flex items-center justify-between" onclick="window.openToolModal('Kanal Analiz', 'channel')">
                         <div>
                             <i class="fas fa-chart-line text-3xl mb-2 text-green-400"></i>
                             <h3 class="font-bold text-xl">Kanal Veri Analiz ve Kontrol</h3>
-                            <p class="text-sm text-gray-400">Kanalınızın büyüme performansını yapay zeka ile ölçün.</p>
+                            <p class="text-sm text-gray-400">Kanalınızın büyüme performansını analiz edin.</p>
                         </div>
                         <i class="fas fa-arrow-right text-2xl"></i>
                     </div>
@@ -584,14 +585,14 @@
         </div>
     </div>
 
-    <!-- BONUS MODALI (Reklamsız) -->
+    <!-- BONUS MODALI (Reklam Simülasyonu) -->
     <div id="bonusModal" class="bonus-overlay">
         <div class="bg-white p-8 rounded-2xl max-w-sm text-center">
-            <div class="text-5xl mb-4">🎁</div>
+            <div class="text-5xl mb-4">📺</div>
             <h3 class="text-2xl font-bold mb-2">Günlük Limit Doldu</h3>
-            <p class="text-gray-600 mb-6">Bugünkü 2 hakkınızı doldurdunuz. Size özel tanımlanan <strong>BONUS</strong> hakkınızı kullanmak ister misiniz?</p>
+            <p class="text-gray-600 mb-6">Bugünkü 2 üretim hakkınızı doldurdunuz. Sponsorlu kısa bir işlem sonrası <strong>+1 Bonus Hak</strong> kazanmak ister misiniz?</p>
             <button onclick="window.claimBonus()" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-6 rounded-lg w-full shadow-lg hover:opacity-90 transition">
-                Evet, Bonus Hakkımı Kullan
+                Bonus Hakkı Al (Reklamlı)
             </button>
             <button onclick="document.getElementById('bonusModal').style.display='none'" class="mt-4 text-sm text-gray-400 hover:text-gray-600">Vazgeç</button>
         </div>
@@ -622,7 +623,8 @@
         }
 
         let currentUser = null;
-        let currentToolType = null; 
+        let currentToolType = null;
+        let currentLang = 'tr'; 
         
         // --- FONKSİYONLAR GLOBAL (WINDOW) ---
         
@@ -630,8 +632,6 @@
             if (!supabaseClient) return alert("Supabase bağlantısı henüz yapılandırılmadı.");
             
             try {
-                // Sadece provider: 'google'. options: { redirectTo } parametresini kaldırdık.
-                // Bu sayede Supabase Dashboard'daki "Site URL" kullanılır.
                 const { error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'google'
                 });
@@ -657,7 +657,7 @@
             const key = getLimitKey();
             if (!key) return null;
             
-            const defaultLimits = { title: 0, hashtag: 0, bonusUsed: false, bonusActive: false };
+            const defaultLimits = { title: 0, hashtag: 0, channel: 0, bonusUsed: false, bonusActive: false };
             const stored = localStorage.getItem(key);
             
             if (stored) return JSON.parse(stored);
@@ -705,34 +705,49 @@
             
             currentToolType = type;
             const limits = getUserLimits();
-            const currentCount = limits[type];
-            const maxLimit = limits.bonusActive ? 3 : 2; 
+            
+            // Tüm araçlar ortak havuzdan yer (veya ayrıştırılabilir, talimat "Günlük 2 üretim hakkı" dediği için ortak varsayıyoruz)
+            // Basitleştirmek için toplam işlem sayısına bakalım:
+            const totalUsage = (limits.title || 0) + (limits.hashtag || 0) + (limits.channel || 0);
+            const maxLimit = limits.bonusActive ? 3 : 2; // 2 normal + 1 bonus
             
             const modal = document.getElementById('toolModal');
             document.getElementById('modalTitle').innerText = toolName;
+            
+            // Kanal analizi için placeholder değiştir
+            const input = document.getElementById('userInput');
+            if(type === 'channel') {
+                input.placeholder = "Kanal Linki (Örn: youtube.com/@kanaladi)";
+            } else {
+                input.placeholder = "Konu giriniz...";
+            }
+
             document.getElementById('inputArea').style.display = 'block';
             document.getElementById('loadingContainer').style.display = 'none';
             document.getElementById('resultArea').classList.add('hidden');
             
-            const remaining = Math.max(0, maxLimit - currentCount);
-            document.getElementById('limitBadge').innerText = `Kalan ${type === 'title' ? 'Başlık' : 'Hashtag'} Hakkı: ${remaining}`;
+            const remaining = Math.max(0, maxLimit - totalUsage);
+            document.getElementById('limitBadge').innerText = `Kalan Hak: ${remaining}`;
             
             modal.style.display = 'flex';
         };
 
         window.startGeneration = function() {
             const input = document.getElementById('userInput').value;
-            if(!input) return alert("Lütfen bir konu girin!");
+            if(!input) return alert("Lütfen geçerli bir giriş yapın!");
 
             const limits = getUserLimits();
-            const type = currentToolType;
+            const totalUsage = (limits.title || 0) + (limits.hashtag || 0) + (limits.channel || 0);
             const maxLimit = limits.bonusActive ? 3 : 2; 
             
-            if (limits[type] >= maxLimit) {
+            // Limit Kontrolü
+            if (totalUsage >= maxLimit) {
                 document.getElementById('toolModal').style.display = 'none';
                 if (!limits.bonusUsed) {
+                    // Henüz bonus kullanılmadı, reklam teklif et
                     document.getElementById('bonusModal').style.display = 'flex';
                 } else {
+                    // Bonus da bitti
                     alert("Günlük tüm haklarınız (Bonus dahil) doldu. Yarın tekrar bekleriz!");
                 }
                 return;
@@ -742,40 +757,69 @@
             document.getElementById('loadingContainer').style.display = 'block';
 
             setTimeout(() => {
-                limits[type]++;
+                // Hakkı düş
+                if(!limits[currentToolType]) limits[currentToolType] = 0;
+                limits[currentToolType]++;
                 saveUserLimits(limits);
-                
-                const results = [
-                    `Viral ${type === 'title' ? 'Başlık' : 'Hashtag'} #1: ${input} Harika`,
-                    `Viral ${type === 'title' ? 'Başlık' : 'Hashtag'} #2: ${input} Trend`
-                ];
                 
                 const content = document.getElementById('resultContent');
                 content.innerHTML = '';
-                results.forEach(r => {
-                    const div = document.createElement('div');
-                    div.className = 'result-box';
-                    div.innerText = r;
-                    content.appendChild(div);
-                });
+                
+                // DİL DESTEĞİ İLE ÇIKTI ÜRETİMİ
+                let resultText = "";
+                
+                if (currentToolType === 'channel') {
+                    // Kanal Analiz Simülasyonu (Veri Kaydetmez)
+                    resultText = `
+                        <div class="font-bold mb-2">📊 Kanal Analizi (${currentLang.toUpperCase()})</div>
+                        <div>Kanal: ${input}</div>
+                        <div class="text-sm text-gray-500 mt-1">Veriler sadece size gösterilmektedir. Kayıt edilmez.</div>
+                        <div class="mt-2 p-2 bg-green-50 text-green-700 rounded border border-green-200">
+                           ✅ Kanal Durumu: Aktif<br>
+                           📈 Büyüme Skoru: 8.5/10<br>
+                           💡 Öneri: Düzenli içerik paylaşımına devam edin.
+                        </div>
+                    `;
+                } else {
+                    // Başlık/Hashtag Üretimi
+                    const prompts = {
+                        tr: `🔥 ${input} Hakkında Dikkat Çekici Bir İçerik 🚀`,
+                        en: `🔥 Eye-Catching Content About ${input} 🚀`,
+                        de: `🔥 Auffälliger Inhalt über ${input} 🚀`,
+                        fr: `🔥 Contenu Attrayant sur ${input} 🚀`,
+                        es: `🔥 Contenido Llamativo sobre ${input} 🚀`,
+                        pt: `🔥 Conteúdo Atraente sobre ${input} 🚀`
+                    };
+                    
+                    const text = prompts[currentLang] || prompts['tr'];
+                    resultText = `<div class="font-bold text-lg">${text}</div>`;
+                }
+                
+                const div = document.createElement('div');
+                div.className = 'result-box';
+                div.innerHTML = resultText; // HTML render etmesi için
+                content.appendChild(div);
 
                 document.getElementById('loadingContainer').style.display = 'none';
                 document.getElementById('resultArea').classList.remove('hidden');
                 
-                const remaining = Math.max(0, maxLimit - limits[type]);
+                // Badge Güncelle
+                const newTotal = (limits.title || 0) + (limits.hashtag || 0) + (limits.channel || 0);
+                const remaining = Math.max(0, maxLimit - newTotal);
                 document.getElementById('limitBadge').innerText = `Kalan Hak: ${remaining}`;
                 
             }, 1500);
         };
 
         window.claimBonus = function() {
+            // Reklam simülasyonu (Kullanıcı tıkladı kabul ediyoruz)
             const limits = getUserLimits();
             limits.bonusActive = true; 
             limits.bonusUsed = true;   
             saveUserLimits(limits);
             
             document.getElementById('bonusModal').style.display = 'none';
-            alert("Tebrikler! +1 Bonus hak hesabınıza tanımlandı.");
+            alert("Teşekkürler! +1 Bonus hak hesabınıza tanımlandı.");
         };
 
         window.closeModal = (e) => { if(e.target.id === 'toolModal') document.getElementById('toolModal').style.display = 'none'; };
@@ -791,72 +835,66 @@
             if(sec) { sec.classList.add('active'); window.scrollTo(0,0); }
         };
         
+        // Çoklu Dil Desteği
         window.setLanguage = function(lang, btn) {
+            currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-             const translations = {
+            
+            const translations = {
                 tr: {
                     nav_home: "Anasayfa", nav_apps: "Uygulamalar", nav_platform: "Platform", nav_tools: "Araçlar", nav_login: "Giriş Yap", nav_logout: "Çıkış",
                     hero_title: "Viral İçerikler <br><span class='text-red-600'>Oluşturun</span>",
                     hero_desc: "Kayda basmadan önce neyin viral olacağını öğrenin. Yapay zeka ile geleceği öngörün, algoritmayı yönetin.",
-                    hero_subdesc: "İçerik üreticileri için dünyanın en gelişmiş yapay zeka destekli analiz platformu.",
                     hero_btn: "Hemen Başla", stat_data: "Daha Fazla Veri", stat_user: "Aktif Kullanıcı",
-                    about_title: "Hakkımızda", contact_title: "İletişim", help_title: "Yardım Merkezi", help_msg: "Yakında aktif olacaktır.",
-                    career_title: "Kariyer", career_msg: "Ekibe katılmak istediğiniz için teşekkürler.",
-                    press_title: "Basın Odası", press_msg: "Basın bültenleri hazırlanıyor.",
-                    brand_title: "Marka Varlıkları", brand_msg: "Kurumsal kimlik güncelleniyor.",
-                    faq_title: "Sık Sorulan Sorular", faq_desc: "En çok merak edilenler.",
-                    tools_title: "Üretici Araçları", tools_desc: "Her araç için günlük 3 istek hakkınız bulunur.",
-                    mobile_title: "Mobil Dünyada Biz", mobile_desc: "JarvisHeyrose çok yakında cebinizde.",
-                    ai_title: "Yapay Zeka Motoru", ai_desc: "Google Gemini altyapısı ile içeriklerinizi analiz ediyor, trendleri tahmin ediyoruz.", ai_btn: "Araçları Dene",
-                    footer_desc: "İçerik üreticileri için dünyanın en gelişmiş yapay zeka destekli analiz platformu.",
-                    footer_corp: "Kurumsal", footer_sup: "Destek & Yasal",
-                    f_about: "Hakkımızda", f_career: "Kariyer", f_press: "Basın Odası", f_brand: "Marka",
-                    f_contact: "İletişim", f_help: "Yardım", f_faq: "SSS", f_priv: "Gizlilik", f_terms: "Şartlar", f_sec: "Güvenlik",
-                    common_soon: "Bu sayfa yakında aktif olacaktır."
+                    tools_title: "Üretici Araçları", tools_desc: "Günlük 2 adet içerik üretim hakkınız mevcuttur."
                 },
                 en: {
                     nav_home: "Home", nav_apps: "Apps", nav_platform: "Platform", nav_tools: "Tools", nav_login: "Login", nav_logout: "Logout",
                     hero_title: "Create <br><span class='text-red-600'>Viral Content</span>",
                     hero_desc: "Know what goes viral before hitting record. Predict the future with AI, master the algorithm.",
-                    hero_subdesc: "The world's most advanced AI-powered analysis platform for content creators.",
                     hero_btn: "Start Now", stat_data: "More Data", stat_user: "Active Users",
-                    about_title: "About Us", contact_title: "Contact", help_title: "Help Center", help_msg: "Coming soon.",
-                    career_title: "Careers", career_msg: "Thanks for your interest in joining the team.",
-                    press_title: "Press Room", press_msg: "Press releases are being prepared.",
-                    brand_title: "Brand Assets", brand_msg: "Brand identity is being updated.",
-                    faq_title: "FAQ", faq_desc: "Frequently asked questions.",
-                    tools_title: "Creator Tools", tools_desc: "You have 3 requests per tool daily.",
-                    mobile_title: "We are Mobile", mobile_desc: "JarvisHeyrose in your pocket soon.",
-                    ai_title: "AI Engine", ai_desc: "Powered by Google Gemini to analyze content and predict trends.", ai_btn: "Try Tools",
-                    footer_desc: "World's most advanced AI-powered analysis platform for creators.",
-                    footer_corp: "Corporate", footer_sup: "Support & Legal",
-                    f_about: "About Us", f_career: "Careers", f_press: "Press Room", f_brand: "Brand",
-                    f_contact: "Contact", f_help: "Help", f_faq: "FAQ", f_priv: "Privacy", f_terms: "Terms", f_sec: "Security",
-                    common_soon: "This page will be active soon."
+                    tools_title: "Creator Tools", tools_desc: "You have 2 daily content generation credits."
+                },
+                de: {
+                    nav_home: "Startseite", nav_apps: "Apps", nav_platform: "Plattform", nav_tools: "Werkzeuge", nav_login: "Anmelden", nav_logout: "Abmelden",
+                    hero_title: "Erstellen Sie <br><span class='text-red-600'>Virale Inhalte</span>",
+                    hero_desc: "Wissen Sie, was viral geht, bevor Sie auf Aufnahme drücken. Vorhersagen mit KI.",
+                    hero_btn: "Jetzt Starten", stat_data: "Mehr Daten", stat_user: "Aktive Nutzer",
+                    tools_title: "Creator Tools", tools_desc: "Sie haben täglich 2 Credits zur Inhaltserstellung."
+                },
+                fr: {
+                    nav_home: "Accueil", nav_apps: "Apps", nav_platform: "Plateforme", nav_tools: "Outils", nav_login: "Connexion", nav_logout: "Déconnexion",
+                    hero_title: "Créez du <br><span class='text-red-600'>Contenu Viral</span>",
+                    hero_desc: "Sachez ce qui devient viral avant d'enregistrer. Prédisez l'avenir avec l'IA.",
+                    hero_btn: "Commencer", stat_data: "Plus de Données", stat_user: "Utilisateurs Actifs",
+                    tools_title: "Outils Créateur", tools_desc: "Vous avez 2 crédits de génération de contenu par jour."
+                },
+                es: {
+                    nav_home: "Inicio", nav_apps: "Apps", nav_platform: "Plataforma", nav_tools: "Herramientas", nav_login: "Entrar", nav_logout: "Salir",
+                    hero_title: "Crea <br><span class='text-red-600'>Contenido Viral</span>",
+                    hero_desc: "Sepa qué se vuelve viral antes de grabar. Predice el futuro con IA.",
+                    hero_btn: "Empezar", stat_data: "Más Datos", stat_user: "Usuarios Activos",
+                    tools_title: "Herramientas", tools_desc: "Tienes 2 créditos diarios de generación de contenido."
+                },
+                pt: {
+                    nav_home: "Início", nav_apps: "Apps", nav_platform: "Plataforma", nav_tools: "Ferramentas", nav_login: "Entrar", nav_logout: "Sair",
+                    hero_title: "Crie <br><span class='text-red-600'>Conteúdo Viral</span>",
+                    hero_desc: "Saiba o que viraliza antes de gravar. Preveja o futuro com IA.",
+                    hero_btn: "Começar", stat_data: "Mais Dados", stat_user: "Usuários Ativos",
+                    tools_title: "Ferramentas", tools_desc: "Você tem 2 créditos diários de geração de conteúdo."
                 }
             };
 
             const t = translations[lang] || translations['tr'];
+            const ids = ['nav-home', 'nav-apps', 'nav-platform', 'nav-tools', 'nav-login', 'nav-logout', 'hero-title', 'hero-desc', 'hero-btn', 'stat-data', 'stat-user', 'tools-title', 'tools-desc'];
             
-            const ids = [
-                'nav-home', 'nav-apps', 'nav-platform', 'nav-tools', 'nav-login', 'nav-logout',
-                'hero-title', 'hero-desc', 'hero-subdesc', 'hero-btn', 'stat-data', 'stat-user',
-                'about-title', 'contact-title', 'help-title', 'help-msg',
-                'career-title', 'career-msg', 'press-title', 'press-msg', 'brand-title', 'brand-msg',
-                'faq-title', 'faq-desc', 'tools-title', 'tools-desc',
-                'mobile-title', 'mobile-desc', 'ai-title', 'ai-desc', 'ai-btn',
-                'footer-desc', 'footer-corp', 'footer-sup',
-                'f-about', 'f-career', 'f-press', 'f-brand',
-                'f-contact', 'f-help', 'f-faq', 'f-priv', 'f-terms', 'f-sec'
-            ];
             ids.forEach(id => {
                 const el = document.getElementById(id);
                 if (el && t[id.replace(/-/g, '_')]) {
                     el.innerHTML = t[id.replace(/-/g, '_')];
                 }
             });
-            document.querySelectorAll('.common-soon').forEach(el => el.innerText = t.common_soon);
         };
     </script>
 </body>
