@@ -189,17 +189,31 @@
                         <p id="hero-desc" class="text-lg text-gray-600 mb-4 leading-relaxed font-light">
                             Kayda basmadan önce neyin viral olacağını öğrenin. Yapay zeka ile geleceği öngörün, algoritmayı yönetin.
                         </p>
+                        <p id="hero-subdesc" class="text-md text-gray-500 mb-8 font-medium">
+                            İçerik üreticileri için dünyanın en gelişmiş yapay zeka destekli analiz platformu.
+                        </p>
                         <button id="hero-btn" onclick="showSection('tools')" class="bg-red-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-red-700 transition shadow-lg mb-8 transform hover:scale-105">
                             Hemen Başla
                         </button>
                         
                         <!-- İstatistikler -->
                         <div class="grid grid-cols-2 gap-6 pt-6 border-t border-gray-100 mb-6">
-                            <div><div class="text-2xl font-bold text-gray-900">2,500x</div><div class="text-xs text-gray-500 uppercase">Daha Fazla Veri</div></div>
-                            <div><div class="text-2xl font-bold text-gray-900">17K+</div><div class="text-xs text-gray-500 uppercase">Aktif Kullanıcı</div></div>
+                            <div>
+                                <div class="text-2xl font-bold text-gray-900">2,500x</div>
+                                <div id="stat-data" class="text-xs text-gray-500 uppercase">Daha Fazla Veri</div>
+                            </div>
+                            <div>
+                                <div class="text-2xl font-bold text-gray-900">17K+</div>
+                                <div id="stat-user" class="text-xs text-gray-500 uppercase">Aktif Kullanıcı</div>
+                            </div>
                         </div>
 
-                        <!-- Reklam Alanı (Mevcut HTML yapısı korundu) -->
+                        <!-- Sol Taraftaki Görsel Alanı -->
+                        <div class="w-full mb-4">
+                            <img src="hero (2).png" class="left-hero shadow-sm" alt="Tanıtım Görseli" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1000&q=80'">
+                        </div>
+
+                        <!-- Reklam Alanı Placeholder -->
                         <div class="w-full h-24 bg-gray-50 rounded-lg border border-gray-200 flex items-center justify-center">
                             <span class="text-gray-400 text-xs uppercase tracking-widest"><i class="fas fa-ad mr-2"></i>Reklam Alanı</span>
                         </div>
@@ -212,12 +226,195 @@
             </div>
         </section>
 
-        <!-- HAKKIMIZDA, İLETİŞİM VB. (İçerikler Korundu) -->
-        <section id="about"><div class="max-w-4xl mx-auto px-4 py-20"><div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100"><h2 class="text-3xl font-bold mb-6 gradient-text">Hakkımızda</h2><p>Jarvis Heyrose...</p></div></div></section>
-        <section id="contact"><div class="max-w-4xl mx-auto px-4 py-20"><div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center"><h2 class="text-3xl font-bold mb-8 gradient-text">İletişim</h2><p>jarvisheyrose@gmail.com</p></div></div></section>
-        <!-- Diğer bölümler gizli olarak mevcut yapıda devam ediyor -->
+        <!-- HAKKIMIZDA BÖLÜMÜ -->
+        <section id="about">
+            <div class="max-w-4xl mx-auto px-4 py-20">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <h2 id="about-title" class="text-3xl font-bold mb-6 gradient-text">Hakkımızda</h2>
+                    <div class="space-y-6 text-gray-700 leading-relaxed">
+                        <p class="text-lg font-semibold">Jarvis Heyrose, içerik üreticilerinin en büyük problemini çözer: daha hızlı, daha güçlü ve daha viral içerik üretmek.</p>
+                        
+                        <p>Biz sohbet eden bir bot değiliz; sonuç üreten bir araç tasarladık. YouTube, Instagram ve TikTok gibi platformlarda öne çıkmak için yalnızca iyi içerik yetmez… <strong>Doğru başlık, doğru hashtag ve doğru açıklama gerekir.</strong></p>
+                        
+                        <p>Jarvis Heyrose tam olarak bunu saniyeler içinde hazırlar.</p>
+                        
+                        <div class="bg-gray-50 p-6 rounded-xl border-l-4 border-red-500">
+                            <h3 class="font-bold text-xl mb-2 text-gray-900">Amacımız Basit:</h3>
+                            <p>İçeriğinizi profesyonel gösteren, izlenmeyi artıran ve markanızı büyüten metinleri tek tıkla üretmek. Daha az uğraş, daha fazla etki.</p>
+                            <p class="mt-2 font-bold italic">Jarvis Heyrose — Viral içerik üretiminin premium yolu.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <!-- ARAÇLAR (Kategorilere Ayrıldı) -->
+        <!-- İLETİŞİM BÖLÜMÜ -->
+        <section id="contact">
+            <div class="max-w-4xl mx-auto px-4 py-20">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
+                    <h2 id="contact-title" class="text-3xl font-bold mb-8 gradient-text">İletişim</h2>
+                    <div class="bg-gray-50 p-8 rounded-xl inline-block">
+                        <div class="flex items-center justify-center space-x-3 text-xl">
+                            <i class="fas fa-envelope text-red-600"></i>
+                            <a href="mailto:jarvisheyrose@gmail.com" class="hover:text-red-600 font-bold">jarvisheyrose@gmail.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- YARDIM MERKEZİ BÖLÜMÜ -->
+        <section id="help">
+            <div class="max-w-4xl mx-auto px-4 py-20">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
+                    <h2 id="help-title" class="text-3xl font-bold mb-6 gradient-text">Yardım Merkezi</h2>
+                    <div class="py-12">
+                        <i class="fas fa-tools text-6xl text-gray-300 mb-6"></i>
+                        <p id="help-msg" class="text-xl text-gray-600 font-semibold">Yakında aktif olacaktır.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- KARİYER BÖLÜMÜ -->
+        <section id="career">
+            <div class="max-w-4xl mx-auto px-4 py-20">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
+                    <h2 id="career-title" class="text-3xl font-bold mb-6 gradient-text">Kariyer</h2>
+                    <div class="py-12">
+                        <i class="fas fa-rocket text-6xl text-gray-300 mb-6"></i>
+                        <p id="career-msg" class="text-xl text-gray-600 font-semibold mb-2">Jarvis Heyrose ekibine katılmak istediğiniz için teşekkürler.</p>
+                        <p class="text-lg text-gray-500 common-soon">Bu sayfa yakında aktif olacaktır.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BASIN ODASI BÖLÜMÜ -->
+        <section id="press">
+            <div class="max-w-4xl mx-auto px-4 py-20">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
+                    <h2 id="press-title" class="text-3xl font-bold mb-6 gradient-text">Basın Odası</h2>
+                    <div class="py-12">
+                        <i class="fas fa-newspaper text-6xl text-gray-300 mb-6"></i>
+                        <p id="press-msg" class="text-xl text-gray-600 font-semibold mb-2">Basın bültenleri ve medya kitleri hazırlanıyor.</p>
+                        <p class="text-lg text-gray-500 common-soon">Bu sayfa yakında aktif olacaktır.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MARKA VARLIKLARI BÖLÜMÜ -->
+        <section id="brand">
+            <div class="max-w-4xl mx-auto px-4 py-20">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
+                    <h2 id="brand-title" class="text-3xl font-bold mb-6 gradient-text">Marka Varlıkları</h2>
+                    <div class="py-12">
+                        <i class="fas fa-palette text-6xl text-gray-300 mb-6"></i>
+                        <p id="brand-msg" class="text-xl text-gray-600 font-semibold mb-2">Logo ve kurumsal kimlik rehberimiz güncelleniyor.</p>
+                        <p class="text-lg text-gray-500 common-soon">Bu sayfa yakında aktif olacaktır.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SSS BÖLÜMÜ -->
+        <section id="sss" class="faqSection">
+            <div class="max-w-4xl mx-auto">
+                <div class="faqHead">
+                    <h2 id="faq-title">Sık Sorulan Sorular</h2>
+                    <p id="faq-desc">Jarvis Heyrose hakkında en çok merak edilenler.</p>
+                </div>
+            
+                <div class="faqGrid">
+                    <details class="faqItem" open>
+                        <summary>Jarvis Heyrose ne işe yarar?</summary>
+                        <div class="faqAnswer">
+                            YouTube, Instagram, TikTok ve X için başlık, hashtag ve kanal açıklaması üretir. Yapay zeka altyapımız ile viral potansiyeli yüksek içerik fikirleri sunar.
+                        </div>
+                    </details>
+                
+                    <details class="faqItem">
+                        <summary>Ücretsiz kullanım var mı?</summary>
+                        <div class="faqAnswer">
+                            Evet. Her gün yenilenen ücretsiz kullanım haklarınız bulunur. Limit bitince reklam izleyerek devam edebilirsiniz.
+                        </div>
+                    </details>
+                
+                    <details class="faqItem">
+                        <summary>Google ile giriş neden zorunlu?</summary>
+                        <div class="faqAnswer">
+                            Güvenlik, spam koruması ve limitlerinizi (kredilerinizi) hesabınıza tanımlamak için Google ile giriş zorunludur. Şifrenizi asla kaydetmeyiz.
+                        </div>
+                    </details>
+                
+                    <details class="faqItem">
+                        <summary>Üretilen içerikler saklanıyor mu?</summary>
+                        <div class="faqAnswer">
+                            Hayır. Kullanıcı gizliliği için üretilen içerikler oturumunuz süresince görünür, kalıcı olarak sunucularımızda saklanmaz.
+                        </div>
+                    </details>
+                
+                    <details class="faqItem">
+                        <summary>Destek için nereye ulaşabilirim?</summary>
+                        <div class="faqAnswer">
+                            Her türlü teknik destek, öneri veya iş birliği için: <a href="mailto:jarvisheyrose@gmail.com">jarvisheyrose@gmail.com</a>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- GİZLİLİK POLİTİKASI BÖLÜMÜ -->
+        <section id="privacy">
+            <div class="max-w-4xl mx-auto px-4 py-20">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <h2 id="privacy-title" class="text-3xl font-bold mb-8 gradient-text">Gizlilik Politikası</h2>
+                    <div class="mb-10">
+                        <p class="text-xs text-gray-500 mb-3">Son Güncelleme: 2026</p>
+                        <p class="text-gray-700 mb-4">Jarvis Heyrose olarak kullanıcı gizliliğine en üst düzeyde önem veriyoruz. Hizmetlerimizi kullanırken kişisel verilerinizin nasıl işlendiğini bilmeniz hakkınızdır.</p>
+                        <h3 class="font-bold text-lg mt-4 mb-2">1. Toplanan Veriler</h3>
+                        <p class="text-gray-600 mb-2">Sadece Google OAuth aracılığıyla sağlanan temel profil bilgilerinizi (Ad, E-posta, Profil Resmi) kullanırız. Şifrelerinize veya diğer özel verilerinize erişimimiz yoktur.</p>
+                        <h3 class="font-bold text-lg mt-4 mb-2">2. Veri Kullanımı</h3>
+                        <p class="text-gray-600 mb-2">Verileriniz sadece size özel içerik üretimi ve kullanım limitlerinizin takibi için kullanılır. Üçüncü taraflarla paylaşılmaz.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KULLANIM ŞARTLARI BÖLÜMÜ -->
+        <section id="terms">
+            <div class="max-w-4xl mx-auto px-4 py-20">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <h2 id="terms-title" class="text-3xl font-bold mb-8 gradient-text">Kullanım Şartları</h2>
+                    <div class="mb-10">
+                         <p class="text-gray-700 mb-4">Jarvis Heyrose hizmetlerini kullanarak aşağıdaki şartları kabul etmiş olursunuz:</p>
+                         <ul class="list-disc list-inside text-gray-600 space-y-2">
+                             <li>Platformu yasa dışı amaçlar için kullanamazsınız.</li>
+                             <li>Üretilen içeriklerin sorumluluğu kullanıcıya aittir.</li>
+                             <li>Sistem güvenliğini tehlikeye atacak girişimlerde bulunmak yasaktır.</li>
+                             <li>Jarvis Heyrose, hizmet özelliklerini önceden bildirmeksizin değiştirme hakkını saklı tutar.</li>
+                         </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GÜVENLİK BÖLÜMÜ -->
+        <section id="security">
+            <div class="max-w-4xl mx-auto px-4 py-20">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center">
+                    <h2 id="security-title" class="text-3xl font-bold mb-8 gradient-text">Güvenlik</h2>
+                    <div class="py-6">
+                        <i class="fas fa-shield-alt text-6xl text-green-500 mb-6"></i>
+                        <p class="text-lg text-gray-700 mt-4 mb-2">Verileriniz Güvende.</p>
+                        <p class="text-gray-500">Jarvis Heyrose, Google altyapısı üzerinden güvenli giriş sağlar (OAuth 2.0). Veritabanı bağlantılarımız SSL ile şifrelenmiştir ve düzenli güvenlik taramalarından geçirilir.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ARAÇLAR -->
         <section id="tools">
             <div class="max-w-7xl mx-auto px-4 py-16">
                 <div class="text-center mb-16">
@@ -258,13 +455,39 @@
                 </div>
             </div>
         </section>
+
+        <!-- UYGULAMALAR -->
+        <section id="apps">
+            <div class="max-w-7xl mx-auto px-4 py-20 text-center">
+                <h2 id="mobile-title" class="text-4xl font-bold mb-8">Mobil Dünyada Biz</h2>
+                <div class="bg-gradient-to-r from-gray-900 to-black p-12 rounded-3xl text-white shadow-2xl">
+                    <p id="mobile-desc" class="text-gray-400 mb-8 max-w-xl mx-auto italic">JarvisHeyrose çok yakında cebinizde.</p>
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <button onclick="alert('iOS App')" class="bg-white/10 backdrop-blur px-8 py-3 rounded-xl border border-white/20 flex items-center space-x-3 hover:bg-white/20 transition">
+                            <i class="fab fa-apple text-3xl"></i>
+                            <div class="text-left"><p class="text-[10px] uppercase">Coming soon</p><p class="text-lg font-bold">App Store</p></div>
+                        </button>
+                        <button onclick="alert('Android App')" class="bg-white/10 backdrop-blur px-8 py-3 rounded-xl border border-white/20 flex items-center space-x-3 hover:bg-white/20 transition">
+                            <i class="fab fa-google-play text-2xl"></i>
+                            <div class="text-left"><p class="text-[10px] uppercase">Coming soon</p><p class="text-lg font-bold">Play Store</p></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
         
         <!-- PLATFORM (Aynı) -->
         <section id="platform">
             <div class="max-w-7xl mx-auto px-4 py-20">
-                <div class="bg-white rounded-3xl p-12 shadow-sm border border-gray-100 text-center">
-                    <h2 class="text-4xl font-bold mb-6 gemini-gradient">Yapay Zeka Motoru</h2>
-                    <button onclick="showSection('tools')" class="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition">Araçları Dene</button>
+                <div class="bg-white rounded-3xl p-12 shadow-sm border border-gray-100 relative overflow-hidden">
+                    <div class="relative z-10 text-center">
+                        <span class="bg-indigo-100 text-indigo-800 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">Powered by Gemini</span>
+                        <h2 id="ai-title" class="text-4xl font-bold mb-6 gemini-gradient">Yapay Zeka Motoru</h2>
+                        <p id="ai-desc" class="text-gray-600 text-lg max-w-2xl mx-auto mb-8">
+                            Google Gemini altyapısı ile içeriklerinizi analiz ediyor, trendleri tahmin ediyoruz.
+                        </p>
+                        <button id="ai-btn" onclick="showSection('tools')" class="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition">Araçları Dene</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -272,8 +495,38 @@
 
     <!-- FOOTER -->
     <footer class="bg-gray-900 text-gray-300 py-16 mt-20">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <p>&copy; 2026 JarvisHeyrose Inc.</p>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                <div>
+                    <h2 class="text-2xl font-bold text-white mb-4">JarvisHeyrose</h2>
+                    <p id="footer-desc" class="text-sm text-gray-400 mb-6">İçerik üreticileri için dünyanın en gelişmiş yapay zeka destekli analiz platformu.</p>
+                </div>
+
+                <div>
+                    <h3 id="footer-corp" class="footer-heading">Kurumsal</h3>
+                    <ul class="space-y-2">
+                        <li><a onclick="showSection('about')" id="f-about" class="footer-link">Hakkımızda</a></li>
+                        <li><a onclick="showSection('career')" id="f-career" class="footer-link">Kariyer</a></li>
+                        <li><a onclick="showSection('press')" id="f-press" class="footer-link">Basın Odası</a></li>
+                        <li><a onclick="showSection('brand')" id="f-brand" class="footer-link">Marka Varlıkları</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 id="footer-sup" class="footer-heading">Destek & Yasal</h3>
+                    <ul class="space-y-2">
+                        <li><a onclick="showSection('contact')" id="f-contact" class="footer-link">İletişim</a></li>
+                        <li><a onclick="showSection('help')" id="f-help" class="footer-link">Yardım Merkezi</a></li>
+                        <li><a onclick="showSection('sss')" id="f-faq" class="footer-link">SSS</a></li>
+                        <li><a onclick="showSection('privacy')" id="f-priv" class="footer-link">Gizlilik Politikası</a></li>
+                        <li><a onclick="showSection('terms')" id="f-terms" class="footer-link">Kullanım Şartları</a></li>
+                        <li><a onclick="showSection('security')" id="f-sec" class="footer-link">Güvenlik</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-sm text-gray-500">
+                <p>&copy; 2026 JarvisHeyrose Inc.</p>
+            </div>
         </div>
     </footer>
 
@@ -536,8 +789,71 @@
         window.setLanguage = function(lang, btn) {
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            // Metin değiştirme mantığı önceki kodlarla aynı kalabilir veya buraya eklenebilir.
-        }
+            
+            const translations = {
+                tr: {
+                    nav_home: "Anasayfa", nav_apps: "Uygulamalar", nav_platform: "Platform", nav_tools: "Araçlar", nav_login: "Giriş Yap", nav_logout: "Çıkış",
+                    hero_title: "Viral İçerikler <br><span class='text-red-600'>Oluşturun</span>",
+                    hero_desc: "Kayda basmadan önce neyin viral olacağını öğrenin. Yapay zeka ile geleceği öngörün, algoritmayı yönetin.",
+                    hero_subdesc: "İçerik üreticileri için dünyanın en gelişmiş yapay zeka destekli analiz platformu.",
+                    hero_btn: "Hemen Başla", stat_data: "Daha Fazla Veri", stat_user: "Aktif Kullanıcı",
+                    about_title: "Hakkımızda", contact_title: "İletişim", help_title: "Yardım Merkezi", help_msg: "Yakında aktif olacaktır.",
+                    career_title: "Kariyer", career_msg: "Ekibe katılmak istediğiniz için teşekkürler.",
+                    press_title: "Basın Odası", press_msg: "Basın bültenleri hazırlanıyor.",
+                    brand_title: "Marka Varlıkları", brand_msg: "Kurumsal kimlik güncelleniyor.",
+                    faq_title: "Sık Sorulan Sorular", faq_desc: "En çok merak edilenler.",
+                    tools_title: "Üretici Araçları", tools_desc: "Her araç için günlük 3 istek hakkınız bulunur.",
+                    mobile_title: "Mobil Dünyada Biz", mobile_desc: "JarvisHeyrose çok yakında cebinizde.",
+                    ai_title: "Yapay Zeka Motoru", ai_desc: "Google Gemini altyapısı ile içeriklerinizi analiz ediyor, trendleri tahmin ediyoruz.", ai_btn: "Araçları Dene",
+                    footer_desc: "İçerik üreticileri için dünyanın en gelişmiş yapay zeka destekli analiz platformu.",
+                    footer_corp: "Kurumsal", footer_sup: "Destek & Yasal",
+                    f_about: "Hakkımızda", f_career: "Kariyer", f_press: "Basın Odası", f_brand: "Marka",
+                    f_contact: "İletişim", f_help: "Yardım", f_faq: "SSS", f_priv: "Gizlilik", f_terms: "Şartlar", f_sec: "Güvenlik",
+                    common_soon: "Bu sayfa yakında aktif olacaktır."
+                },
+                en: {
+                    nav_home: "Home", nav_apps: "Apps", nav_platform: "Platform", nav_tools: "Tools", nav_login: "Login", nav_logout: "Logout",
+                    hero_title: "Create <br><span class='text-red-600'>Viral Content</span>",
+                    hero_desc: "Know what goes viral before hitting record. Predict the future with AI, master the algorithm.",
+                    hero_subdesc: "The world's most advanced AI-powered analysis platform for content creators.",
+                    hero_btn: "Start Now", stat_data: "More Data", stat_user: "Active Users",
+                    about_title: "About Us", contact_title: "Contact", help_title: "Help Center", help_msg: "Coming soon.",
+                    career_title: "Careers", career_msg: "Thanks for your interest in joining the team.",
+                    press_title: "Press Room", press_msg: "Press releases are being prepared.",
+                    brand_title: "Brand Assets", brand_msg: "Brand identity is being updated.",
+                    faq_title: "FAQ", faq_desc: "Frequently asked questions.",
+                    tools_title: "Creator Tools", tools_desc: "You have 3 requests per tool daily.",
+                    mobile_title: "We are Mobile", mobile_desc: "JarvisHeyrose in your pocket soon.",
+                    ai_title: "AI Engine", ai_desc: "Powered by Google Gemini to analyze content and predict trends.", ai_btn: "Try Tools",
+                    footer_desc: "World's most advanced AI-powered analysis platform for creators.",
+                    footer_corp: "Corporate", footer_sup: "Support & Legal",
+                    f_about: "About Us", f_career: "Careers", f_press: "Press Room", f_brand: "Brand",
+                    f_contact: "Contact", f_help: "Help", f_faq: "FAQ", f_priv: "Privacy", f_terms: "Terms", f_sec: "Security",
+                    common_soon: "This page will be active soon."
+                }
+            };
+
+            const t = translations[lang] || translations['tr'];
+            
+            const ids = [
+                'nav-home', 'nav-apps', 'nav-platform', 'nav-tools', 'nav-login', 'nav-logout',
+                'hero-title', 'hero-desc', 'hero-subdesc', 'hero-btn', 'stat-data', 'stat-user',
+                'about-title', 'contact-title', 'help-title', 'help-msg',
+                'career-title', 'career-msg', 'press-title', 'press-msg', 'brand-title', 'brand-msg',
+                'faq-title', 'faq-desc', 'tools-title', 'tools-desc',
+                'mobile-title', 'mobile-desc', 'ai-title', 'ai-desc', 'ai-btn',
+                'footer-desc', 'footer-corp', 'footer-sup',
+                'f-about', 'f-career', 'f-press', 'f-brand',
+                'f-contact', 'f-help', 'f-faq', 'f-priv', 'f-terms', 'f-sec'
+            ];
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && t[id.replace(/-/g, '_')]) {
+                    el.innerHTML = t[id.replace(/-/g, '_')];
+                }
+            });
+            document.querySelectorAll('.common-soon').forEach(el => el.innerText = t.common_soon);
+        };
     </script>
 </body>
 </html>
