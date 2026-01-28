@@ -37,7 +37,7 @@
         }
 
         .hero-gradient {
-            background: radial-gradient(circle at 20% 30%, rgba(255, 0, 0, 0.05) 0%, transparent 50%);
+            background: radial-gradient(circle at 50% 50%, rgba(255, 0, 0, 0.03) 0%, transparent 70%);
         }
 
         .card-premium {
@@ -185,16 +185,16 @@
         <!-- Home Section -->
         <section id="home" class="active hero-gradient">
             <div class="max-w-7xl mx-auto px-6 py-12">
-                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="grid lg:grid-cols-3 gap-8 items-center text-center">
                     <!-- Sol Görsel (Hero 2) -->
-                    <div class="relative order-2 lg:order-1">
-                        <div class="absolute -inset-10 bg-red-600/5 blur-[120px] rounded-full"></div>
-                        <img src="hero (2).png" class="relative w-full rounded-[40px] border border-slate-100 shadow-xl" alt="JarvisHero2">
+                    <div class="relative hidden lg:block">
+                        <div class="absolute -inset-10 bg-red-600/5 blur-[80px] rounded-full"></div>
+                        <img src="hero (2).png" class="relative w-full rounded-[40px] border border-slate-100 shadow-lg" alt="JarvisHero2">
                     </div>
 
-                    <!-- Sağ İçerik -->
-                    <div class="text-center lg:text-left order-1 lg:order-2">
-                        <div class="flex flex-wrap gap-2 mb-8 justify-center lg:justify-start">
+                    <!-- Orta İçerik -->
+                    <div class="lg:col-span-1">
+                        <div class="flex flex-wrap gap-2 mb-8 justify-center">
                             <button class="lang-btn active px-4 py-1.5 rounded-full text-[10px] font-bold" onclick="window.setLanguage('tr', this)">TR</button>
                             <button class="lang-btn px-4 py-1.5 rounded-full text-[10px] font-bold" onclick="window.setLanguage('en', this)">EN</button>
                             <button class="lang-btn px-4 py-1.5 rounded-full text-[10px] font-bold" onclick="window.setLanguage('de', this)">DE</button>
@@ -203,16 +203,28 @@
                             <button class="lang-btn px-4 py-1.5 rounded-full text-[10px] font-bold" onclick="window.setLanguage('pt', this)">PT</button>
                         </div>
 
-                        <h1 class="text-5xl lg:text-7xl font-extrabold mb-8 leading-[1.1] tracking-tighter text-slate-900" id="h-title">
+                        <h1 class="text-4xl lg:text-6xl font-extrabold mb-8 leading-[1.1] tracking-tighter text-slate-900" id="h-title">
                             Viral İçerikler <br><span class="text-red-600">Oluşturun</span>
                         </h1>
-                        <p class="text-lg text-slate-500 mb-12 max-w-xl mx-auto lg:mx-0 leading-relaxed" id="h-desc">
-                            Yapay zeka ile sosyal medya algoritmasını yönetin. Saniyeler içinde etkileşim odaklı başlık ve hashtagler üretin.
+                        <p class="text-md text-slate-500 mb-12 max-w-sm mx-auto leading-relaxed" id="h-desc">
+                            Yapay zeka motoru ile sosyal medya algoritmasını yönetin. Saniyeler içinde etkileşim rekorları kıran başlık ve hashtagler üretin.
                         </p>
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                            <button onclick="window.showSection('tools')" class="btn-primary px-10 py-4 rounded-2xl text-md font-bold shadow-lg">Üretime Başla</button>
-                            <button onclick="window.showSection('about')" class="bg-slate-100 border border-slate-200 px-10 py-4 rounded-2xl text-md font-bold hover:bg-slate-200 transition text-slate-700">Keşfet</button>
+                        <div class="flex flex-col gap-4 items-center">
+                            <button onclick="window.showSection('tools')" class="btn-primary w-full max-w-[240px] py-4 rounded-2xl text-md font-bold shadow-lg">Üretime Başla</button>
+                            <button onclick="window.showSection('about')" class="bg-slate-100 border border-slate-200 w-full max-w-[240px] py-4 rounded-2xl text-md font-bold hover:bg-slate-200 transition text-slate-700">Keşfet</button>
                         </div>
+                    </div>
+
+                    <!-- Sağ Görsel (Hero 3) -->
+                    <div class="relative hidden lg:block">
+                        <div class="absolute -inset-10 bg-blue-600/5 blur-[80px] rounded-full"></div>
+                        <img src="hero (3).png" class="relative w-full rounded-[40px] border border-slate-100 shadow-lg" alt="JarvisHero3">
+                    </div>
+                    
+                    <!-- Mobil için görseller -->
+                    <div class="grid grid-cols-2 gap-4 lg:hidden mt-8">
+                        <img src="hero (2).png" class="rounded-2xl border shadow-sm" alt="Hero 2">
+                        <img src="hero (3).png" class="rounded-2xl border shadow-sm" alt="Hero 3">
                     </div>
                 </div>
             </div>
@@ -220,32 +232,61 @@
 
         <!-- Tools Section -->
         <section id="tools">
-            <div class="max-w-7xl mx-auto px-6 py-24 flex gap-8">
+            <div class="max-w-7xl mx-auto px-6 py-24 flex flex-col xl:flex-row gap-8">
                 <div class="flex-grow">
-                    <div class="mb-16">
+                    <div class="mb-12 text-center lg:text-left">
                         <h2 class="text-3xl font-bold mb-4 tracking-tight text-slate-900">Üretici Araçları</h2>
-                        <p class="text-slate-500">Platforma özel optimize edilmiş yapay zeka araçları.</p>
+                        <p class="text-slate-500">Her platform için sosyal medya kurallarına %100 uyumlu içerik motoru.</p>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="card-premium p-8 rounded-[32px]" onclick="window.openToolModal('YouTube Başlık', 'title')">
-                            <div class="w-12 h-12 bg-red-600/5 flex items-center justify-center rounded-2xl mb-6 text-red-600 text-2xl"><i class="fab fa-youtube"></i></div>
-                            <h3 class="text-xl font-bold mb-3 text-slate-900">YouTube Başlık</h3>
-                            <p class="text-slate-500 text-xs leading-relaxed">Algoritma dostu, tıklanma oranı yüksek viral başlıklar.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- YouTube -->
+                        <div class="card-premium p-6 rounded-[24px]" onclick="window.openToolModal('YouTube Başlık', 'yt-title')">
+                            <div class="w-10 h-10 bg-red-600/5 flex items-center justify-center rounded-xl mb-4 text-red-600 text-xl"><i class="fab fa-youtube"></i></div>
+                            <h3 class="text-md font-bold text-slate-900">YouTube Başlık</h3>
                         </div>
-                        <div class="card-premium p-8 rounded-[32px]" onclick="window.openToolModal('Instagram Reels', 'title')">
-                            <div class="w-12 h-12 bg-pink-600/5 flex items-center justify-center rounded-2xl mb-6 text-pink-600 text-2xl"><i class="fab fa-instagram"></i></div>
-                            <h3 class="text-xl font-bold mb-3 text-slate-900">Instagram Başlık</h3>
-                            <p class="text-slate-500 text-xs leading-relaxed">Erişim odaklı modern Reels ve post açıklamaları.</p>
+                        <div class="card-premium p-6 rounded-[24px]" onclick="window.openToolModal('YouTube Hashtag', 'yt-hashtag')">
+                            <div class="w-10 h-10 bg-red-600/5 flex items-center justify-center rounded-xl mb-4 text-red-600 text-xl"><i class="fas fa-hashtag"></i></div>
+                            <h3 class="text-md font-bold text-slate-900">YouTube Hashtag</h3>
                         </div>
-                        <div class="card-premium p-8 rounded-[32px]" onclick="window.openToolModal('TikTok Trend', 'title')">
-                            <div class="w-12 h-12 bg-slate-100 flex items-center justify-center rounded-2xl mb-6 text-slate-900 text-2xl"><i class="fab fa-tiktok"></i></div>
-                            <h3 class="text-xl font-bold mb-3 text-slate-900">TikTok Başlık</h3>
-                            <p class="text-slate-500 text-xs leading-relaxed">Keşfet odaklı, kısa ve akılda kalıcı trend metinleri.</p>
+
+                        <!-- Instagram -->
+                        <div class="card-premium p-6 rounded-[24px]" onclick="window.openToolModal('Instagram Başlık', 'ig-title')">
+                            <div class="w-10 h-10 bg-pink-600/5 flex items-center justify-center rounded-xl mb-4 text-pink-600 text-xl"><i class="fab fa-instagram"></i></div>
+                            <h3 class="text-md font-bold text-slate-900">Instagram Başlık</h3>
                         </div>
-                        <div class="card-premium p-8 rounded-[32px]" onclick="window.openToolModal('X (Twitter) Post', 'title')">
-                            <div class="w-12 h-12 bg-sky-500/5 flex items-center justify-center rounded-2xl mb-6 text-sky-500 text-2xl"><i class="fab fa-twitter"></i></div>
-                            <h3 class="text-xl font-bold mb-3 text-slate-900">X Başlık</h3>
-                            <p class="text-slate-500 text-xs leading-relaxed">Trend topic etkileşimi için optimize edilmiş metinler.</p>
+                        <div class="card-premium p-6 rounded-[24px]" onclick="window.openToolModal('Instagram Hashtag', 'ig-hashtag')">
+                            <div class="w-10 h-10 bg-pink-600/5 flex items-center justify-center rounded-xl mb-4 text-pink-600 text-xl"><i class="fas fa-hashtag"></i></div>
+                            <h3 class="text-md font-bold text-slate-900">Instagram Hashtag</h3>
+                        </div>
+
+                        <!-- TikTok -->
+                        <div class="card-premium p-6 rounded-[24px]" onclick="window.openToolModal('TikTok Başlık', 'tt-title')">
+                            <div class="w-10 h-10 bg-slate-100 flex items-center justify-center rounded-xl mb-4 text-slate-900 text-xl"><i class="fab fa-tiktok"></i></div>
+                            <h3 class="text-md font-bold text-slate-900">TikTok Başlık</h3>
+                        </div>
+                        <div class="card-premium p-6 rounded-[24px]" onclick="window.openToolModal('TikTok Hashtag', 'tt-hashtag')">
+                            <div class="w-10 h-10 bg-slate-100 flex items-center justify-center rounded-xl mb-4 text-slate-900 text-xl"><i class="fas fa-hashtag"></i></div>
+                            <h3 class="text-md font-bold text-slate-900">TikTok Hashtag</h3>
+                        </div>
+
+                        <!-- X -->
+                        <div class="card-premium p-6 rounded-[24px]" onclick="window.openToolModal('X Başlık', 'x-title')">
+                            <div class="w-10 h-10 bg-sky-500/5 flex items-center justify-center rounded-xl mb-4 text-sky-500 text-xl"><i class="fab fa-twitter"></i></div>
+                            <h3 class="text-md font-bold text-slate-900">X Başlık</h3>
+                        </div>
+                        <div class="card-premium p-6 rounded-[24px]" onclick="window.openToolModal('X Hashtag', 'x-hashtag')">
+                            <div class="w-10 h-10 bg-sky-500/5 flex items-center justify-center rounded-xl mb-4 text-sky-500 text-xl"><i class="fas fa-hashtag"></i></div>
+                            <h3 class="text-md font-bold text-slate-900">X Hashtag</h3>
+                        </div>
+
+                        <!-- Analiz ve Veri -->
+                        <div class="card-premium p-6 rounded-[24px] sm:col-span-2" onclick="window.openToolModal('Kanal Analiz', 'channel-analysis')">
+                            <div class="w-10 h-10 bg-indigo-600/5 flex items-center justify-center rounded-xl mb-4 text-indigo-600 text-xl"><i class="fas fa-chart-pie"></i></div>
+                            <h3 class="text-md font-bold text-slate-900">Kanal Analiz Yeri</h3>
+                        </div>
+                        <div class="card-premium p-6 rounded-[24px] sm:col-span-2" onclick="window.openToolModal('Kanal Veri', 'channel-data')">
+                            <div class="w-10 h-10 bg-green-600/5 flex items-center justify-center rounded-xl mb-4 text-green-600 text-xl"><i class="fas fa-database"></i></div>
+                            <h3 class="text-md font-bold text-slate-900">Kanal Veri Yeri</h3>
                         </div>
                     </div>
                 </div>
@@ -256,7 +297,7 @@
             </div>
         </section>
 
-        <!-- Diğer Sayfalar (Hakkımızda, SSS vb. benzer açık tema düzeninde) -->
+        <!-- Diğer Sayfalar -->
         <section id="sss">
             <div class="max-w-3xl mx-auto px-6 py-24">
                 <div class="text-center mb-16">
@@ -265,18 +306,17 @@
                 </div>
                 <div class="space-y-4">
                     <details class="faq-item" open>
-                        <summary>Hizmet ücretsiz mi? <i class="fas fa-plus text-xs opacity-30"></i></summary>
-                        <div class="faq-content">Her kullanıcı günlük 2 adet ücretsiz üretim hakkına sahiptir. Reklam izleyerek +1 bonus hak kazanabilir.</div>
+                        <summary>Kurallar nelerdir? <i class="fas fa-plus text-xs opacity-30"></i></summary>
+                        <div class="faq-content">Üretilen başlıklar maks 40, hashtagler maks 59 karakterdir. Toplamda 100 karakter sınırına sadık kalınır ve "garanti" gibi yanıltıcı ifadeler kullanılmaz.</div>
                     </details>
                     <details class="faq-item">
-                        <summary>Hangi dilleri destekliyor? <i class="fas fa-plus text-xs opacity-30"></i></summary>
-                        <div class="faq-content">Şu an TR, EN, DE, FR, ES ve PT dillerinde profesyonel içerik üretebilirsiniz.</div>
+                        <summary>Hizmet ücretsiz mi? <i class="fas fa-plus text-xs opacity-30"></i></summary>
+                        <div class="faq-content">Günlük 2 adet ücretsiz üretim hakkınız bulunmaktadır. Reklam izleyerek +1 bonus hak kazanabilirsiniz.</div>
                     </details>
                 </div>
             </div>
         </section>
 
-        <!-- Statik Sayfalar -->
         <section id="about" class="max-w-5xl mx-auto px-6 py-24 text-center">
             <h2 class="text-5xl font-extrabold mb-12 tracking-tight text-slate-900">Geleceği <span class="text-red-600">Öngörün</span></h2>
             <div class="bg-slate-50 p-12 rounded-[40px] border border-slate-100 text-slate-600 text-lg leading-relaxed text-left">
@@ -297,7 +337,7 @@
 
     <!-- Footer -->
     <footer class="py-16 border-t border-slate-100 bg-slate-50">
-        <div class="max-w-7xl mx-auto px-6">
+        <div class="max-w-7xl mx-auto px-6 text-center">
             <div class="flex flex-wrap justify-center gap-x-10 gap-y-5 text-[10px] font-bold uppercase tracking-[2px] mb-10 text-slate-400">
                 <a onclick="window.showSection('about')" class="footer-link">Hakkımızda</a>
                 <a onclick="window.showSection('sss')" class="footer-link">SSS</a>
