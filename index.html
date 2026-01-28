@@ -744,9 +744,13 @@
         const DEFAULT_LIMIT = 3;
 
         try {
-            // Supabase istemcisini başlat
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            console.log("Supabase initialized");
+            // Supabase istemcisini başlat - Hata durumunda (yanlış URL gibi) catch'e düşsün
+            if (!SUPABASE_URL.includes('YOUR_PROJECT_ID')) {
+                 supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                 console.log("Supabase initialized");
+            } else {
+                 console.log("Supabase config eksik, Demo Modu aktif.");
+            }
         } catch (error) {
             console.error("Supabase init error:", error);
         }
@@ -757,6 +761,34 @@
 
         // --- AUTH (SUPABASE) ---
         window.handleGoogleLogin = async () => {
+            // 1. Simülasyon Kontrolü (Eğer API Keyler girilmediyse)
+            if (SUPABASE_URL.includes('YOUR_PROJECT_ID')) {
+                console.log("Simülasyon Modu: Giriş yapılıyor...");
+                const mockUser = {
+                    id: 'mock-user-123',
+                    user_metadata: {
+                        full_name: 'Ziyaretçi (Demo)',
+                        avatar_url: 'https://ui-avatars.com/api/?name=Demo+User&background=random'
+                    }
+                };
+                
+                // Session varmış gibi davran
+                window.currentUser = mockUser;
+                
+                // UI Güncelle
+                document.getElementById('loginBtn').classList.add('hidden');
+                document.getElementById('userProfile').classList.remove('hidden');
+                document.getElementById('userName').innerText = mockUser.user_metadata.full_name;
+                document.getElementById('userAvatar').src = mockUser.user_metadata.avatar_url;
+                
+                // Limitleri yükle (Memory'den)
+                await fetchUserLimits(mockUser.id);
+                
+                alert("Demo Modu: Başarıyla giriş yapıldı (Supabase Ayarları Girilmediği İçin).");
+                return;
+            }
+
+            // 2. Gerçek Supabase Girişi
             if (!supabase) { alert("Supabase ayarları eksik!"); return; }
             
             try {
@@ -776,6 +808,13 @@
         };
 
         window.handleLogout = async () => {
+             // Demo modu çıkışı
+            if (SUPABASE_URL.includes('YOUR_PROJECT_ID')) {
+                window.currentUser = null;
+                window.location.reload();
+                return;
+            }
+
             if (!supabase) return;
             try {
                 const { error } = await supabase.auth.signOut();
@@ -819,8 +858,10 @@
         // Tablo yapısı: id (uuid, PK, references auth.users), remaining_credits (int4)
         
         async function fetchUserLimits(uid) {
-            if (!supabase) {
+            // Eğer Supabase yoksa veya demo modundaysak memory kullan
+            if (!supabase || SUPABASE_URL.includes('YOUR_PROJECT_ID')) {
                  window.userLimits = { remaining_credits: DEFAULT_LIMIT };
+                 updateLimitUI();
                  return;
             }
 
@@ -863,8 +904,8 @@
             window.userLimits.remaining_credits = newLimit;
             updateLimitUI();
 
-            // DB'de güncelle
-            if (supabase) {
+            // DB'de güncelle (Sadece gerçek modda)
+            if (supabase && !SUPABASE_URL.includes('YOUR_PROJECT_ID')) {
                 try {
                     const { error } = await supabase
                         .from('profiles')
