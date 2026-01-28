@@ -597,7 +597,11 @@
                 if (!contentType || !contentType.includes("application/json")) {
                     const errorText = await res.text();
                     console.error("API Hatası (JSON Değil):", errorText);
-                    throw new Error("Sunucu yanıtı geçersiz. Lütfen teknik ekiple iletişime geçin.");
+                    // Daha detaylı hata gösterimi
+                    if (errorText.includes("500") || errorText.includes("Error")) {
+                        throw new Error("Sunucu hatası: Backend çalışmıyor. API anahtarlarını ve Vercel ayarlarını kontrol edin.");
+                    }
+                    throw new Error("Sunucu yanıtı geçersiz (JSON bekleniyor).");
                 }
 
                 const data = await res.json();
