@@ -415,7 +415,7 @@
             </div>
         </section>
 
-        <!-- ARAÇLAR -->
+        <!-- ARAÇLAR (DÜZELTİLEN ALAN) -->
         <section id="tools">
             <div class="max-w-7xl mx-auto px-4 py-16">
                 <div class="text-center mb-16">
@@ -423,35 +423,64 @@
                     <p id="tools-desc" class="text-gray-600">Günlük 2 Başlık ve 2 Hashtag hakkınız vardır.</p>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Başlık Araçları -->
+                <!-- GRID SİSTEMİ GÜNCELLENDİ: 2 SÜTUN YAPILDI -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- YouTube Grubu -->
                     <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('YouTube Başlık', 'title')">
                         <i class="fab fa-youtube text-red-600 text-3xl mb-4"></i>
                         <h3 class="font-bold text-lg mb-2">YouTube Başlık</h3>
+                        <p class="text-xs text-gray-400">Tıklanabilir viral başlıklar üretin.</p>
                     </div>
-                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('Instagram Başlık', 'title')">
-                        <i class="fab fa-instagram text-pink-600 text-3xl mb-4"></i>
-                        <h3 class="font-bold text-lg mb-2">Instagram Başlık</h3>
-                    </div>
-                    
-                    <!-- Hashtag Araçları -->
                     <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('YouTube Hashtag', 'hashtag')">
                         <div class="text-red-600 text-3xl font-bold mb-4">#️⃣</div>
                         <h3 class="font-bold text-lg mb-2">YouTube Hashtag</h3>
+                         <p class="text-xs text-gray-400">Keşfete düşüren etiketler.</p>
+                    </div>
+
+                    <!-- Instagram Grubu -->
+                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('Instagram Başlık', 'title')">
+                        <i class="fab fa-instagram text-pink-600 text-3xl mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2">Instagram Başlık</h3>
+                        <p class="text-xs text-gray-400">Reels ve gönderi açıklamaları.</p>
                     </div>
                     <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('Instagram Hashtag', 'hashtag')">
                         <div class="text-pink-600 text-3xl font-bold mb-4">#️⃣</div>
                         <h3 class="font-bold text-lg mb-2">Instagram Hashtag</h3>
+                        <p class="text-xs text-gray-400">Milyonluk erişim için etiketler.</p>
                     </div>
                     
-                    <!-- Diğer Araçlar -->
+                    <!-- TikTok Grubu -->
                     <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('TikTok Başlık', 'title')">
                         <i class="fab fa-tiktok text-black text-3xl mb-4"></i>
                         <h3 class="font-bold text-lg mb-2">TikTok Başlık</h3>
+                         <p class="text-xs text-gray-400">Akım yaratan metinler.</p>
                     </div>
                      <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('TikTok Hashtag', 'hashtag')">
                         <div class="text-black text-3xl font-bold mb-4">#️⃣</div>
                         <h3 class="font-bold text-lg mb-2">TikTok Hashtag</h3>
+                        <p class="text-xs text-gray-400">FYP garantili etiketler.</p>
+                    </div>
+                    
+                    <!-- X (Twitter) Grubu - YENİ EKLENDİ -->
+                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('X Başlık', 'title')">
+                        <i class="fab fa-twitter text-blue-400 text-3xl mb-4"></i> <!-- FontAwesome eski sürümse twitter, yeniyse x-twitter -->
+                        <h3 class="font-bold text-lg mb-2">X (Twitter) Başlık</h3>
+                        <p class="text-xs text-gray-400">Etkileşim alan tweet fikirleri.</p>
+                    </div>
+                     <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('X Hashtag', 'hashtag')">
+                        <div class="text-blue-400 text-3xl font-bold mb-4">#️⃣</div>
+                        <h3 class="font-bold text-lg mb-2">X (Twitter) Hashtag</h3>
+                        <p class="text-xs text-gray-400">TT listesine sokan etiketler.</p>
+                    </div>
+
+                    <!-- KANAL VERİ ANALİZ (Tam Genişlik) - YENİ EKLENDİ -->
+                    <div class="tool-card bg-gradient-to-r from-gray-900 to-black text-white p-6 rounded-2xl md:col-span-2 flex items-center justify-between" onclick="alert('Kanal analiz modülü yükleniyor...')">
+                        <div>
+                            <i class="fas fa-chart-line text-3xl mb-2 text-green-400"></i>
+                            <h3 class="font-bold text-xl">Kanal Veri Analiz ve Kontrol</h3>
+                            <p class="text-sm text-gray-400">Kanalınızın büyüme performansını yapay zeka ile ölçün.</p>
+                        </div>
+                        <i class="fas fa-arrow-right text-2xl"></i>
                     </div>
                 </div>
             </div>
