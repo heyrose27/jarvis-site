@@ -592,21 +592,20 @@
                     body: JSON.stringify({ topic: val, type: currentToolType, lang: currentLang })
                 });
 
-                // Yanıt formatı kontrolü
-                const contentType = res.headers.get("content-type");
-                if (!contentType || !contentType.includes("application/json")) {
-                    const errorText = await res.text();
-                    console.error("API Hatası (JSON Değil):", errorText);
-                    // Daha detaylı hata gösterimi
-                    if (errorText.includes("500") || errorText.includes("Error")) {
-                        throw new Error("Sunucu hatası: Backend çalışmıyor. API anahtarlarını ve Vercel ayarlarını kontrol edin.");
+                // Hata yakalama mekanizmasını güçlendir
+                if (!res.ok) {
+                    const contentType = res.headers.get("content-type");
+                    if (contentType && contentType.includes("application/json")) {
+                        const errData = await res.json();
+                        throw new Error(errData.error || "Sunucu hatası.");
+                    } else {
+                        const rawText = await res.text();
+                        console.error("Beklenmeyen Yanıt:", rawText);
+                        throw new Error("Sunucu geçersiz bir yanıt döndürdü (HTML/Text). Vercel kayıtlarını kontrol edin.");
                     }
-                    throw new Error("Sunucu yanıtı geçersiz (JSON bekleniyor).");
                 }
 
                 const data = await res.json();
-                if(!res.ok) throw new Error(data.error || "API Hatası oluştu.");
-
                 localStorage.setItem('jh_credits', JSON.stringify({ ...credits, count: credits.count - 1 }));
                 document.getElementById('resultContent').innerText = data.result;
                 document.getElementById('loadingContainer').style.display = 'none';
