@@ -145,11 +145,31 @@
             letter-spacing: 1px;
         }
 
+        .rules-box {
+            background: #fff8f8;
+            border: 1px solid #fee2e2;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 11px;
+            color: #991b1b;
+        }
+
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--brand-light); }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
+    <!-- JS Fonksiyonlarını erken tanımlıyoruz ki TypeError hatası oluşmasın -->
+    <script>
+        window.showSection = (id) => {
+            document.querySelectorAll('main > section').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(id);
+            if(target) target.classList.add('active');
+            window.scrollTo(0,0);
+        };
+    </script>
 </head>
 <body>
 
@@ -168,6 +188,7 @@
             <nav class="hidden md:flex space-x-10 items-center text-[13px] font-bold uppercase tracking-widest">
                 <a href="javascript:void(0)" onclick="window.showSection('home')" class="footer-link">Anasayfa</a>
                 <a href="javascript:void(0)" onclick="window.showSection('apps')" class="footer-link">Uygulamalar</a>
+                <a href="javascript:void(0)" onclick="window.showSection('platform')" class="footer-link">Platform</a>
                 <a href="javascript:void(0)" onclick="window.showSection('tools')" class="footer-link">Araçlar</a>
                 <div id="authArea">
                     <button id="loginBtn" onclick="window.handleGoogleLogin()" class="bg-slate-900 text-white px-6 py-2.5 rounded-full hover:bg-slate-800 transition">Giriş Yap</button>
@@ -211,7 +232,7 @@
                         </p>
                         <div class="flex flex-col gap-4 items-center">
                             <button onclick="window.showSection('tools')" class="btn-primary w-full max-w-[240px] py-4 rounded-2xl text-md font-bold shadow-lg">Üretime Başla</button>
-                            <button onclick="window.showSection('about')" class="bg-slate-100 border border-slate-200 w-full max-w-[240px] py-4 rounded-2xl text-md font-bold hover:bg-slate-200 transition text-slate-700">Keşfet</button>
+                            <button onclick="window.showSection('platform')" class="bg-slate-100 border border-slate-200 w-full max-w-[240px] py-4 rounded-2xl text-md font-bold hover:bg-slate-200 transition text-slate-700">Keşfet</button>
                         </div>
                     </div>
 
@@ -297,49 +318,114 @@
             </div>
         </section>
 
-        <!-- Diğer Sayfalar -->
+        <!-- FAQ Section (SSS) -->
         <section id="sss">
             <div class="max-w-3xl mx-auto px-6 py-24">
                 <div class="text-center mb-16">
                     <h2 class="text-4xl font-bold mb-6 tracking-tight text-slate-900">Sık Sorulan Sorular</h2>
-                    <p class="text-slate-500">JarvisHeyrose hakkında merak edilenler.</p>
+                    <p class="text-slate-500">JarvisHeyrose hakkında merak edilen her şey.</p>
                 </div>
                 <div class="space-y-4">
                     <details class="faq-item" open>
-                        <summary>Kurallar nelerdir? <i class="fas fa-plus text-xs opacity-30"></i></summary>
-                        <div class="faq-content">Üretilen başlıklar maks 40, hashtagler maks 59 karakterdir. Toplamda 100 karakter sınırına sadık kalınır ve "garanti" gibi yanıltıcı ifadeler kullanılmaz.</div>
+                        <summary>Bu site ne işe yarar? <i class="fas fa-plus text-xs opacity-30"></i></summary>
+                        <div class="faq-content">JarvisHeyrose, içerik üreticilerinin sosyal medya platformları için viral potansiyeli yüksek başlık ve hashtagleri yapay zeka yardımıyla saniyeler içinde üretmesini sağlayan bir araçtır.</div>
                     </details>
                     <details class="faq-item">
-                        <summary>Hizmet ücretsiz mi? <i class="fas fa-plus text-xs opacity-30"></i></summary>
-                        <div class="faq-content">Günlük 2 adet ücretsiz üretim hakkınız bulunmaktadır. Reklam izleyerek +1 bonus hak kazanabilirsiniz.</div>
+                        <summary>Başlık limiti nedir? <i class="fas fa-plus text-xs opacity-30"></i></summary>
+                        <div class="faq-content">Üretilen tüm başlıklar, sosyal medya platformlarının en iyi görünüm standartlarına uygun olarak emojiler dahil maksimum 40 karakterle sınırlandırılmıştır.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Hashtag limiti nedir? <i class="fas fa-plus text-xs opacity-30"></i></summary>
+                        <div class="faq-content">Hashtag grupları, algoritma tarafından boğulmaması ve okunabilir kalması için maksimum 59 karakter olarak üretilir.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Toplam limit nedir? <i class="fas fa-plus text-xs opacity-30"></i></summary>
+                        <div class="faq-content">Üretilen içerik paketi (Başlık + Hashtag), paylaşım alanlarındaki kısıtlamalar göz önüne alınarak toplamda 100 karakteri asla geçmez.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>2 hak nedir? <i class="fas fa-plus text-xs opacity-30"></i></summary>
+                        <div class="faq-content">Ücretsiz kullanıcılar her gün sistemimize giriş yaparak 2 adet ücretsiz üretim hakkı kazanırlar. Bu haklar her 24 saatte bir yenilenir.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Bonus hak nasıl gelir? <i class="fas fa-plus text-xs opacity-30"></i></summary>
+                        <div class="faq-content">Günlük 2 hakkınız bittiğinde, karşınıza çıkan bonus butonuna basarak kısa bir reklam/sponsorlu içerik izleyebilir ve +1 üretim hakkı daha kazanabilirsiniz.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Reklam izlemek zorunlu mu? <i class="fas fa-plus text-xs opacity-30"></i></summary>
+                        <div class="faq-content">Hayır, reklam izlemek tamamen isteğe bağlıdır. Sadece günlük 2 hakkınızın üzerine çıkmak isterseniz bonus hak için reklam izleyebilirsiniz.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Dil seçimi nasıl çalışır? <i class="fas fa-plus text-xs opacity-30"></i></summary>
+                        <div class="faq-content">Seçtiğiniz dil (TR, EN, DE, FR, ES, PT), yapay zekaya gönderilen talimatı değiştirir. Böylece içerikler o dilin kültürel ve algoritmik yapısına uygun üretilir.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Google ile giriş neden zorunlu? <i class="fas fa-plus text-xs opacity-30"></i></summary>
+                        <div class="faq-content">Kullanıcı haklarını adil bir şekilde dağıtmak, spam üretimleri önlemek ve size özel kullanım limitlerini takip edebilmek için güvenli Google girişi zorunludur.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Verilerim nerede saklanır? <i class="fas fa-plus text-xs opacity-30"></i></summary>
+                        <div class="faq-content">Profil verileriniz dünya standartlarında güvenlik sunan Supabase altyapısında, Avrupa sunucularında şifrelenmiş olarak saklanmaktadır.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Kanal verisi aracı ne yapar / ne yapmaz? <i class="fas fa-plus text-xs opacity-30"></i></summary>
+                        <div class="faq-content">Kanal verisi aracı, girdiğiniz kanal ismini genel trendlerle karşılaştırır. Kanalınıza doğrudan erişim sağlamaz, şifre istemez; sadece herkese açık verileri analiz eder.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Hata alırsam ne yapacağım? <i class="fas fa-plus text-xs opacity-30"></i></summary>
+                        <div class="faq-content">Eğer üretim sırasında bir hata alırsanız sayfanızı yenileyip tekrar deneyin. Sorun devam ederse jarvisheyrose@gmail.com adresinden teknik destek alabilirsiniz.</div>
                     </details>
                 </div>
             </div>
         </section>
 
-        <section id="about" class="max-w-5xl mx-auto px-6 py-24 text-center">
-            <h2 class="text-5xl font-extrabold mb-12 tracking-tight text-slate-900">Geleceği <span class="text-red-600">Öngörün</span></h2>
-            <div class="bg-slate-50 p-12 rounded-[40px] border border-slate-100 text-slate-600 text-lg leading-relaxed text-left">
-                <p class="mb-8 font-bold text-slate-900 text-2xl leading-snug">Jarvis Heyrose, içerik üreticilerinin büyüme süreçlerini otomatize etmek için doğdu.</p>
-                <p class="mb-6">Biz sadece metin üretmiyoruz; her platformun en güncel algoritmik verilerini analiz ederek içerik sunuyoruz.</p>
+        <!-- Security Section (Güvenlik) -->
+        <section id="security">
+            <div class="max-w-4xl mx-auto px-6 py-24">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold mb-6 tracking-tight text-slate-900">Güvenlik ve Veri Gizliliği</h2>
+                    <p class="text-slate-500">Kullanıcı güvenliği, platformumuzun temel önceliğidir.</p>
+                </div>
+                <div class="bg-white p-8 lg:p-12 rounded-[40px] border border-slate-100 shadow-sm text-left leading-relaxed text-slate-600">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">Güvenli Giriş Mekanizması</h3>
+                    <p class="mb-6">JarvisHeyrose, kullanıcı kimlik doğrulaması için **Google OAuth 2.0** standartlarını kullanır. Bu sayede platformumuz hiçbir zaman şifrenizi görmez ve saklamaz. Sadece Google tarafından doğrulanan hesabınızın temel profil bilgilerini alarak güvenli bir oturum açarız.</p>
+                    
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">API ve Anahtar Güvenliği</h3>
+                    <p class="mb-6">Yapay zeka üretimlerini sağlayan **Gemini API anahtarları**, kesinlikle kullanıcıya açık olan frontend kodları içinde (index.html vb.) yer almaz. Tüm anahtarlar **Vercel Environment Variables** üzerinde sunucu tarafında gizli tutulur. `/api/generate` uç noktası üzerinden yapılan tüm çağrılar, backend tarafında güvenli bir katmandan geçerek anahtar sızıntısı riskini tamamen ortadan kaldırır.</p>
+
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">Minimum Veri Prensibi ve Spam Koruması</h3>
+                    <p class="mb-6">Platformumuz sadece limit takibi ve üretim dili tercihinizi saklar. Gereksiz hiçbir veri toplanmaz. Ayrıca **Rate Limit** ve spam koruma sistemlerimiz sayesinde, platformun kötüye kullanımı engellenerek sistemin tüm kullanıcılara eşit ve hızlı hizmet vermesi garanti altına alınır.</p>
+
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">Veri Silme ve Kontrol</h3>
+                    <p class="mb-6">Kullanıcılar, verileri üzerinde tam kontrole sahiptir. Hesabınızı ve tüm verilerinizi sistemimizden kalıcı olarak silmek isterseniz, talebinizi jarvisheyrose@gmail.com adresine iletebilirsiniz. Verileriniz Supabase üzerinden güvenli bir şekilde imha edilecektir.</p>
+                </div>
             </div>
         </section>
 
-        <!-- Alt Kısımlar -->
-        <section id="security" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-3xl font-bold mb-8 text-slate-900">Güvenlik</h2><p class="text-slate-500">Verileriniz SSL ve Supabase ile korunmaktadır.</p></section>
-        <section id="contact" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-3xl font-bold mb-8 text-slate-900">İletişim</h2><p class="text-slate-500">Destek: jarvisheyrose@gmail.com</p></section>
-        <section id="career" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-3xl font-bold mb-8 text-slate-900">Kariyer</h2><p class="text-slate-500">Başvurular yakında.</p></section>
-        <section id="privacy" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-3xl font-bold mb-8 text-slate-900">Gizlilik</h2><p class="text-slate-500">Verileriniz anonim olarak işlenir.</p></section>
-        <section id="terms" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-3xl font-bold mb-8 text-slate-900">Şartlar</h2><p class="text-slate-500">Kullanım kuralları.</p></section>
-        <section id="apps" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-3xl font-bold mb-8 text-slate-900">Uygulamalar</h2><p class="text-slate-500">iOS ve Android yakında.</p></section>
-        <section id="platform" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-3xl font-bold mb-8 text-slate-900">Altyapı</h2><p class="text-slate-500">Gemini Pro 2.0 desteği.</p></section>
+        <!-- About / Platform Section -->
+        <section id="platform">
+            <div class="max-w-5xl mx-auto px-6 py-24 text-center">
+                <h2 class="text-5xl font-extrabold mb-12 tracking-tight text-slate-900">Geleceği <span class="text-red-600">Öngörün</span></h2>
+                <div class="bg-slate-50 p-12 rounded-[40px] border border-slate-100 text-slate-600 text-lg leading-relaxed text-left">
+                    <p class="mb-8 font-bold text-slate-900 text-2xl leading-snug">Jarvis Heyrose, içerik üreticilerinin büyüme süreçlerini otomatize etmek için doğdu.</p>
+                    <p class="mb-6">Biz sadece metin üretmiyoruz; her platformun en güncel algoritmik verilerini analiz ederek içerik sunuyoruz. Google Gemini Pro 2.0 destekli hibrit motorumuz, sizin için en doğru anahtar kelimeleri seçer.</p>
+                    <p>Dünya genelinde binlerce içerik üreticisi, paylaşım yapmadan önce Jarvis Heyrose ile içeriklerini optimize ederek keşfet etkisini artırıyor.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Alt Kısımlar (Diğer sayfalarla uyumlu aydınlık düzen) -->
+        <section id="contact" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-3xl font-bold mb-8 text-slate-900">İletişim</h2><p class="text-slate-500">Destek ve iş birliği talepleri için: **jarvisheyrose@gmail.com**</p></section>
+        <section id="career" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-3xl font-bold mb-8 text-slate-900">Kariyer</h2><p class="text-slate-500">Vizyoner ekibimize katılmak için başvurular yakında açılacaktır.</p></section>
+        <section id="privacy" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-3xl font-bold mb-8 text-slate-900">Gizlilik</h2><p class="text-slate-500">Verileriniz anonimleştirilmiş olarak sadece deneyimi geliştirmek için işlenir.</p></section>
+        <section id="terms" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-3xl font-bold mb-8 text-slate-900">Şartlar</h2><p class="text-slate-500">Platformu kullanarak hizmet kullanım koşullarını kabul etmiş sayılırsınız.</p></section>
+        <section id="apps" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-3xl font-bold mb-8 text-slate-900">Uygulamalar</h2><p class="text-slate-500">iOS ve Android mobil uygulamalarımız yakında yayına girecek.</p></section>
     </main>
 
     <!-- Footer -->
     <footer class="py-16 border-t border-slate-100 bg-slate-50">
         <div class="max-w-7xl mx-auto px-6 text-center">
             <div class="flex flex-wrap justify-center gap-x-10 gap-y-5 text-[10px] font-bold uppercase tracking-[2px] mb-10 text-slate-400">
-                <a onclick="window.showSection('about')" class="footer-link">Hakkımızda</a>
+                <a onclick="window.showSection('platform')" class="footer-link">Hakkımızda</a>
                 <a onclick="window.showSection('sss')" class="footer-link">SSS</a>
                 <a onclick="window.showSection('career')" class="footer-link">Kariyer</a>
                 <a onclick="window.showSection('contact')" class="footer-link">İletişim</a>
@@ -364,6 +450,17 @@
                 <button onclick="window.closeModalForce()" class="text-slate-400 hover:text-slate-600 transition"><i class="fas fa-times text-xl"></i></button>
             </div>
             
+            <!-- Rules Box -->
+            <div class="rules-box">
+                <div class="font-bold mb-1">Üretim Kuralları:</div>
+                <ul class="list-disc pl-4 space-y-1">
+                    <li>Başlık: Max 40 karakter (Emoji dahil)</li>
+                    <li>Hashtag: Max 59 karakter</li>
+                    <li>Toplam: Max 100 karakter sınırına sadık kalınır.</li>
+                    <li>Politika: %100, garanti veya kesin sonuç ifadeleri içermez.</li>
+                </ul>
+            </div>
+
             <div id="inputArea">
                 <input type="text" id="userInput" class="custom-input bg-slate-50 text-slate-900 border-slate-100" placeholder="İçerik konusu girin...">
                 <button onclick="window.startGeneration()" id="generateBtn" class="w-full btn-primary py-4 rounded-2xl font-bold">Oluştur</button>
@@ -388,8 +485,8 @@
         <div class="modal-content text-center">
             <div class="text-6xl mb-6">📺</div>
             <h3 class="text-2xl font-bold mb-4 text-slate-900">Günlük Limit Doldu</h3>
-            <p class="text-slate-500 mb-10 leading-relaxed">Ücretsiz haklarınızı kullandınız. Reklam izleyerek +1 bonus hak kazanabilirsiniz.</p>
-            <button onclick="window.claimBonus()" class="w-full btn-primary py-4 rounded-2xl font-bold text-lg">Bonus Al (Reklam)</button>
+            <p class="text-slate-500 mb-10 leading-relaxed">Ücretsiz 2 hakkınızı kullandınız. Bonus hak kazanmak için sponsorlu içeriği izleyerek sisteme destek olabilirsiniz.</p>
+            <button onclick="window.claimBonus()" class="w-full btn-primary py-4 rounded-2xl font-bold text-lg">Bonus Al (1 Üretim)</button>
             <button onclick="document.getElementById('bonusModal').style.display='none'" class="mt-6 text-slate-400 font-bold">Daha Sonra</button>
         </div>
     </div>
@@ -442,8 +539,10 @@
 
         function updateCreditsUI() {
             const credits = getCredits();
-            document.getElementById('limitBadge').innerText = "HAK: " + credits.count;
-            document.getElementById('generateBtn').disabled = (credits.count <= 0);
+            const badge = document.getElementById('limitBadge');
+            if(badge) badge.innerText = "HAK: " + credits.count;
+            const btn = document.getElementById('generateBtn');
+            if(btn) btn.disabled = (credits.count <= 0);
         }
 
         window.setLanguage = (lang, btn) => {
