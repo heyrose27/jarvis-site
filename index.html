@@ -6,167 +6,333 @@
     <title>JarvisHeyrose - Global İçerik Üretici Merkezi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        :root { --pink: #ff0080; --violet: #7928ca; --muted: #9ca3af; }
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        .gradient-text { background: linear-gradient(90deg, #ff0000, #ff0080, #1DA1F2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .tool-card { transition: all 0.3s ease; border: 1px solid #f3f4f6; cursor: pointer; }
-        .tool-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); border-color: #fee2e2; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --brand-red: #ff0000;
+            --brand-dark: #0a0a0a;
+            --brand-gray: #1f1f1f;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--brand-dark);
+            color: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-glass {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .hero-gradient {
+            background: radial-gradient(circle at 50% 50%, rgba(255, 0, 0, 0.1) 0%, transparent 50%);
+        }
+
+        .card-premium {
+            background: var(--brand-gray);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-premium:hover {
+            border-color: rgba(255, 0, 0, 0.5);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
         section { display: none; }
-        section.active { display: block; animation: fadeIn 0.5s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .lang-btn { cursor: pointer; padding: 4px 12px; border-radius: 20px; transition: all 0.3s; font-size: 0.75rem; font-weight: 600; color: #6b7280; display: inline-block; margin-bottom: 0.5rem; border: 1px solid #e5e7eb; }
-        .lang-btn.active { color: #fff; background: #dc2626; border-color: #dc2626; box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3); }
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; padding: 2rem; border-radius: 1.5rem; width: 90%; max-width: 500px; position: relative; animation: slideUp 0.3s ease-out; }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .custom-input { width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 0.5rem; margin-bottom: 1rem; font-size: 1rem; outline: none; }
-        .result-box { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 12px; margin-top: 10px; font-size: 0.95rem; font-weight: 500; color: #111827; }
-        .limit-badge { position: absolute; top: 1rem; left: 1rem; background: #fee2e2; color: #dc2626; font-size: 0.7rem; font-weight: bold; padding: 0.2rem 0.6rem; border-radius: 1rem; }
-        .faqItem { border-radius: 12px; background: #f9fafb; border: 1px solid #e5e7eb; margin-bottom: 8px; overflow: hidden; }
-        .faqItem summary { cursor: pointer; padding: 14px; font-weight: 600; list-style: none; display: flex; justify-content: space-between; }
-        .faqAnswer { padding: 0 14px 14px; color: #4b5563; font-size: 0.9rem; }
-        .bonus-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center; }
-        .fixed-ad-left { position: fixed; top: 50%; left: 0; transform: translateY(-50%); width: 160px; height: 600px; background: #f3f4f6; border-right: 1px solid #e5e7eb; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 40; border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
-        @media (min-width: 1500px) { .fixed-ad-left { display: flex; } main { padding-left: 180px; } }
+        section.active { display: block; animation: slideIn 0.6s ease-out; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+        }
+
+        .btn-primary {
+            background: #ffffff;
+            color: #000000;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            background: #f0f0f0;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            justify-content: center; align-items: center;
+        }
+
+        .modal-content {
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 90%; max-width: 500px;
+            border-radius: 24px;
+            padding: 2.5rem;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            margin-bottom: 12px;
+        }
+
+        .faq-item summary {
+            padding: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-content { padding: 0 20px 20px; color: #aaa; font-size: 0.95rem; }
+
+        .footer-link {
+            color: #666;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .footer-link:hover { color: #fff; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--brand-dark); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen">
+<body>
 
-    <div class="fixed-ad-left">
-        <span class="text-xs text-gray-400 mb-2 rotate-90 uppercase tracking-widest">Reklam</span>
-        <div class="w-32 h-96 bg-gray-200 rounded flex items-center justify-center text-center p-2"><span class="text-xs text-gray-500">Sponsorlu Alan</span></div>
-    </div>
-
-    <header class="fixed w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
-            <div class="text-2xl font-bold gradient-text cursor-pointer" onclick="window.showSection('home')">JarvisHeyrose</div>
-            <nav class="hidden md:flex space-x-6 items-center text-sm font-medium">
-                <a href="javascript:void(0)" onclick="window.showSection('home')" class="hover:text-red-600">Anasayfa</a>
-                <a href="javascript:void(0)" onclick="window.showSection('apps')" class="hover:text-red-600">Uygulamalar</a>
-                <a href="javascript:void(0)" onclick="window.showSection('tools')" class="hover:text-red-600">Araçlar</a>
-                <button id="loginBtn" onclick="window.handleGoogleLogin()" class="border px-3 py-1.5 rounded-lg flex items-center space-x-2"><span>Giriş Yap</span></button>
-                <div id="userProfile" class="hidden flex items-center space-x-2">
-                    <img id="userAvatar" src="" class="w-8 h-8 rounded-full">
-                    <button onclick="window.handleLogout()" class="text-xs text-red-600 border border-red-200 px-3 py-1 rounded-full">Çıkış</button>
+    <!-- Header -->
+    <header class="fixed w-full z-50 nav-glass">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="text-2xl font-bold tracking-tighter cursor-pointer" onclick="window.showSection('home')">
+                JARVIS<span class="text-red-600">HEYROSE</span>
+            </div>
+            
+            <nav class="hidden md:flex space-x-10 items-center text-[13px] font-bold uppercase tracking-widest">
+                <a href="javascript:void(0)" onclick="window.showSection('home')" class="footer-link">Anasayfa</a>
+                <a href="javascript:void(0)" onclick="window.showSection('apps')" class="footer-link">Uygulamalar</a>
+                <a href="javascript:void(0)" onclick="window.showSection('tools')" class="footer-link">Araçlar</a>
+                <div id="authArea">
+                    <button id="loginBtn" onclick="window.handleGoogleLogin()" class="bg-white text-black px-6 py-2.5 rounded-full hover:bg-gray-200 transition">Giriş Yap</button>
+                    <div id="userProfile" class="hidden flex items-center space-x-4">
+                        <img id="userAvatar" src="" class="w-9 h-9 rounded-full border border-white/10">
+                        <span id="userName" class="text-white hidden lg:block">Yükleniyor...</span>
+                        <button onclick="window.handleLogout()" class="text-red-500 hover:text-red-400"><i class="fas fa-power-off"></i></button>
+                    </div>
                 </div>
             </nav>
         </div>
     </header>
 
     <main class="pt-20 flex-grow">
-        <section id="home" class="active">
-            <div class="max-w-7xl mx-auto px-4 py-10">
-                <div class="flex flex-wrap gap-2 mb-8 justify-center md:justify-start">
-                    <span class="lang-btn active" onclick="window.setLanguage('tr', this)">TR</span>
-                    <span class="lang-btn" onclick="window.setLanguage('en', this)">EN</span>
-                    <span class="lang-btn" onclick="window.setLanguage('de', this)">DE</span>
-                    <span class="lang-btn" onclick="window.setLanguage('fr', this)">FR</span>
-                    <span class="lang-btn" onclick="window.setLanguage('es', this)">ES</span>
-                    <span class="lang-btn" onclick="window.setLanguage('pt', this)">PT</span>
+        <!-- Home Section -->
+        <section id="home" class="active hero-gradient">
+            <div class="max-w-7xl mx-auto px-6 py-24">
+                <div class="flex flex-wrap gap-3 mb-12 justify-center lg:justify-start">
+                    <button class="lang-btn active px-5 py-2 rounded-full text-xs font-bold" onclick="window.setLanguage('tr', this)">TR</button>
+                    <button class="lang-btn px-5 py-2 rounded-full text-xs font-bold" onclick="window.setLanguage('en', this)">EN</button>
+                    <button class="lang-btn px-5 py-2 rounded-full text-xs font-bold" onclick="window.setLanguage('de', this)">DE</button>
+                    <button class="lang-btn px-5 py-2 rounded-full text-xs font-bold" onclick="window.setLanguage('fr', this)">FR</button>
+                    <button class="lang-btn px-5 py-2 rounded-full text-xs font-bold" onclick="window.setLanguage('es', this)">ES</button>
+                    <button class="lang-btn px-5 py-2 rounded-full text-xs font-bold" onclick="window.setLanguage('pt', this)">PT</button>
                 </div>
-                <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <h1 class="text-5xl font-extrabold mb-6" id="h-title">Viral İçerikler <br><span class="text-red-600">Oluşturun</span></h1>
-                        <p class="text-lg text-gray-600 mb-8" id="h-desc">Yapay zeka ile sosyal medya algoritmasını yönetin. Saniyeler içinde profesyonel başlık ve hashtagler üretin.</p>
-                        <button onclick="window.showSection('tools')" class="bg-red-600 text-white px-8 py-4 rounded-xl font-bold shadow-lg">Hemen Başla</button>
+
+                <div class="grid lg:grid-cols-2 gap-20 items-center">
+                    <div class="text-center lg:text-left">
+                        <h1 class="text-6xl lg:text-8xl font-extrabold mb-8 leading-[1.1] tracking-tighter" id="h-title">
+                            Viral İçerikler <br><span class="text-red-600">Oluşturun</span>
+                        </h1>
+                        <p class="text-xl text-gray-400 mb-12 max-w-xl mx-auto lg:mx-0 leading-relaxed" id="h-desc">
+                            Yapay zeka ile sosyal medya algoritmasını yönetin. Saniyeler içinde etkileşim odaklı başlık ve hashtagler üretin.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
+                            <button onclick="window.showSection('tools')" class="btn-primary px-10 py-5 rounded-2xl text-lg font-bold shadow-2xl">Üretime Başla</button>
+                            <button onclick="window.showSection('about')" class="bg-white/5 border border-white/10 px-10 py-5 rounded-2xl text-lg font-bold hover:bg-white/10 transition">Keşfet</button>
+                        </div>
                     </div>
-                    <img src="hero (3).png" class="rounded-3xl shadow-xl" alt="Tanıtım Görseli">
+                    <div class="relative">
+                        <div class="absolute -inset-10 bg-red-600/10 blur-[120px] rounded-full"></div>
+                        <img src="hero (3).png" class="relative w-full rounded-[40px] border border-white/10 shadow-2xl" alt="JarvisHero">
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- FOOTER SECTIONS -->
-        <section id="about" class="max-w-4xl mx-auto py-20 px-4">
-            <h2 class="text-3xl font-bold mb-6 gradient-text">Hakkımızda</h2>
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-gray-700 leading-relaxed">
-                <p class="mb-4">Jarvis Heyrose, global içerik üreticilerinin büyüme süreçlerini otomatize etmek amacıyla kurulmuş bir teknoloji platformudur.</p>
-                <p>YouTube, Instagram, TikTok ve X platformları için platform bazlı analizler yaparak en yüksek etkileşim potansiyeline sahip metinleri üretiriz.</p>
-            </div>
-        </section>
-
-        <section id="sss" class="max-w-4xl mx-auto py-20 px-4">
-            <h2 class="text-3xl font-bold mb-8 text-center">Sık Sorulan Sorular</h2>
-            <div class="faqGrid">
-                <details class="faqItem"><summary>Günlük kullanım sınırı var mı?</summary><div class="faqAnswer">Her gün 2 adet ücretsiz üretim hakkınız bulunmaktadır. Reklam izleyerek +1 bonus alabilirsiniz.</div></details>
-                <details class="faqItem"><summary>Hangi dilleri destekliyor?</summary><div class="faqAnswer">Şu an TR, EN, DE, FR, ES ve PT dillerinde üretim yapmaktayız.</div></details>
-                <details class="faqItem"><summary>Verilerim güvende mi?</summary><div class="faqAnswer">Google OAuth üzerinden giriş yaparak sadece limit takibi için profil doğrulaması yapıyoruz.</div></details>
-            </div>
-        </section>
-
-        <section id="security" class="max-w-4xl mx-auto py-20 px-4 text-center">
-            <h2 class="text-3xl font-bold mb-6">Güvenlik</h2>
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-gray-700">
-                <p>Verileriniz Supabase ve SSL protokolleri ile korunmaktadır. API anahtarlarımız sunucu tarafında güvenli bir şekilde saklanır ve asla dışarı sızmaz.</p>
-            </div>
-        </section>
-
+        <!-- Tools Section -->
         <section id="tools">
-            <div class="max-w-7xl mx-auto px-4 py-16">
-                <div class="text-center mb-10"><h2 class="text-4xl font-bold mb-4">Üretici Araçları</h2></div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('YouTube Başlık', 'title')"><i class="fab fa-youtube text-red-600 text-2xl mb-2"></i><h3 class="font-bold">YouTube Başlık</h3></div>
-                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('Instagram Başlık', 'title')"><i class="fab fa-instagram text-pink-600 text-2xl mb-2"></i><h3 class="font-bold">Instagram Başlık</h3></div>
-                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('TikTok Başlık', 'title')"><i class="fab fa-tiktok text-black text-2xl mb-2"></i><h3 class="font-bold">TikTok Başlık</h3></div>
-                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('X Başlık', 'title')"><i class="fab fa-twitter text-blue-400 text-2xl mb-2"></i><h3 class="font-bold">X Başlık</h3></div>
-                    <div class="tool-card bg-gray-900 text-white p-6 rounded-2xl lg:col-span-2" onclick="window.openToolModal('Kanal Analiz', 'channel')"><h3 class="font-bold">Kanal Veri Analiz ve Kontrol</h3></div>
+            <div class="max-w-7xl mx-auto px-6 py-24">
+                <div class="mb-16">
+                    <h2 class="text-4xl font-bold mb-4 tracking-tight">Üretici Araçları</h2>
+                    <p class="text-gray-500">Platforma özel optimize edilmiş yapay zeka araçları.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card-premium p-10 rounded-[32px]" onclick="window.openToolModal('YouTube Başlık', 'title')">
+                        <div class="w-12 h-12 bg-red-600/10 flex items-center justify-center rounded-2xl mb-8 text-red-600 text-2xl"><i class="fab fa-youtube"></i></div>
+                        <h3 class="text-2xl font-bold mb-3">YouTube Başlık</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Algoritma dostu, tıklanma oranı yüksek viral başlıklar.</p>
+                    </div>
+                    <div class="card-premium p-10 rounded-[32px]" onclick="window.openToolModal('Instagram Reels', 'title')">
+                        <div class="w-12 h-12 bg-pink-600/10 flex items-center justify-center rounded-2xl mb-8 text-pink-600 text-2xl"><i class="fab fa-instagram"></i></div>
+                        <h3 class="text-2xl font-bold mb-3">Instagram Başlık</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Erişim odaklı modern Reels ve post açıklamaları.</p>
+                    </div>
+                    <div class="card-premium p-10 rounded-[32px]" onclick="window.openToolModal('TikTok Trend', 'title')">
+                        <div class="w-12 h-12 bg-white/10 flex items-center justify-center rounded-2xl mb-8 text-white text-2xl"><i class="fab fa-tiktok"></i></div>
+                        <h3 class="text-2xl font-bold mb-3">TikTok Başlık</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Keşfet odaklı, kısa ve akılda kalıcı trend metinleri.</p>
+                    </div>
+                    <div class="card-premium p-10 rounded-[32px]" onclick="window.openToolModal('X (Twitter) Post', 'title')">
+                        <div class="w-12 h-12 bg-blue-400/10 flex items-center justify-center rounded-2xl mb-8 text-blue-400 text-2xl"><i class="fab fa-twitter"></i></div>
+                        <h3 class="text-2xl font-bold mb-3">X Başlık</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">Trend topic etkileşimi için optimize edilmiş metinler.</p>
+                    </div>
+                    <div class="card-premium p-10 rounded-[32px] lg:col-span-2 flex flex-col justify-center relative overflow-hidden" onclick="window.openToolModal('Kanal Analizi', 'channel')">
+                        <div class="relative z-10">
+                            <h3 class="text-3xl font-bold mb-4">Kanal Veri Analiz Merkezi</h3>
+                            <p class="text-gray-500 max-w-md">Kanal performansınızı profesyonel veri setleri ile kontrol edin ve geliştirin.</p>
+                        </div>
+                        <div class="absolute right-[-20px] bottom-[-20px] opacity-10 text-[180px]"><i class="fas fa-chart-line"></i></div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- OTHER SIMPLE SECTIONS -->
-        <section id="career" class="py-20 text-center"><h2 class="text-2xl font-bold">Kariyer</h2><p class="mt-4">Ekibimize katılmak için başvurular yakında açılacaktır.</p></section>
-        <section id="press" class="py-20 text-center"><h2 class="text-2xl font-bold">Basın</h2><p class="mt-4">Medya kitleri yakında paylaşılacaktır.</p></section>
-        <section id="brand" class="py-20 text-center"><h2 class="text-2xl font-bold">Marka</h2><p class="mt-4">Logo rehberi yakında eklenecektir.</p></section>
-        <section id="contact" class="py-20 text-center"><h2 class="text-2xl font-bold">İletişim</h2><p class="mt-4">jarvisheyrose@gmail.com</p></section>
-        <section id="privacy" class="py-20 text-center"><h2 class="text-2xl font-bold">Gizlilik</h2><p class="mt-4">Veri politikalarımız güncelleniyor.</p></section>
-        <section id="terms" class="py-20 text-center"><h2 class="text-2xl font-bold">Şartlar</h2><p class="mt-4">Hizmet kullanım koşulları.</p></section>
-        <section id="apps" class="py-20 text-center"><h2 class="text-2xl font-bold">Mobil</h2><p class="mt-4">iOS ve Android yakında mağazalarda.</p></section>
-        <section id="platform" class="py-20 text-center"><h2 class="text-2xl font-bold">Altyapı</h2><p class="mt-4">Google Gemini Pro 2.0 desteği ile çalışıyoruz.</p></section>
+        <!-- FAQ Section -->
+        <section id="sss">
+            <div class="max-w-3xl mx-auto px-6 py-24">
+                <div class="text-center mb-16">
+                    <h2 class="text-5xl font-bold mb-6 tracking-tight">Sık Sorulan Sorular</h2>
+                    <p class="text-gray-500">JarvisHeyrose hakkında merak edilenler.</p>
+                </div>
+                <div class="space-y-4">
+                    <details class="faq-item" open>
+                        <summary>Hizmet ücretsiz mi? <i class="fas fa-plus text-xs"></i></summary>
+                        <div class="faq-content">Her kullanıcı günlük 2 adet ücretsiz üretim hakkına sahiptir. Reklam izleyerek +1 bonus hak kazanabilir veya Pro paketleri bekleyebilirsiniz.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Hangi dilleri destekliyor? <i class="fas fa-plus text-xs"></i></summary>
+                        <div class="faq-content">Şu an TR, EN, DE, FR, ES ve PT dillerinde profesyonel içerik üretebilirsiniz.</div>
+                    </details>
+                    <details class="faq-item">
+                        <summary>Güvenli mi? <i class="fas fa-plus text-xs"></i></summary>
+                        <div class="faq-content">Google OAuth ve Supabase güvencesiyle sadece limit takibi yapıyoruz. Verileriniz bizimle güvende.</div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hakkımızda Section -->
+        <section id="about">
+            <div class="max-w-4xl mx-auto px-6 py-24 text-center">
+                <h2 class="text-6xl font-extrabold mb-12 tracking-tight">Geleceği <span class="text-red-600">Öngörün</span></h2>
+                <div class="bg-white/5 p-12 rounded-[40px] border border-white/5 text-gray-400 text-lg leading-relaxed text-left">
+                    <p class="mb-8 font-bold text-white text-2xl leading-snug">Jarvis Heyrose, içerik üreticilerinin büyüme süreçlerini otomatize etmek için doğdu.</p>
+                    <p class="mb-6">Biz sadece metin üretmiyoruz; her platformun (YouTube, Instagram, TikTok, X) en güncel algoritmik verilerini analiz ederek, saniyeler içinde viral olma potansiyeli taşıyan "anahtar" içerikler sunuyoruz.</p>
+                    <p>Dünya genelinde 17 binden fazla üretici, algoritmaya takılmadan kitlelerine ulaşmak için bizi tercih ediyor. Sizin için sadece bir asistan değil, bir strateji ortağıyız.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Static Pages (Simplified) -->
+        <section id="security" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-4xl font-bold mb-8">Güvenlik</h2><p class="text-gray-500">Tüm verileriniz 256-bit SSL ve Supabase altyapısı ile korunmaktadır.</p></section>
+        <section id="contact" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-4xl font-bold mb-8">İletişim</h2><p class="text-gray-500">Destek ve sorularınız için: jarvisheyrose@gmail.com</p></section>
+        <section id="career" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-4xl font-bold mb-8">Kariyer</h2><p class="text-gray-500">Ekibimize katılmak için başvurular yakında açılacaktır.</p></section>
+        <section id="privacy" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-4xl font-bold mb-8">Gizlilik</h2><p class="text-gray-500">Kullanıcı verileri sadece limit takibi amacıyla anonim olarak işlenmektedir.</p></section>
+        <section id="terms" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-4xl font-bold mb-8">Kullanım Şartları</h2><p class="text-gray-500">JarvisHeyrose hizmetlerini kullanarak platform kurallarını kabul etmiş sayılırsınız.</p></section>
+        <section id="apps" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-4xl font-bold mb-8">Uygulamalar</h2><p class="text-gray-500">iOS ve Android uygulamalarımız yakında yayında.</p></section>
+        <section id="platform" class="max-w-4xl mx-auto px-6 py-24 text-center"><h2 class="text-4xl font-bold mb-8">Platform Altyapısı</h2><p class="text-gray-500">Google Gemini Pro 2.0 destekli hibrit analiz motoru.</p></section>
     </main>
 
-    <footer class="bg-gray-900 text-gray-400 py-10 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-            <div class="flex flex-wrap justify-center gap-4 text-xs mb-6 uppercase tracking-widest">
-                <a onclick="window.showSection('about')" class="hover:text-white cursor-pointer">Hakkımızda</a>
-                <a onclick="window.showSection('sss')" class="hover:text-white cursor-pointer">SSS</a>
-                <a onclick="window.showSection('career')" class="hover:text-white cursor-pointer">Kariyer</a>
-                <a onclick="window.showSection('press')" class="hover:text-white cursor-pointer">Basın</a>
-                <a onclick="window.showSection('brand')" class="hover:text-white cursor-pointer">Marka</a>
-                <a onclick="window.showSection('contact')" class="hover:text-white cursor-pointer">İletişim</a>
-                <a onclick="window.showSection('security')" class="hover:text-white cursor-pointer">Güvenlik</a>
-                <a onclick="window.showSection('privacy')" class="hover:text-white cursor-pointer">Gizlilik</a>
-                <a onclick="window.showSection('terms')" class="hover:text-white cursor-pointer">Şartlar</a>
+    <!-- Footer -->
+    <footer class="py-20 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-wrap justify-center gap-x-10 gap-y-5 text-[11px] font-bold uppercase tracking-[2px] mb-12">
+                <a onclick="window.showSection('about')" class="footer-link">Hakkımızda</a>
+                <a onclick="window.showSection('sss')" class="footer-link">SSS</a>
+                <a onclick="window.showSection('career')" class="footer-link">Kariyer</a>
+                <a onclick="window.showSection('contact')" class="footer-link">İletişim</a>
+                <a onclick="window.showSection('security')" class="footer-link">Güvenlik</a>
+                <a onclick="window.showSection('privacy')" class="footer-link">Gizlilik</a>
+                <a onclick="window.showSection('terms')" class="footer-link">Şartlar</a>
             </div>
-            <p class="text-[10px]">&copy; 2026 JarvisHeyrose Platform.</p>
+            <div class="text-center text-gray-700 text-[10px] tracking-widest">
+                &copy; 2026 JARVISHEYROSE GLOBAL INC. TÜM HAKLARI SAKLIDIR.
+            </div>
         </div>
     </footer>
 
-    <!-- Üretim Modalı -->
+    <!-- Modals -->
     <div id="toolModal" class="modal-overlay" onclick="window.closeModal(event)">
-        <div class="modal-content text-center">
-            <span id="limitBadge" class="limit-badge">Hak: 2</span>
-            <button class="absolute top-4 right-4 text-gray-400" onclick="window.closeModalForce()"><i class="fas fa-times"></i></button>
-            <h3 id="modalTitle" class="text-xl font-bold mb-4">Üretim</h3>
-            <div id="inputArea">
-                <input type="text" id="userInput" class="custom-input" placeholder="Konu girin...">
-                <button onclick="window.startGeneration()" id="generateBtn" class="w-full bg-red-600 text-white py-3 rounded-lg font-bold">Oluştur</button>
+        <div class="modal-content">
+            <div class="flex justify-between items-start mb-10">
+                <div>
+                    <span id="limitBadge" class="bg-red-600/10 text-red-500 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Hak: 2</span>
+                    <h3 id="modalTitle" class="text-3xl font-bold mt-4">Analiz</h3>
+                </div>
+                <button onclick="window.closeModalForce()" class="text-gray-500 hover:text-white transition"><i class="fas fa-times text-xl"></i></button>
             </div>
-            <div id="loadingContainer" class="hidden mt-4">Analiz ediliyor...</div>
-            <div id="resultArea" class="hidden"><div id="resultContent" class="result-box"></div><button onclick="window.resetModal()" class="mt-4 w-full text-xs text-gray-400">Yeni İstek</button></div>
+            
+            <div id="inputArea">
+                <input type="text" id="userInput" class="custom-input bg-transparent text-white border-white/10" placeholder="İçerik konusu girin...">
+                <button onclick="window.startGeneration()" id="generateBtn" class="w-full btn-primary py-4 rounded-2xl font-bold text-lg">Oluştur</button>
+            </div>
+
+            <div id="loadingContainer" class="hidden text-center py-10">
+                <div class="loading-spinner"></div>
+                <p class="text-gray-500 animate-pulse text-sm">Yapay zeka analiz ediyor...</p>
+            </div>
+
+            <div id="resultArea" class="hidden">
+                <div id="resultContent" class="result-box border-red-600/20 bg-red-600/5 text-white"></div>
+                <div class="mt-8 flex gap-3">
+                    <button onclick="window.copyResult()" class="flex-1 bg-white/5 border border-white/10 py-3 rounded-xl font-bold hover:bg-white/10 transition">Kopyala</button>
+                    <button onclick="window.resetModal()" class="flex-1 border border-white/5 py-3 rounded-xl font-bold text-gray-500">Yenile</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Bonus Modalı -->
-    <div id="bonusModal" class="bonus-overlay">
-        <div class="bg-white p-8 rounded-2xl max-w-sm text-center">
-            <h3 class="text-xl font-bold mb-4">Limit Doldu</h3>
-            <p class="text-gray-500 mb-6 text-sm">Üretim hakkınız bitti. +1 Bonus hak için sponsorlu işleme devam edin.</p>
-            <button onclick="window.claimBonus()" class="bg-red-600 text-white font-bold py-3 px-6 rounded-lg w-full">Bonus Hak Al (Reklam)</button>
-            <button onclick="document.getElementById('bonusModal').style.display='none'" class="mt-4 text-xs text-gray-400">Kapat</button>
+    <div id="bonusModal" class="modal-overlay">
+        <div class="modal-content text-center">
+            <div class="text-6xl mb-6">📺</div>
+            <h3 class="text-3xl font-bold mb-4">Günlük Limit Doldu</h3>
+            <p class="text-gray-500 mb-10 leading-relaxed">Bugünkü ücretsiz haklarınızı kullandınız. Reklam izleyerek +1 bonus hak kazanmak ister misiniz?</p>
+            <button onclick="window.claimBonus()" class="w-full btn-primary py-4 rounded-2xl font-bold text-lg">Bonus Al (Reklam)</button>
+            <button onclick="document.getElementById('bonusModal').style.display='none'" class="mt-6 text-gray-600 font-bold">Daha Sonra</button>
         </div>
     </div>
 
@@ -175,34 +341,36 @@
         const SUPABASE_ANON_KEY = "sb_publishable_QDz16Zn2HeoOw7Sf25PENA_FgZL0P-F";
         let supabaseClient;
         if(typeof supabase !== 'undefined') supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
         let currentUser = null;
         let currentLang = 'tr';
+        let currentToolType = 'title';
 
-        const t = {
-            tr: { h_title: "Viral İçerikler <br><span class='text-red-600'>Oluşturun</span>", h_desc: "Yapay zeka ile sosyal medya algoritmasını yönetin." },
-            en: { h_title: "Create <br><span class='text-red-600'>Viral Content</span>", h_desc: "Master the social media algorithm with AI." },
-            de: { h_title: "Virale <br><span class='text-red-600'>Inhalte</span>", h_desc: "Beherrschen Sie den Algorithmus mit KI." },
-            fr: { h_title: "Contenu <br><span class='text-red-600'>Viral</span>", h_desc: "Maîtrisez l'algorithme avec l'IA." },
-            es: { h_title: "Contenido <br><span class='text-red-600'>Viral</span>", h_desc: "Domina el algoritmo con IA." },
-            pt: { h_title: "Conteúdo <br><span class='text-red-600'>Viral</span>", h_desc: "Domine o algoritmo com IA." }
+        const i18n = {
+            tr: { h_title: "Viral İçerikler <br><span class='text-red-600'>Oluşturun</span>", h_desc: "Yapay zeka motoru ile sosyal medya algoritmasını yönetin. Saniyeler içinde etkileşim rekorları kıran başlık ve hashtagler üretin." },
+            en: { h_title: "Create <br><span class='text-red-600'>Viral Content</span>", h_desc: "Master the social media algorithm with AI. Generate high-engagement titles and hashtags in seconds." },
+            de: { h_title: "Virale <br><span class='text-red-600'>Inhalte erstellen</span>", h_desc: "Beherrschen Sie den Social-Media-Algorithmus mit KI. Erstellen Sie in Sekundenschnelle Titel und Hashtags." },
+            fr: { h_title: "Créer du <br><span class='text-red-600'>Contenu Viral</span>", h_desc: "Maîtrisez l'algorithme des réseaux sociaux avec l'IA. Générez des titres et des hashtags en quelques secondes." },
+            es: { h_title: "Crea <br><span class='text-red-600'>Contenido Viral</span>", h_desc: "Domina el algoritmo de las redes sociales con IA. Genera títulos y hashtags de alto engagement en segundos." },
+            pt: { h_title: "Crie <br><span class='text-red-600'>Conteúdo Viral</span>", h_desc: "Domine o algoritmo das redes sociais com IA. Gere títulos e hashtags de alto engajamento em segundos." }
         };
 
         window.handleGoogleLogin = async () => { if(supabaseClient) await supabaseClient.auth.signInWithOAuth({ provider: 'google' }); };
         window.handleLogout = async () => { if(supabaseClient) { await supabaseClient.auth.signOut(); window.location.reload(); } };
         
         if (supabaseClient) {
-            supabaseClient.auth.getSession().then(({ data: { session } }) => updateUI(session));
-            supabaseClient.auth.onAuthStateChange((_, session) => updateUI(session));
+            supabaseClient.auth.getSession().then(({ data: { session } }) => updateAuthUI(session));
+            supabaseClient.auth.onAuthStateChange((_, session) => updateAuthUI(session));
         }
 
-        function updateUI(session) {
+        function updateAuthUI(session) {
             currentUser = session?.user || null;
-            document.getElementById('loginBtn').style.display = session ? 'none' : 'flex';
+            document.getElementById('loginBtn').style.display = session ? 'none' : 'block';
             document.getElementById('userProfile').style.display = session ? 'flex' : 'none';
             if (session) {
+                document.getElementById('userName').innerText = session.user.user_metadata.full_name.split(' ')[0];
                 document.getElementById('userAvatar').src = session.user.user_metadata.avatar_url;
-                document.getElementById('userName').innerText = session.user.user_metadata.full_name;
-                updateCreditUI();
+                updateCreditsUI();
             }
         }
 
@@ -210,12 +378,13 @@
             const today = new Date().toDateString();
             const stored = localStorage.getItem('jh_credits');
             const data = stored ? JSON.parse(stored) : null;
-            return (!data || data.date !== today) ? { count: 2, date: today, bonus: false } : data;
+            if (!data || data.date !== today) return { count: 2, date: today, bonusUsed: false };
+            return data;
         }
 
-        function updateCreditUI() {
+        function updateCreditsUI() {
             const credits = getCredits();
-            document.getElementById('limitBadge').innerText = "Hak: " + credits.count;
+            document.getElementById('limitBadge').innerText = "HAK: " + credits.count;
             document.getElementById('generateBtn').disabled = (credits.count <= 0);
         }
 
@@ -223,9 +392,9 @@
             currentLang = lang;
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            const data = t[lang] || t.tr;
-            document.getElementById('h-title').innerHTML = data.h_title;
-            document.getElementById('h-desc').innerText = data.h_desc;
+            const content = i18n[lang] || i18n.tr;
+            document.getElementById('h-title').innerHTML = content.h_title;
+            document.getElementById('h-desc').innerText = content.h_desc;
         };
 
         window.showSection = (id) => {
@@ -236,47 +405,66 @@
         };
 
         window.openToolModal = (title, type) => {
-            if(!currentUser) return alert("Lütfen giriş yapın.");
+            if(!currentUser) { window.handleGoogleLogin(); return; }
+            currentToolType = type;
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('toolModal').style.display = 'flex';
             window.resetModal();
-            updateCreditUI();
+            updateCreditsUI();
         };
 
         window.startGeneration = async () => {
             const credits = getCredits();
             if(credits.count <= 0) {
-                if(!credits.bonus) document.getElementById('bonusModal').style.display = 'flex';
-                else alert("Limit doldu.");
+                if(!credits.bonusUsed) document.getElementById('bonusModal').style.display = 'flex';
+                else alert("Günlük limitiniz doldu.");
                 return;
             }
             const val = document.getElementById('userInput').value;
-            if(!val) return alert("Konu girin.");
+            if(!val) return;
+
             document.getElementById('inputArea').style.display = 'none';
             document.getElementById('loadingContainer').style.display = 'block';
+
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
                 const res = await fetch('/api/generate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
-                    body: JSON.stringify({ topic: val, lang: currentLang })
+                    body: JSON.stringify({ topic: val, type: currentToolType, lang: currentLang })
                 });
                 const data = await res.json();
-                if(!res.ok) throw new Error(data.error);
+                if(!res.ok) throw new Error(data.error || "Hata");
+
                 localStorage.setItem('jh_credits', JSON.stringify({ ...credits, count: credits.count - 1 }));
                 document.getElementById('resultContent').innerText = data.result;
                 document.getElementById('loadingContainer').style.display = 'none';
                 document.getElementById('resultArea').style.display = 'block';
-                updateCreditUI();
-            } catch(e) { alert(e.message); window.resetModal(); }
+                updateCreditsUI();
+            } catch(e) { 
+                console.error(e);
+                window.resetModal();
+                alert("Üretim hatası oluştu.");
+            }
         };
 
         window.claimBonus = () => {
             const credits = getCredits();
-            localStorage.setItem('jh_credits', JSON.stringify({ ...credits, count: 1, bonus: true }));
+            localStorage.setItem('jh_credits', JSON.stringify({ ...credits, count: 1, bonusUsed: true }));
             document.getElementById('bonusModal').style.display = 'none';
-            updateCreditUI();
-            alert("Bonus hak eklendi.");
+            updateCreditsUI();
+            alert("Bonus hakkınız tanımlandı.");
+        };
+
+        window.copyResult = () => {
+            const text = document.getElementById('resultContent').innerText;
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            alert("Kopyalandı!");
         };
 
         window.resetModal = () => {
