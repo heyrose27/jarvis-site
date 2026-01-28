@@ -92,7 +92,8 @@
             display: none; flex-direction: column; align-items: center; justify-content: center;
             z-index: 40; border-top-right-radius: 10px; border-bottom-right-radius: 10px;
         }
-        @media (min-width: 1280px) { .fixed-ad-left { display: flex; } }
+        /* DÜZELTME: Sadece ekran çok genişse (1500px+) reklamı göster ki yazıların üstüne binmesin */
+        @media (min-width: 1500px) { .fixed-ad-left { display: flex; } }
         
         /* FAQ Özel Stiller */
         .faqSection { margin-top: 42px; padding: 40px 16px; background: #111827; min-height: 80vh; }
@@ -140,17 +141,17 @@
     <header class="fixed w-full bg-white/90 backdrop-blur-md z-50 border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
-                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="showSection('home')">
+                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="window.showSection('home')">
                     <span class="text-2xl font-bold gradient-text">JarvisHeyrose</span>
                 </div>
                 <nav class="hidden md:flex space-x-8 items-center">
-                    <a href="javascript:void(0)" onclick="showSection('home')" id="nav-home" class="text-gray-600 hover:text-red-600 font-medium transition">Anasayfa</a>
-                    <a href="javascript:void(0)" onclick="showSection('apps')" id="nav-apps" class="text-gray-600 hover:text-red-600 font-medium transition">Uygulamalar</a>
-                    <a href="javascript:void(0)" onclick="showSection('platform')" id="nav-platform" class="text-gray-600 hover:text-red-600 font-medium transition">Platform</a>
-                    <a href="javascript:void(0)" onclick="showSection('tools')" id="nav-tools" class="text-gray-600 hover:text-red-600 font-medium transition">Araçlar</a>
+                    <a href="javascript:void(0)" onclick="window.showSection('home')" id="nav-home" class="text-gray-600 hover:text-red-600 font-medium transition">Anasayfa</a>
+                    <a href="javascript:void(0)" onclick="window.showSection('apps')" id="nav-apps" class="text-gray-600 hover:text-red-600 font-medium transition">Uygulamalar</a>
+                    <a href="javascript:void(0)" onclick="window.showSection('platform')" id="nav-platform" class="text-gray-600 hover:text-red-600 font-medium transition">Platform</a>
+                    <a href="javascript:void(0)" onclick="window.showSection('tools')" id="nav-tools" class="text-gray-600 hover:text-red-600 font-medium transition">Araçlar</a>
                     
                     <!-- Giriş Yapılmamış Durum -->
-                    <button id="loginBtn" onclick="handleGoogleLogin()" class="bg-white border border-gray-300 px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-gray-50 transition shadow-sm">
+                    <button id="loginBtn" onclick="window.handleGoogleLogin()" class="bg-white border border-gray-300 px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-gray-50 transition shadow-sm">
                         <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-5 h-5" alt="Google">
                         <span id="nav-login" class="text-sm font-semibold">Giriş Yap</span>
                     </button>
@@ -161,7 +162,7 @@
                             <img id="userAvatar" src="" class="w-8 h-8 rounded-full border border-gray-300">
                             <span id="userName" class="text-sm font-semibold text-gray-700">Kullanıcı</span>
                         </div>
-                        <button onclick="handleLogout()" class="text-xs text-red-600 hover:text-red-800 border border-red-200 px-3 py-1 rounded-full">
+                        <button onclick="window.handleLogout()" class="text-xs text-red-600 hover:text-red-800 border border-red-200 px-3 py-1 rounded-full">
                             <i class="fas fa-sign-out-alt"></i> <span id="nav-logout">Çıkış</span>
                         </button>
                     </div>
@@ -176,8 +177,8 @@
             <div class="max-w-7xl mx-auto px-4 py-10">
                 <!-- Dil Seçici -->
                 <div class="flex flex-wrap justify-center md:justify-start gap-2 mb-8">
-                    <span class="lang-btn active" onclick="setLanguage('tr', this)">Türkçe</span>
-                    <span class="lang-btn" onclick="setLanguage('en', this)">English</span>
+                    <span class="lang-btn active" onclick="window.setLanguage('tr', this)">Türkçe</span>
+                    <span class="lang-btn" onclick="window.setLanguage('en', this)">English</span>
                     <!-- Diğer diller kod karmaşası olmaması için kısaltıldı, mantık aynı -->
                 </div>
 
@@ -192,7 +193,7 @@
                         <p id="hero-subdesc" class="text-md text-gray-500 mb-8 font-medium">
                             İçerik üreticileri için dünyanın en gelişmiş yapay zeka destekli analiz platformu.
                         </p>
-                        <button id="hero-btn" onclick="showSection('tools')" class="bg-red-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-red-700 transition shadow-lg mb-8 transform hover:scale-105">
+                        <button id="hero-btn" onclick="window.showSection('tools')" class="bg-red-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-red-700 transition shadow-lg mb-8 transform hover:scale-105">
                             Hemen Başla
                         </button>
                         
@@ -424,31 +425,31 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Başlık Araçları -->
-                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="openToolModal('YouTube Başlık', 'title')">
+                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('YouTube Başlık', 'title')">
                         <i class="fab fa-youtube text-red-600 text-3xl mb-4"></i>
                         <h3 class="font-bold text-lg mb-2">YouTube Başlık</h3>
                     </div>
-                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="openToolModal('Instagram Başlık', 'title')">
+                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('Instagram Başlık', 'title')">
                         <i class="fab fa-instagram text-pink-600 text-3xl mb-4"></i>
                         <h3 class="font-bold text-lg mb-2">Instagram Başlık</h3>
                     </div>
                     
                     <!-- Hashtag Araçları -->
-                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="openToolModal('YouTube Hashtag', 'hashtag')">
+                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('YouTube Hashtag', 'hashtag')">
                         <div class="text-red-600 text-3xl font-bold mb-4">#️⃣</div>
                         <h3 class="font-bold text-lg mb-2">YouTube Hashtag</h3>
                     </div>
-                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="openToolModal('Instagram Hashtag', 'hashtag')">
+                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('Instagram Hashtag', 'hashtag')">
                         <div class="text-pink-600 text-3xl font-bold mb-4">#️⃣</div>
                         <h3 class="font-bold text-lg mb-2">Instagram Hashtag</h3>
                     </div>
                     
                     <!-- Diğer Araçlar -->
-                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="openToolModal('TikTok Başlık', 'title')">
+                    <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('TikTok Başlık', 'title')">
                         <i class="fab fa-tiktok text-black text-3xl mb-4"></i>
                         <h3 class="font-bold text-lg mb-2">TikTok Başlık</h3>
                     </div>
-                     <div class="tool-card bg-white p-6 rounded-2xl" onclick="openToolModal('TikTok Hashtag', 'hashtag')">
+                     <div class="tool-card bg-white p-6 rounded-2xl" onclick="window.openToolModal('TikTok Hashtag', 'hashtag')">
                         <div class="text-black text-3xl font-bold mb-4">#️⃣</div>
                         <h3 class="font-bold text-lg mb-2">TikTok Hashtag</h3>
                     </div>
@@ -486,7 +487,7 @@
                         <p id="ai-desc" class="text-gray-600 text-lg max-w-2xl mx-auto mb-8">
                             Google Gemini altyapısı ile içeriklerinizi analiz ediyor, trendleri tahmin ediyoruz.
                         </p>
-                        <button id="ai-btn" onclick="showSection('tools')" class="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition">Araçları Dene</button>
+                        <button id="ai-btn" onclick="window.showSection('tools')" class="bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition">Araçları Dene</button>
                     </div>
                 </div>
             </div>
@@ -505,22 +506,22 @@
                 <div>
                     <h3 id="footer-corp" class="footer-heading">Kurumsal</h3>
                     <ul class="space-y-2">
-                        <li><a onclick="showSection('about')" id="f-about" class="footer-link">Hakkımızda</a></li>
-                        <li><a onclick="showSection('career')" id="f-career" class="footer-link">Kariyer</a></li>
-                        <li><a onclick="showSection('press')" id="f-press" class="footer-link">Basın Odası</a></li>
-                        <li><a onclick="showSection('brand')" id="f-brand" class="footer-link">Marka Varlıkları</a></li>
+                        <li><a onclick="window.showSection('about')" id="f-about" class="footer-link">Hakkımızda</a></li>
+                        <li><a onclick="window.showSection('career')" id="f-career" class="footer-link">Kariyer</a></li>
+                        <li><a onclick="window.showSection('press')" id="f-press" class="footer-link">Basın Odası</a></li>
+                        <li><a onclick="window.showSection('brand')" id="f-brand" class="footer-link">Marka Varlıkları</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h3 id="footer-sup" class="footer-heading">Destek & Yasal</h3>
                     <ul class="space-y-2">
-                        <li><a onclick="showSection('contact')" id="f-contact" class="footer-link">İletişim</a></li>
-                        <li><a onclick="showSection('help')" id="f-help" class="footer-link">Yardım Merkezi</a></li>
-                        <li><a onclick="showSection('sss')" id="f-faq" class="footer-link">SSS</a></li>
-                        <li><a onclick="showSection('privacy')" id="f-priv" class="footer-link">Gizlilik Politikası</a></li>
-                        <li><a onclick="showSection('terms')" id="f-terms" class="footer-link">Kullanım Şartları</a></li>
-                        <li><a onclick="showSection('security')" id="f-sec" class="footer-link">Güvenlik</a></li>
+                        <li><a onclick="window.showSection('contact')" id="f-contact" class="footer-link">İletişim</a></li>
+                        <li><a onclick="window.showSection('help')" id="f-help" class="footer-link">Yardım Merkezi</a></li>
+                        <li><a onclick="window.showSection('sss')" id="f-faq" class="footer-link">SSS</a></li>
+                        <li><a onclick="window.showSection('privacy')" id="f-priv" class="footer-link">Gizlilik Politikası</a></li>
+                        <li><a onclick="window.showSection('terms')" id="f-terms" class="footer-link">Kullanım Şartları</a></li>
+                        <li><a onclick="window.showSection('security')" id="f-sec" class="footer-link">Güvenlik</a></li>
                     </ul>
                 </div>
             </div>
@@ -531,15 +532,15 @@
     </footer>
 
     <!-- ÜRETİM MODALI -->
-    <div id="toolModal" class="modal-overlay" onclick="closeModal(event)">
+    <div id="toolModal" class="modal-overlay" onclick="window.closeModal(event)">
         <div class="modal-content text-center">
             <span id="limitBadge" class="limit-badge">Yükleniyor...</span>
-            <button class="absolute top-4 right-4 text-gray-400 hover:text-red-500" onclick="closeModalForce()"><i class="fas fa-times text-xl"></i></button>
+            <button class="absolute top-4 right-4 text-gray-400 hover:text-red-500" onclick="window.closeModalForce()"><i class="fas fa-times text-xl"></i></button>
             <div id="modalIcon" class="text-4xl mb-4">🚀</div>
             <h3 id="modalTitle" class="text-2xl font-bold mb-2">Araç Başlatılıyor</h3>
             <div id="inputArea" class="input-area">
                 <input type="text" id="userInput" class="custom-input" placeholder="Konu giriniz..." maxlength="100">
-                <button onclick="startGeneration()" id="generateBtn" class="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 font-bold shadow-md transition transform hover:scale-105">
+                <button onclick="window.startGeneration()" id="generateBtn" class="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 font-bold shadow-md transition transform hover:scale-105">
                     Oluştur <i class="fas fa-magic ml-2"></i>
                 </button>
             </div>
@@ -549,7 +550,7 @@
             </div>
             <div id="resultArea" class="hidden mt-6 text-left">
                 <div id="resultContent"></div>
-                <button onclick="resetModal()" class="mt-4 w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-900 transition">Yeni İstek</button>
+                <button onclick="window.resetModal()" class="mt-4 w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-900 transition">Yeni İstek</button>
             </div>
         </div>
     </div>
@@ -560,7 +561,7 @@
             <div class="text-5xl mb-4">🎁</div>
             <h3 class="text-2xl font-bold mb-2">Günlük Limit Doldu</h3>
             <p class="text-gray-600 mb-6">Bugünkü 2 hakkınızı doldurdunuz. Size özel tanımlanan <strong>BONUS</strong> hakkınızı kullanmak ister misiniz?</p>
-            <button onclick="claimBonus()" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-6 rounded-lg w-full shadow-lg hover:opacity-90 transition">
+            <button onclick="window.claimBonus()" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-6 rounded-lg w-full shadow-lg hover:opacity-90 transition">
                 Evet, Bonus Hakkımı Kullan
             </button>
             <button onclick="document.getElementById('bonusModal').style.display='none'" class="mt-4 text-sm text-gray-400 hover:text-gray-600">Vazgeç</button>
@@ -572,13 +573,9 @@
         // SUPABASE AYARLARI
         // ******************************************************
         
-        // Supabase Project URL
         const SUPABASE_URL = "https://cdzxzgwvebmvccfkvfll.supabase.co";
-        
-        // Supabase Anon Public Key
         const SUPABASE_ANON_KEY = "sb_publishable_QDz16Zn2HeoOw7Sf25PENA_FgZL0P-F";
         
-        // Supabase Client Başlatma (Hatasız ve Strict)
         let supabaseClient;
         try {
             if (typeof supabase !== 'undefined') {
@@ -595,16 +592,15 @@
             console.error("Supabase Başlatma Hatası:", err);
         }
 
-        // Global Değişkenler
         let currentUser = null;
-        let currentToolType = null; // 'title' veya 'hashtag'
+        let currentToolType = null; 
         
-        // --- AUTH İŞLEMLERİ (Sadece Google) ---
-        async function handleGoogleLogin() {
+        // --- FONKSİYONLAR GLOBAL (WINDOW) ---
+        
+        window.handleGoogleLogin = async function() {
             if (!supabaseClient) return alert("Supabase bağlantısı henüz yapılandırılmadı.");
             
             try {
-                // Sadece ve sadece Google OAuth
                 const { error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
                     options: { redirectTo: window.location.href }
@@ -613,16 +609,14 @@
             } catch (error) {
                 alert("Giriş Hatası: " + error.message);
             }
-        }
+        };
 
-        async function handleLogout() {
+        window.handleLogout = async function() {
             if (!supabaseClient) return;
             const { error } = await supabaseClient.auth.signOut();
             if (!error) window.location.reload();
-        }
+        };
 
-        // --- LİMİT VE KREDİ SİSTEMİ (localStorage tabanlı) ---
-        // Kullanıcı ID'sine bağlı günlük limit takibi
         function getLimitKey() {
             if (!currentUser) return null;
             const today = new Date().toISOString().split('T')[0];
@@ -645,8 +639,6 @@
             if (key) localStorage.setItem(key, JSON.stringify(limits));
         }
 
-        // --- UI GÜNCELLEMELERİ ---
-        // Sayfa yüklendiğinde oturum kontrolü
         if (supabaseClient) {
             supabaseClient.auth.getSession().then(({ data: { session } }) => {
                 updateAuthUI(session);
@@ -665,11 +657,9 @@
                 currentUser = session.user;
                 loginBtn.classList.add('hidden');
                 userProfile.classList.remove('hidden');
-                
-                // Google'dan gelen bilgiler
                 const meta = session.user.user_metadata;
                 document.getElementById('userName').innerText = meta.full_name || "Kullanıcı";
-                document.getElementById('userAvatar').src = meta.avatar_url || "";
+                if(meta.avatar_url) document.getElementById('userAvatar').src = meta.avatar_url;
             } else {
                 currentUser = null;
                 loginBtn.classList.remove('hidden');
@@ -677,31 +667,28 @@
             }
         }
 
-        // --- ARAÇ MANTIĞI ---
         window.openToolModal = function(toolName, type) {
             if (!currentUser) {
                 alert("Lütfen önce Google ile giriş yapın.");
                 return;
             }
             
-            currentToolType = type; // 'title' veya 'hashtag'
+            currentToolType = type;
             const limits = getUserLimits();
             const currentCount = limits[type];
-            const maxLimit = limits.bonusActive ? 3 : 2; // Bonus aktifse limit artar, değilse 2
+            const maxLimit = limits.bonusActive ? 3 : 2; 
             
-            // Modal Aç
             const modal = document.getElementById('toolModal');
             document.getElementById('modalTitle').innerText = toolName;
             document.getElementById('inputArea').style.display = 'block';
             document.getElementById('loadingContainer').style.display = 'none';
             document.getElementById('resultArea').classList.add('hidden');
             
-            // Badge Güncelle
             const remaining = Math.max(0, maxLimit - currentCount);
             document.getElementById('limitBadge').innerText = `Kalan ${type === 'title' ? 'Başlık' : 'Hashtag'} Hakkı: ${remaining}`;
             
             modal.style.display = 'flex';
-        }
+        };
 
         window.startGeneration = function() {
             const input = document.getElementById('userInput').value;
@@ -709,13 +696,10 @@
 
             const limits = getUserLimits();
             const type = currentToolType;
-            const maxLimit = limits.bonusActive ? 3 : 2; // Bonus aktifse +1 hak (toplam 3'e çıkar)
+            const maxLimit = limits.bonusActive ? 3 : 2; 
             
-            // 1. Limit Kontrolü
             if (limits[type] >= maxLimit) {
                 document.getElementById('toolModal').style.display = 'none';
-                
-                // Bonus hakkı henüz kullanılmadıysa teklif et
                 if (!limits.bonusUsed) {
                     document.getElementById('bonusModal').style.display = 'flex';
                 } else {
@@ -724,16 +708,13 @@
                 return;
             }
 
-            // 2. Üretim Simülasyonu
             document.getElementById('inputArea').style.display = 'none';
             document.getElementById('loadingContainer').style.display = 'block';
 
             setTimeout(() => {
-                // Hakkı düş
                 limits[type]++;
                 saveUserLimits(limits);
                 
-                // Sonuç Göster
                 const results = [
                     `Viral ${type === 'title' ? 'Başlık' : 'Hashtag'} #1: ${input} Harika`,
                     `Viral ${type === 'title' ? 'Başlık' : 'Hashtag'} #2: ${input} Trend`
@@ -751,26 +732,22 @@
                 document.getElementById('loadingContainer').style.display = 'none';
                 document.getElementById('resultArea').classList.remove('hidden');
                 
-                // Badge Güncelle
                 const remaining = Math.max(0, maxLimit - limits[type]);
                 document.getElementById('limitBadge').innerText = `Kalan Hak: ${remaining}`;
                 
             }, 1500);
-        }
+        };
 
-        // Bonus Kullanımı
         window.claimBonus = function() {
             const limits = getUserLimits();
-            limits.bonusActive = true; // Bonusu aktifleştir (Limitleri 2'den 3'e çıkarır)
-            limits.bonusUsed = true;   // Bir daha bonus teklif edilmez
+            limits.bonusActive = true; 
+            limits.bonusUsed = true;   
             saveUserLimits(limits);
             
             document.getElementById('bonusModal').style.display = 'none';
             alert("Tebrikler! +1 Bonus hak hesabınıza tanımlandı.");
-            // Kullanıcı tekrar butona basıp devam edebilir
-        }
+        };
 
-        // Modal Kapatma
         window.closeModal = (e) => { if(e.target.id === 'toolModal') document.getElementById('toolModal').style.display = 'none'; };
         window.closeModalForce = () => document.getElementById('toolModal').style.display = 'none';
         window.resetModal = () => {
@@ -778,19 +755,16 @@
             document.getElementById('inputArea').style.display = 'block';
         };
 
-        // Bölüm Gösterme
         window.showSection = function(id) {
             document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
             const sec = document.getElementById(id);
             if(sec) { sec.classList.add('active'); window.scrollTo(0,0); }
-        }
+        };
         
-        // Dil Değiştirme (Basit)
         window.setLanguage = function(lang, btn) {
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
-            const translations = {
+             const translations = {
                 tr: {
                     nav_home: "Anasayfa", nav_apps: "Uygulamalar", nav_platform: "Platform", nav_tools: "Araçlar", nav_login: "Giriş Yap", nav_logout: "Çıkış",
                     hero_title: "Viral İçerikler <br><span class='text-red-600'>Oluşturun</span>",
